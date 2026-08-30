@@ -1,37 +1,40 @@
-import React from 'react';
-import { PlayerState } from '../../types/game';
+import React from "react";
+import { PlayerState } from "../../types/game";
+import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
 interface TokenBadgeProps {
   player: PlayerState;
   isCurrentTurn?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 export const TokenBadge: React.FC<TokenBadgeProps> = ({
   player,
   isCurrentTurn = false,
-  size = 'md',
+  size = "md",
 }) => {
-  const sizeClasses = {
-    sm: 'w-5 h-5 text-xs',
-    md: 'w-6 h-6 text-sm',
-    lg: 'w-8 h-8 text-base',
+  const pixelSize = {
+    sm: 18,
+    md: 24,
+    lg: 32,
   }[size];
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center rounded-full transition-all duration-200 select-none shadow-sm ${sizeClasses} ${
-        isCurrentTurn ? 'ring-2 ring-blue-500 ring-offset-1 scale-110 z-10' : ''
+      className={`relative inline-flex items-center justify-center select-none ${
+        isCurrentTurn ? "scale-110 z-10" : ""
       }`}
-      style={{
-        backgroundColor: player.token.color,
-        color: '#FFFFFF',
-      }}
-      title={`${player.name} (${player.token.name}) - $${player.money}${player.inJail ? ' [In Jail]' : ''}`}
+      title={`${player.name} — $${player.money}${
+        player.inJail ? " [Jail]" : ""
+      }`}
     >
-      <span className="leading-none drop-shadow-xs">{player.token.icon}</span>
+      <IdenticonAvatar
+        name={player.name}
+        size={pixelSize}
+        color={player.token.color}
+      />
       {player.inJail && (
-        <span className="absolute -bottom-1 -right-1 bg-amber-500 text-[8px] px-1 rounded-full text-black font-bold border border-white">
+        <span className="absolute -bottom-1 -right-1 bg-[#ffc905] text-[7px] w-3.5 h-3.5 flex items-center justify-center rounded-xs text-black font-extrabold border border-black">
           J
         </span>
       )}

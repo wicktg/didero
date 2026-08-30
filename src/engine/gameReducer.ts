@@ -1,5 +1,5 @@
-import { GameState, TradeOffer } from '../types/game';
-import { SQUARES } from '../data/boardData';
+import { GameState, TradeOffer } from "../types/game";
+import { SQUARES } from "../data/boardData";
 import {
   createInitialGameState,
   canBuildHouse,
@@ -7,59 +7,69 @@ import {
   canMortgageProperty,
   canUnmortgageProperty,
   createLogEntry,
-} from './gameEngine';
-import { handleLanding } from './cardEngine';
-import { startAuction, placeBid, passBid, exitAuction } from './auctionEngine';
-import { proposeTrade, acceptTrade, rejectTrade } from './tradeEngine';
+} from "./gameEngine";
+import { handleLanding } from "./cardEngine";
+import { startAuction, placeBid, passBid, exitAuction } from "./auctionEngine";
+import { proposeTrade, acceptTrade, rejectTrade } from "./tradeEngine";
 
 export type GameAction =
-  | { type: 'ROLL_DICE'; payload?: { diceOverride?: [number, number] } }
-  | { type: 'BUY_PROPERTY'; payload: { propertyIndex: number } }
-  | { type: 'DECLINE_BUY'; payload: { propertyIndex: number } }
-  | { type: 'BUILD_HOUSE'; payload: { propertyIndex: number } }
-  | { type: 'SELL_HOUSE'; payload: { propertyIndex: number } }
-  | { type: 'MORTGAGE_PROPERTY'; payload: { propertyIndex: number } }
-  | { type: 'UNMORTGAGE_PROPERTY'; payload: { propertyIndex: number } }
-  | { type: 'PAY_JAIL_FINE'; payload?: { playerId?: number } }
-  | { type: 'USE_JAIL_CARD'; payload: { cardType: 'chance' | 'communityChest'; playerId?: number } }
-  | { type: 'RESOLVE_DEBT' }
-  | { type: 'DECLARE_BANKRUPTCY'; payload?: { playerId?: number } }
-  | { type: 'END_TURN' }
-  | { type: 'PLACE_AUCTION_BID'; payload: { playerId: number; amount: number } }
-  | { type: 'PASS_AUCTION_BID'; payload: { playerId: number } }
-  | { type: 'EXIT_AUCTION'; payload: { playerId: number } }
-  | { type: 'PROPOSE_TRADE'; payload: { trade: TradeOffer } }
-  | { type: 'ACCEPT_TRADE' }
-  | { type: 'REJECT_TRADE' }
-  | { type: 'SET_BOT_SPEED'; payload: { speed: 'normal' | 'fast' | 'instant' } }
-  | { type: 'TOGGLE_AUTO_PLAY'; payload?: { autoPlay?: boolean } }
-  | { type: 'RESET_GAME' };
+  | { type: "ROLL_DICE"; payload?: { diceOverride?: [number, number] } }
+  | { type: "BUY_PROPERTY"; payload: { propertyIndex: number } }
+  | { type: "DECLINE_BUY"; payload: { propertyIndex: number } }
+  | { type: "BUILD_HOUSE"; payload: { propertyIndex: number } }
+  | { type: "SELL_HOUSE"; payload: { propertyIndex: number } }
+  | { type: "MORTGAGE_PROPERTY"; payload: { propertyIndex: number } }
+  | { type: "UNMORTGAGE_PROPERTY"; payload: { propertyIndex: number } }
+  | { type: "PAY_JAIL_FINE"; payload?: { playerId?: number } }
+  | {
+      type: "USE_JAIL_CARD";
+      payload: { cardType: "chance" | "communityChest"; playerId?: number };
+    }
+  | { type: "RESOLVE_DEBT" }
+  | { type: "DECLARE_BANKRUPTCY"; payload?: { playerId?: number } }
+  | { type: "END_TURN" }
+  | { type: "PLACE_AUCTION_BID"; payload: { playerId: number; amount: number } }
+  | { type: "PASS_AUCTION_BID"; payload: { playerId: number } }
+  | { type: "EXIT_AUCTION"; payload: { playerId: number } }
+  | { type: "PROPOSE_TRADE"; payload: { trade: TradeOffer } }
+  | { type: "ACCEPT_TRADE" }
+  | { type: "REJECT_TRADE" }
+  | { type: "SET_BOT_SPEED"; payload: { speed: "normal" | "fast" | "instant" } }
+  | { type: "TOGGLE_AUTO_PLAY"; payload?: { autoPlay?: boolean } }
+  | { type: "RESET_GAME" };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
-    case 'RESET_GAME': {
+    case "RESET_GAME": {
       return createInitialGameState();
     }
 
-    case 'SET_BOT_SPEED': {
+    case "SET_BOT_SPEED": {
       return { ...state, botSpeed: action.payload.speed };
     }
 
-    case 'TOGGLE_AUTO_PLAY': {
-      const autoPlay = action.payload?.autoPlay !== undefined ? action.payload.autoPlay : !state.isAutoPlaying;
+    case "TOGGLE_AUTO_PLAY": {
+      const autoPlay =
+        action.payload?.autoPlay !== undefined
+          ? action.payload.autoPlay
+          : !state.isAutoPlaying;
       return { ...state, isAutoPlaying: autoPlay };
     }
 
-    case 'ROLL_DICE': {
-      if (state.turnPhase !== 'ROLL') return state;
+    case "ROLL_DICE": {
+      if (state.turnPhase !== "ROLL") return state;
 
       const playerId = state.currentTurnPlayerId;
       const player = { ...state.players[playerId] };
       const nextPlayers = [...state.players];
       nextPlayers[playerId] = player;
 
-      const die1 = action.payload?.diceOverride ? action.payload.diceOverride[0] : Math.floor(Math.random() * 6) + 1;
-      const die2 = action.payload?.diceOverride ? action.payload.diceOverride[1] : Math.floor(Math.random() * 6) + 1;
+      const die1 = action.payload?.diceOverride
+        ? action.payload.diceOverride[0]
+        : Math.floor(Math.random() * 6) + 1;
+      const die2 = action.payload?.diceOverride
+        ? action.payload.diceOverride[1]
+        : Math.floor(Math.random() * 6) + 1;
       const isDoubles = die1 === die2;
       const totalRoll = die1 + die2;
 
@@ -77,7 +87,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           player.jailTurns = 0;
           nextState.consecutiveDoubles = 0;
           nextState.gameLog = [
-            createLogEntry(`${player.name} rolled doubles (${die1}, ${die2}) and broke out of Jail!`, 'jail', playerId),
+            createLogEntry(
+              `${player.name} rolled doubles (${die1}, ${die2}) and broke out of Jail!`,
+              "jail",
+              playerId,
+            ),
             ...nextState.gameLog,
           ];
 
@@ -92,22 +106,34 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             player.inJail = false;
             player.jailTurns = 0;
             nextState.gameLog = [
-              createLogEntry(`${player.name} served 3 turns in Jail, paid $50 fine, and is released.`, 'jail', playerId),
+              createLogEntry(
+                `${player.name} served 3 turns in Jail, paid $50 fine, and is released.`,
+                "jail",
+                playerId,
+              ),
               ...nextState.gameLog,
             ];
 
             if (player.money < 0) {
-              nextState.turnPhase = 'DEBT_RESOLUTION';
-              nextState.debtInfo = { debtorId: playerId, creditorId: null, amountOwed: 50 };
+              nextState.turnPhase = "DEBT_RESOLUTION";
+              nextState.debtInfo = {
+                debtorId: playerId,
+                creditorId: null,
+                amountOwed: 50,
+              };
               return nextState;
             }
 
             player.position = (player.position + totalRoll) % 40;
             return handleLanding(nextState, playerId);
           } else {
-            nextState.turnPhase = 'END_TURN';
+            nextState.turnPhase = "END_TURN";
             nextState.gameLog = [
-              createLogEntry(`${player.name} failed to roll doubles (${die1}, ${die2}) in Jail (turn ${player.jailTurns}/3).`, 'jail', playerId),
+              createLogEntry(
+                `${player.name} failed to roll doubles (${die1}, ${die2}) in Jail (turn ${player.jailTurns}/3).`,
+                "jail",
+                playerId,
+              ),
               ...nextState.gameLog,
             ];
             return nextState;
@@ -124,9 +150,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           player.inJail = true;
           player.jailTurns = 0;
           nextState.consecutiveDoubles = 0;
-          nextState.turnPhase = 'END_TURN';
+          nextState.turnPhase = "END_TURN";
           nextState.gameLog = [
-            createLogEntry(`${player.name} rolled 3 consecutive doubles and was sent to Jail!`, 'jail', playerId),
+            createLogEntry(
+              `${player.name} rolled 3 consecutive doubles and was sent to Jail!`,
+              "jail",
+              playerId,
+            ),
             ...nextState.gameLog,
           ];
           return nextState;
@@ -143,28 +173,42 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (newPos < oldPos) {
         player.money += 200;
         nextState.gameLog = [
-          createLogEntry(`${player.name} passed GO and collected $200.`, 'move', playerId),
+          createLogEntry(
+            `${player.name} passed GO and collected $200.`,
+            "move",
+            playerId,
+          ),
           ...nextState.gameLog,
         ];
       }
 
       const square = SQUARES[newPos];
       nextState.gameLog = [
-        createLogEntry(`${player.name} rolled a ${totalRoll} (${die1}, ${die2}) and landed on ${square.name}.`, 'move', playerId),
+        createLogEntry(
+          `${player.name} rolled a ${totalRoll} (${die1}, ${die2}) and landed on ${square.name}.`,
+          "move",
+          playerId,
+        ),
         ...nextState.gameLog,
       ];
 
       return handleLanding(nextState, playerId);
     }
 
-    case 'BUY_PROPERTY': {
+    case "BUY_PROPERTY": {
       const pIdx = action.payload.propertyIndex;
       const playerId = state.currentTurnPlayerId;
       const player = { ...state.players[playerId] };
       const square = SQUARES[pIdx];
       const prop = state.properties[pIdx];
 
-      if (!square || !prop || prop.ownerId !== null || !square.price || player.money < square.price) {
+      if (
+        !square ||
+        !prop ||
+        prop.ownerId !== null ||
+        !square.price ||
+        player.money < square.price
+      ) {
         return state;
       }
 
@@ -180,31 +224,42 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         },
       };
 
-      const isDoubles = state.dice[0] === state.dice[1] && !player.inJail && state.consecutiveDoubles > 0;
+      const isDoubles =
+        state.dice[0] === state.dice[1] &&
+        !player.inJail &&
+        state.consecutiveDoubles > 0;
 
       return {
         ...state,
         players: nextPlayers,
         properties: nextProperties,
-        turnPhase: isDoubles ? 'ROLL' : 'END_TURN',
+        turnPhase: isDoubles ? "ROLL" : "END_TURN",
         gameLog: [
-          createLogEntry(`${player.name} bought ${square.name} for $${square.price}.`, 'buy', playerId),
+          createLogEntry(
+            `${player.name} bought ${square.name} for $${square.price}.`,
+            "buy",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'DECLINE_BUY': {
+    case "DECLINE_BUY": {
       return startAuction(state, action.payload.propertyIndex);
     }
 
-    case 'BUILD_HOUSE': {
+    case "BUILD_HOUSE": {
       const pIdx = action.payload.propertyIndex;
       const square = SQUARES[pIdx];
       const prop = state.properties[pIdx];
       const playerId = prop?.ownerId;
 
-      if (playerId === null || playerId === undefined || !canBuildHouse(state, playerId, pIdx)) {
+      if (
+        playerId === null ||
+        playerId === undefined ||
+        !canBuildHouse(state, playerId, pIdx)
+      ) {
         return state;
       }
 
@@ -222,26 +277,35 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         },
       };
 
-      const buildingType = prop.houses + 1 === 5 ? 'a Hotel' : `House #${prop.houses + 1}`;
+      const buildingType =
+        prop.houses + 1 === 5 ? "a Hotel" : `House #${prop.houses + 1}`;
 
       return {
         ...state,
         players: nextPlayers,
         properties: nextProperties,
         gameLog: [
-          createLogEntry(`${player.name} built ${buildingType} on ${square.name} for $${square.housePrice}.`, 'build', playerId),
+          createLogEntry(
+            `${player.name} built ${buildingType} on ${square.name} for $${square.housePrice}.`,
+            "build",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'SELL_HOUSE': {
+    case "SELL_HOUSE": {
       const pIdx = action.payload.propertyIndex;
       const square = SQUARES[pIdx];
       const prop = state.properties[pIdx];
       const playerId = prop?.ownerId;
 
-      if (playerId === null || playerId === undefined || !canSellHouse(state, playerId, pIdx)) {
+      if (
+        playerId === null ||
+        playerId === undefined ||
+        !canSellHouse(state, playerId, pIdx)
+      ) {
         return state;
       }
 
@@ -265,19 +329,27 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         players: nextPlayers,
         properties: nextProperties,
         gameLog: [
-          createLogEntry(`${player.name} sold a house on ${square.name} for $${refund}.`, 'build', playerId),
+          createLogEntry(
+            `${player.name} sold a house on ${square.name} for $${refund}.`,
+            "build",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'MORTGAGE_PROPERTY': {
+    case "MORTGAGE_PROPERTY": {
       const pIdx = action.payload.propertyIndex;
       const square = SQUARES[pIdx];
       const prop = state.properties[pIdx];
       const playerId = prop?.ownerId;
 
-      if (playerId === null || playerId === undefined || !canMortgageProperty(state, playerId, pIdx)) {
+      if (
+        playerId === null ||
+        playerId === undefined ||
+        !canMortgageProperty(state, playerId, pIdx)
+      ) {
         return state;
       }
 
@@ -301,19 +373,27 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         players: nextPlayers,
         properties: nextProperties,
         gameLog: [
-          createLogEntry(`${player.name} mortgaged ${square.name} for $${mortgageValue}.`, 'mortgage', playerId),
+          createLogEntry(
+            `${player.name} mortgaged ${square.name} for $${mortgageValue}.`,
+            "mortgage",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'UNMORTGAGE_PROPERTY': {
+    case "UNMORTGAGE_PROPERTY": {
       const pIdx = action.payload.propertyIndex;
       const square = SQUARES[pIdx];
       const prop = state.properties[pIdx];
       const playerId = prop?.ownerId;
 
-      if (playerId === null || playerId === undefined || !canUnmortgageProperty(state, playerId, pIdx)) {
+      if (
+        playerId === null ||
+        playerId === undefined ||
+        !canUnmortgageProperty(state, playerId, pIdx)
+      ) {
         return state;
       }
 
@@ -337,13 +417,17 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         players: nextPlayers,
         properties: nextProperties,
         gameLog: [
-          createLogEntry(`${player.name} unmortgaged ${square.name} for $${cost}.`, 'mortgage', playerId),
+          createLogEntry(
+            `${player.name} unmortgaged ${square.name} for $${cost}.`,
+            "mortgage",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'PAY_JAIL_FINE': {
+    case "PAY_JAIL_FINE": {
       const playerId = action.payload?.playerId ?? state.currentTurnPlayerId;
       const player = { ...state.players[playerId] };
 
@@ -359,23 +443,33 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         players: nextPlayers,
-        turnPhase: 'ROLL',
+        turnPhase: "ROLL",
         gameLog: [
-          createLogEntry(`${player.name} paid $50 fine and was released from Jail.`, 'jail', playerId),
+          createLogEntry(
+            `${player.name} paid $50 fine and was released from Jail.`,
+            "jail",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'USE_JAIL_CARD': {
+    case "USE_JAIL_CARD": {
       const playerId = action.payload?.playerId ?? state.currentTurnPlayerId;
       const player = { ...state.players[playerId] };
 
       if (!player.inJail) return state;
 
-      if (action.payload.cardType === 'chance' && player.getOutOfJailCards.chance > 0) {
+      if (
+        action.payload.cardType === "chance" &&
+        player.getOutOfJailCards.chance > 0
+      ) {
         player.getOutOfJailCards.chance -= 1;
-      } else if (action.payload.cardType === 'communityChest' && player.getOutOfJailCards.communityChest > 0) {
+      } else if (
+        action.payload.cardType === "communityChest" &&
+        player.getOutOfJailCards.communityChest > 0
+      ) {
         player.getOutOfJailCards.communityChest -= 1;
       } else {
         return state;
@@ -390,34 +484,47 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         players: nextPlayers,
-        turnPhase: 'ROLL',
+        turnPhase: "ROLL",
         gameLog: [
-          createLogEntry(`${player.name} used a "Get Out of Jail Free" card and is released.`, 'jail', playerId),
+          createLogEntry(
+            `${player.name} used a "Get Out of Jail Free" card and is released.`,
+            "jail",
+            playerId,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'RESOLVE_DEBT': {
+    case "RESOLVE_DEBT": {
       if (!state.debtInfo) return state;
       const debtor = state.players[state.debtInfo.debtorId];
       if (debtor.money < 0) return state;
 
       // Debt resolved!
-      const isDoubles = state.dice[0] === state.dice[1] && !debtor.inJail && state.consecutiveDoubles > 0;
+      const isDoubles =
+        state.dice[0] === state.dice[1] &&
+        !debtor.inJail &&
+        state.consecutiveDoubles > 0;
       return {
         ...state,
         debtInfo: null,
-        turnPhase: isDoubles ? 'ROLL' : 'END_TURN',
+        turnPhase: isDoubles ? "ROLL" : "END_TURN",
         gameLog: [
-          createLogEntry(`${debtor.name} successfully raised funds to clear all debt obligations.`, 'info', debtor.id),
+          createLogEntry(
+            `${debtor.name} successfully raised funds to clear all debt obligations.`,
+            "info",
+            debtor.id,
+          ),
           ...state.gameLog,
         ],
       };
     }
 
-    case 'DECLARE_BANKRUPTCY': {
-      const playerId = action.payload?.playerId ?? (state.debtInfo ? state.debtInfo.debtorId : state.currentTurnPlayerId);
+    case "DECLARE_BANKRUPTCY": {
+      const playerId =
+        action.payload?.playerId ??
+        (state.debtInfo ? state.debtInfo.debtorId : state.currentTurnPlayerId);
       const bankruptPlayer = { ...state.players[playerId] };
       const creditorId = state.debtInfo?.creditorId ?? null;
 
@@ -433,8 +540,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       if (creditorId !== null) {
         const creditor = { ...nextPlayers[creditorId] };
         creditor.money += Math.max(0, bankruptPlayer.money);
-        creditor.getOutOfJailCards.chance += bankruptPlayer.getOutOfJailCards.chance;
-        creditor.getOutOfJailCards.communityChest += bankruptPlayer.getOutOfJailCards.communityChest;
+        creditor.getOutOfJailCards.chance +=
+          bankruptPlayer.getOutOfJailCards.chance;
+        creditor.getOutOfJailCards.communityChest +=
+          bankruptPlayer.getOutOfJailCards.communityChest;
 
         Object.values(nextProperties).forEach((prop) => {
           if (prop.ownerId === playerId) {
@@ -464,11 +573,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const remainingActive = nextPlayers.filter((p) => !p.isBankrupt);
 
       let winnerId: number | null = null;
-      let phase: GameState['turnPhase'] = 'END_TURN';
+      let phase: GameState["turnPhase"] = "END_TURN";
 
       if (remainingActive.length === 1) {
         winnerId = remainingActive[0].id;
-        phase = 'GAME_OVER';
+        phase = "GAME_OVER";
       }
 
       return {
@@ -480,8 +589,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         gameWinnerId: winnerId,
         gameLog: [
           createLogEntry(
-            `${bankruptPlayer.name} declared bankruptcy! All assets transferred to ${creditorId !== null ? nextPlayers[creditorId].name : 'the Bank'}.`,
-            'bankruptcy',
+            `${bankruptPlayer.name} declared bankruptcy! All assets transferred to ${creditorId !== null ? nextPlayers[creditorId].name : "the Bank"}.`,
+            "bankruptcy",
             playerId,
           ),
           ...state.gameLog,
@@ -489,8 +598,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       };
     }
 
-    case 'END_TURN': {
-      if (state.turnPhase !== 'END_TURN') return state;
+    case "END_TURN": {
+      if (state.turnPhase !== "END_TURN") return state;
 
       // Find next active non-bankrupt player
       let nextPlayerId = (state.currentTurnPlayerId + 1) % state.players.length;
@@ -504,25 +613,25 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         turnNumber: state.turnNumber + 1,
         isDiceRolled: false,
         consecutiveDoubles: 0,
-        turnPhase: 'ROLL',
+        turnPhase: "ROLL",
         lastDrawnCard: null,
       };
     }
 
     // Auction Actions
-    case 'PLACE_AUCTION_BID':
+    case "PLACE_AUCTION_BID":
       return placeBid(state, action.payload.playerId, action.payload.amount);
-    case 'PASS_AUCTION_BID':
+    case "PASS_AUCTION_BID":
       return passBid(state, action.payload.playerId);
-    case 'EXIT_AUCTION':
+    case "EXIT_AUCTION":
       return exitAuction(state, action.payload.playerId);
 
     // Trade Actions
-    case 'PROPOSE_TRADE':
+    case "PROPOSE_TRADE":
       return proposeTrade(state, action.payload.trade);
-    case 'ACCEPT_TRADE':
+    case "ACCEPT_TRADE":
       return acceptTrade(state);
-    case 'REJECT_TRADE':
+    case "REJECT_TRADE":
       return rejectTrade(state);
 
     default:

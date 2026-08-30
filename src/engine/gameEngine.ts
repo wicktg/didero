@@ -1,9 +1,15 @@
-import { GameState, PlayerState, PropertyState, ColorGroup } from '../types/game';
-import { SQUARES } from '../data/boardData';
-import { CHANCE_CARDS, COMMUNITY_CHEST_CARDS } from '../data/cardsData';
-import { BOT_PROFILES, PLAYER_TOKENS } from '../data/botProfiles';
+import {
+  GameState,
+  PlayerState,
+  PropertyState,
+  ColorGroup,
+  LogEntry,
+} from "../types/game";
+import { SQUARES, COLOR_GROUPS } from "../data/boardData";
+import { CHANCE_CARDS, COMMUNITY_CHEST_CARDS } from "../data/cardsData";
+import { BOT_PROFILES, PLAYER_TOKENS } from "../data/botProfiles";
 
-// Fisher-Yates shuffle
+// Fisher-Yates shuffle algorithm
 export function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -13,13 +19,13 @@ export function shuffleArray<T>(array: T[]): T[] {
   return arr;
 }
 
-export function createInitialGameState(): GameState {
+export function createInitialGameState(playerCount: number = 2): GameState {
   const players: PlayerState[] = [];
 
   // Player 0 (Human)
   players.push({
     id: 0,
-    name: 'You (Player 1)',
+    name: "You (Player 1)",
     token: PLAYER_TOKENS[0],
     isAI: false,
     money: 1500,
@@ -31,8 +37,9 @@ export function createInitialGameState(): GameState {
     bankruptedBy: null,
   });
 
-  // Players 1 to 7 (Bots)
-  for (let i = 0; i < 7; i++) {
+  // Bots (playerCount - 1 bots)
+  const botCount = Math.max(1, Math.min(7, playerCount - 1));
+  for (let i = 0; i < botCount; i++) {
     const bot = BOT_PROFILES[i];
     players.push({
       id: i + 1,
@@ -61,7 +68,9 @@ export function createInitialGameState(): GameState {
   }
 
   const chanceDeck = shuffleArray(CHANCE_CARDS.map((_, idx) => idx));
-  const communityChestDeck = shuffleArray(COMMUNITY_CHEST_CARDS.map((_, idx) => idx));
+  const communityChestDeck = shuffleArray(
+    COMMUNITY_CHEST_CARDS.map((_, idx) => idx),
+  );
 
   return {
     players,
@@ -71,7 +80,7 @@ export function createInitialGameState(): GameState {
     dice: [1, 1],
     isDiceRolled: false,
     consecutiveDoubles: 0,
-    turnPhase: 'ROLL',
+    turnPhase: "ROLL",
     chanceDeck,
     chanceDiscard: [],
     communityChestDeck,
@@ -82,115 +91,146 @@ export function createInitialGameState(): GameState {
     lastDrawnCard: null,
     gameWinnerId: null,
     gameLog: [
-      {
-        id: 'init-1',
-        timestamp: Date.now(),
-        text: 'Game started with 8 players! Each player receives $1500.',
-        type: 'info',
-      },
+      createLogEntry(
+        "New 2-Player Match started. Player 1's turn to roll!",
+        "info",
+      ),
     ],
-    botSpeed: 'normal',
-    isAutoPlaying: true,
+    botSpeed: "normal",
+    isAutoPlaying: false,
   };
 }
 
-// Check if player owns all properties in a color group
-export function ownsFullGroup(state: GameState, playerId: number, group: ColorGroup): boolean {
-  const groupSquares = SQUARES.filter((s) => s.group === group);
-  if (groupSquares.length === 0) return false;
-  return groupSquares.every((s) => state.properties[s.index]?.ownerId === playerId);
+export function createLogEntry(
+  text: string,
+  type: LogEntry["type"] = "info",
+  playerId?: number,
+): LogEntry {
+  return {
+    id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    timestamp: Date.now(),
+    playerId,
+    text,
+    type,
+  };
 }
 
-// Can build house check
-export function canBuildHouse(state: GameState, playerId: number, propertyIndex: number): boolean {
+export function ownsFullGroup(
+  state: GameState,
+  playerId: number,
+  group: ColorGroup,
+): boolean {
+  const groupIndices = COLOR_GROUPS[group].squares;
+  return groupIndices.every(
+    (idx) => state.properties[idx]?.ownerId === playerId,
+  );
+}
+
+export function canBuildHouse(
+  state: GameState,
+  playerId: number,
+  propertyIndex: number,
+): boolean {
   const square = SQUARES[propertyIndex];
-  const prop = state.properties[propertyIndex];
-  const player = state.players[playerId];
-
-  if (!square || !prop || !player || prop.ownerId !== playerId || square.type !== 'STREET' || !square.group) {
-    return false;
-  }
-
-  if (prop.houses >= 5) return false; // Max hotel
-  if (prop.isMortgaged) return false;
-  if (player.money < (square.housePrice || 0)) return false;
-
-  // Must own all properties in the group
+  if (!square || square.type !== "STREET" || !square.group) return false;
   if (!ownsFullGroup(state, playerId, square.group)) return false;
 
-  // No property in the group can be mortgaged
-  const groupSquares = SQUARES.filter((s) => s.group === square.group);
-  const anyMortgaged = groupSquares.some((s) => state.properties[s.index]?.isMortgaged);
-  if (anyMortgaged) return false;
+  const prop = state.properties[propertyIndex];
+  if (prop.isMortgaged || prop.houses >= 5) return false;
 
-  // Even building rule: current houses cannot exceed the min houses in group
-  const houseCounts = groupSquares.map((s) => state.properties[s.index]?.houses || 0);
-  const minHouses = Math.min(...houseCounts);
-  return prop.houses === minHouses;
+  const player = state.players[playerId];
+  if (player.money < (square.housePrice || 0)) return false;
+
+  // Even development rule: cannot build if this property has more houses than any other in the group
+  const groupIndices = COLOR_GROUPS[square.group].squares;
+  const currentHouses = prop.houses;
+  const minHousesInGroup = Math.min(
+    ...groupIndices.map((idx) => state.properties[idx].houses),
+  );
+
+  return currentHouses === minHousesInGroup;
 }
 
-// Can sell house check
-export function canSellHouse(state: GameState, playerId: number, propertyIndex: number): boolean {
+export function canSellHouse(
+  state: GameState,
+  playerId: number,
+  propertyIndex: number,
+): boolean {
   const square = SQUARES[propertyIndex];
+  if (!square || square.type !== "STREET" || !square.group) return false;
+  if (state.properties[propertyIndex]?.ownerId !== playerId) return false;
+
   const prop = state.properties[propertyIndex];
-
-  if (!square || !prop || prop.ownerId !== playerId || square.type !== 'STREET' || !square.group) {
-    return false;
-  }
-
   if (prop.houses <= 0) return false;
 
-  // Even building rule: current houses must equal the max houses in group
-  const groupSquares = SQUARES.filter((s) => s.group === square.group);
-  const houseCounts = groupSquares.map((s) => state.properties[s.index]?.houses || 0);
-  const maxHouses = Math.max(...houseCounts);
-  return prop.houses === maxHouses;
+  // Even development rule: cannot sell if this property has fewer houses than any other in the group
+  const groupIndices = COLOR_GROUPS[square.group].squares;
+  const currentHouses = prop.houses;
+  const maxHousesInGroup = Math.max(
+    ...groupIndices.map((idx) => state.properties[idx].houses),
+  );
+
+  return currentHouses === maxHousesInGroup;
 }
 
-// Can mortgage property check
-export function canMortgageProperty(state: GameState, playerId: number, propertyIndex: number): boolean {
-  const square = SQUARES[propertyIndex];
+export function canMortgageProperty(
+  state: GameState,
+  playerId: number,
+  propertyIndex: number,
+): boolean {
   const prop = state.properties[propertyIndex];
+  if (!prop || prop.ownerId !== playerId || prop.isMortgaged) return false;
 
-  if (!square || !prop || prop.ownerId !== playerId || prop.isMortgaged || !square.price) {
-    return false;
-  }
-
-  // If street, no property in group can have houses
+  const square = SQUARES[propertyIndex];
   if (square.group) {
-    const groupSquares = SQUARES.filter((s) => s.group === square.group);
-    const anyHouses = groupSquares.some((s) => (state.properties[s.index]?.houses || 0) > 0);
-    if (anyHouses) return false;
+    const groupIndices = COLOR_GROUPS[square.group].squares;
+    // Cannot mortgage if any property in the group has houses
+    const hasBuildings = groupIndices.some(
+      (idx) => state.properties[idx].houses > 0,
+    );
+    if (hasBuildings) return false;
   }
 
   return true;
 }
 
-// Can unmortgage property check
-export function canUnmortgageProperty(state: GameState, playerId: number, propertyIndex: number): boolean {
-  const square = SQUARES[propertyIndex];
+export function canUnmortgageProperty(
+  state: GameState,
+  playerId: number,
+  propertyIndex: number,
+): boolean {
   const prop = state.properties[propertyIndex];
-  const player = state.players[playerId];
+  if (!prop || prop.ownerId !== playerId || !prop.isMortgaged) return false;
 
-  if (!square || !prop || !player || prop.ownerId !== playerId || !prop.isMortgaged || !square.price) {
-    return false;
-  }
-
-  const unmortgageCost = Math.round(square.price * 0.55); // 50% + 10% interest
-  return player.money >= unmortgageCost;
+  const square = SQUARES[propertyIndex];
+  const cost = Math.round((square.price || 0) * 0.55);
+  return state.players[playerId].money >= cost;
 }
 
-// Helper to log event
-export function createLogEntry(
-  text: string,
-  type: GameState['gameLog'][0]['type'],
-  playerId?: number,
-): GameState['gameLog'][0] {
-  return {
-    id: `${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    timestamp: Date.now(),
-    text,
-    type,
-    playerId,
-  };
+export function calculatePlayerNetWorth(
+  state: GameState,
+  playerId: number,
+): number {
+  const player = state.players[playerId];
+  if (!player || player.isBankrupt) return 0;
+
+  let total = player.money;
+
+  Object.values(state.properties).forEach((prop) => {
+    if (prop.ownerId === playerId) {
+      const square = SQUARES[prop.index];
+      if (square) {
+        if (prop.isMortgaged) {
+          total += (square.price || 0) * 0.5;
+        } else {
+          total += square.price || 0;
+          if (prop.houses > 0) {
+            total += prop.houses * ((square.housePrice || 0) * 0.5);
+          }
+        }
+      }
+    }
+  });
+
+  return total;
 }

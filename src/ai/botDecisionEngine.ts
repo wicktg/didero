@@ -1,18 +1,27 @@
-import { GameState, ColorGroup } from '../types/game';
-import { SQUARES, COLOR_GROUPS } from '../data/boardData';
-import { BOT_PROFILES } from '../data/botProfiles';
-import { calculatePropertyValuation } from './propertyValuation';
-import { canBuildHouse, canMortgageProperty, canSellHouse, ownsFullGroup } from '../engine/gameEngine';
+import { GameState, ColorGroup } from "../types/game";
+import { SQUARES, COLOR_GROUPS } from "../data/boardData";
+import { BOT_PROFILES } from "../data/botProfiles";
+import { calculatePropertyValuation } from "./propertyValuation";
+import {
+  canBuildHouse,
+  canMortgageProperty,
+  canSellHouse,
+  ownsFullGroup,
+} from "../engine/gameEngine";
 
 export interface LiquidationPlan {
   canSurvive: boolean;
   actions: Array<
-    | { type: 'MORTGAGE_PROPERTY'; payload: { propertyIndex: number } }
-    | { type: 'SELL_HOUSE'; payload: { propertyIndex: number } }
+    | { type: "MORTGAGE_PROPERTY"; payload: { propertyIndex: number } }
+    | { type: "SELL_HOUSE"; payload: { propertyIndex: number } }
   >;
 }
 
-export function evaluateBotBuy(state: GameState, botId: number, propertyIndex: number): boolean {
+export function evaluateBotBuy(
+  state: GameState,
+  botId: number,
+  propertyIndex: number,
+): boolean {
   const square = SQUARES[propertyIndex];
   const bot = state.players[botId];
   const profile = BOT_PROFILES.find((p) => p.id === botId) || BOT_PROFILES[0];
@@ -28,27 +37,35 @@ export function evaluateBotBuy(state: GameState, botId: number, propertyIndex: n
 export function evaluateBotAuctionBid(
   state: GameState,
   botId: number,
-): number | 'PASS' | 'EXIT' {
-  if (!state.activeAuction) return 'PASS';
+): number | "PASS" | "EXIT" {
+  if (!state.activeAuction) return "PASS";
   const auction = state.activeAuction;
   const square = SQUARES[auction.propertyIndex];
   const bot = state.players[botId];
 
-  if (!square || bot.money < (auction.highestBid + auction.minIncrement)) {
-    return 'EXIT';
+  if (!square || bot.money < auction.highestBid + auction.minIncrement) {
+    return "EXIT";
   }
 
-  const valuation = calculatePropertyValuation(state, botId, auction.propertyIndex);
-  const minRequiredBid = auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
+  const valuation = calculatePropertyValuation(
+    state,
+    botId,
+    auction.propertyIndex,
+  );
+  const minRequiredBid =
+    auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
 
   if (minRequiredBid <= valuation && minRequiredBid <= bot.money) {
     return minRequiredBid;
   }
 
-  return 'PASS';
+  return "PASS";
 }
 
-export function evaluateBotJail(state: GameState, botId: number): 'PAY_FINE' | 'USE_CARD' | 'ROLL' {
+export function evaluateBotJail(
+  state: GameState,
+  botId: number,
+): "PAY_FINE" | "USE_CARD" | "ROLL" {
   const bot = state.players[botId];
   const profile = BOT_PROFILES.find((p) => p.id === botId) || BOT_PROFILES[0];
 
@@ -57,22 +74,30 @@ export function evaluateBotJail(state: GameState, botId: number): 'PAY_FINE' | '
     (p) => p.ownerId === null && SQUARES[p.index].price,
   ).length;
 
-  const hasCard = bot.getOutOfJailCards.chance > 0 || bot.getOutOfJailCards.communityChest > 0;
+  const hasCard =
+    bot.getOutOfJailCards.chance > 0 ||
+    bot.getOutOfJailCards.communityChest > 0;
 
   if (hasCard) {
-    return 'USE_CARD';
+    return "USE_CARD";
   }
 
   // If unowned properties exist (early game) or profile is early_exit -> pay fine to get out
-  if ((unownedCount > 10 || profile.jailTolerance === 'early_exit') && bot.money >= 100) {
-    return 'PAY_FINE';
+  if (
+    (unownedCount > 10 || profile.jailTolerance === "early_exit") &&
+    bot.money >= 100
+  ) {
+    return "PAY_FINE";
   }
 
   // Otherwise try to roll doubles
-  return 'ROLL';
+  return "ROLL";
 }
 
-export function evaluateBotHouseBuilding(state: GameState, botId: number): number[] {
+export function evaluateBotHouseBuilding(
+  state: GameState,
+  botId: number,
+): number[] {
   const bot = state.players[botId];
   const profile = BOT_PROFILES.find((p) => p.id === botId) || BOT_PROFILES[0];
   const buildTargets: number[] = [];
@@ -110,7 +135,7 @@ export function evaluateBotDebtLiquidation(
   _debtAmount: number,
 ): LiquidationPlan {
   const bot = state.players[botId];
-  const actions: LiquidationPlan['actions'] = [];
+  const actions: LiquidationPlan["actions"] = [];
   let fundsRaised = bot.money; // Could be negative
 
   // 1. Mortgage unmonopolized single properties
@@ -123,7 +148,10 @@ export function evaluateBotDebtLiquidation(
     // If not a monopoly or railroad/utility, mortgage first
     const isMono = sq.group ? ownsFullGroup(state, botId, sq.group) : false;
     if (!isMono && canMortgageProperty(state, botId, prop.index)) {
-      actions.push({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: prop.index } });
+      actions.push({
+        type: "MORTGAGE_PROPERTY",
+        payload: { propertyIndex: prop.index },
+      });
       fundsRaised += Math.round((sq.price || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };
@@ -139,7 +167,10 @@ export function evaluateBotDebtLiquidation(
   for (const prop of developedProps) {
     const sq = SQUARES[prop.index];
     if (canSellHouse(state, botId, prop.index)) {
-      actions.push({ type: 'SELL_HOUSE', payload: { propertyIndex: prop.index } });
+      actions.push({
+        type: "SELL_HOUSE",
+        payload: { propertyIndex: prop.index },
+      });
       fundsRaised += Math.round((sq.housePrice || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };
@@ -151,7 +182,10 @@ export function evaluateBotDebtLiquidation(
   for (const prop of ownedProps) {
     const sq = SQUARES[prop.index];
     if (canMortgageProperty(state, botId, prop.index)) {
-      actions.push({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: prop.index } });
+      actions.push({
+        type: "MORTGAGE_PROPERTY",
+        payload: { propertyIndex: prop.index },
+      });
       fundsRaised += Math.round((sq.price || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };

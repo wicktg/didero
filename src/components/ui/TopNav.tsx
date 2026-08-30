@@ -1,106 +1,118 @@
-import React from 'react';
-import { useGame } from '../../context/GameContext';
-import { Play, Pause, FastForward, Zap, RotateCcw } from 'lucide-react';
+import React, { useState } from "react";
+import { useGame } from "../../context/GameContext";
+import { SettingsModal } from "../modals/SettingsModal";
+import { LayoutGrid, BarChart2, Settings, Play, Pause } from "lucide-react";
 
 export const TopNav: React.FC = () => {
-  const { state, dispatch } = useGame();
+  const {
+    setSelectedTab,
+    isAutonomousRunning,
+    toggleAutonomous,
+    secondsUntilNextTurn,
+  } = useGame();
+  const [activeMenu, setActiveMenu] = useState<"board" | "stats" | "settings">(
+    "board",
+  );
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const handleMenuClick = (menu: "board" | "stats" | "settings") => {
+    setActiveMenu(menu);
+    if (menu === "board") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (menu === "stats") {
+      setSelectedTab("leaderboard");
+      const asideEl = document.querySelector("aside");
+      if (asideEl) {
+        asideEl.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (menu === "settings") {
+      setIsSettingsOpen(true);
+    }
+  };
 
   return (
-    <header className="w-full bg-white border-b border-neutral-200 px-4 py-2.5 flex items-center justify-between shadow-2xs select-none">
-      {/* Left: Brand & Turn Badge */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-blue-700 text-white font-black text-base flex items-center justify-center shadow-xs">
-            M
-          </span>
-          <div className="flex flex-col">
-            <h1 className="text-sm font-extrabold text-neutral-900 tracking-tight leading-none">
-              Monopoly Classic
-            </h1>
-            <span className="text-[10px] text-neutral-500 font-medium">8-Player AI Match</span>
-          </div>
-        </div>
-
-        <div className="h-4 w-px bg-neutral-200 mx-1 hidden sm:block" />
-
-        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-neutral-100 rounded-full text-xs font-bold text-neutral-700">
-          <span>Turn</span>
-          <span className="text-blue-700 font-black tabular-nums">#{state.turnNumber}</span>
-        </div>
-      </div>
-
-      {/* Right Controls: Bot Speed & Game Actions */}
-      <div className="flex items-center gap-2">
-        {/* Bot Speed Switcher */}
-        <div className="flex items-center bg-neutral-100 p-0.5 rounded-lg border border-neutral-200 text-xs">
+    <>
+      <header className="fixed top-3 inset-x-0 mx-auto w-max z-50 bg-white border-2 border-black rounded-lg p-1 flex items-center select-none shadow-xs pointer-events-auto">
+        {/* 3 Menu Items: Board, Stats, Settings */}
+        <nav className="flex items-center gap-1">
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_BOT_SPEED', payload: { speed: 'normal' } })}
-            className={`px-2 py-1 rounded-md font-bold transition-all ${
-              state.botSpeed === 'normal'
-                ? 'bg-white text-neutral-900 shadow-2xs'
-                : 'text-neutral-500 hover:text-neutral-800'
+            onClick={() => handleMenuClick("board")}
+            className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
+              activeMenu === "board"
+                ? "bg-[#c9daf8] text-black border-black font-black"
+                : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
-            title="Normal bot speed (650ms per step)"
           >
-            Normal
+            <LayoutGrid className="w-3.5 h-3.5" /> Board
           </button>
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_BOT_SPEED', payload: { speed: 'fast' } })}
-            className={`px-2 py-1 rounded-md font-bold flex items-center gap-1 transition-all ${
-              state.botSpeed === 'fast'
-                ? 'bg-white text-neutral-900 shadow-2xs'
-                : 'text-neutral-500 hover:text-neutral-800'
+            onClick={() => handleMenuClick("stats")}
+            className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
+              activeMenu === "stats"
+                ? "bg-[#c9daf8] text-black border-black font-black"
+                : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
-            title="Fast bot speed (200ms per step)"
           >
-            <FastForward className="w-3 h-3" /> Fast
+            <BarChart2 className="w-3.5 h-3.5" /> Stats
           </button>
 
           <button
             type="button"
-            onClick={() => dispatch({ type: 'SET_BOT_SPEED', payload: { speed: 'instant' } })}
-            className={`px-2 py-1 rounded-md font-bold flex items-center gap-1 transition-all ${
-              state.botSpeed === 'instant'
-                ? 'bg-white text-blue-700 shadow-2xs'
-                : 'text-neutral-500 hover:text-neutral-800'
+            onClick={() => handleMenuClick("settings")}
+            className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
+              isSettingsOpen
+                ? "bg-[#c9daf8] text-black border-black font-black"
+                : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
-            title="Instant bot speed (Skip wait between bot turns)"
           >
-            <Zap className="w-3 h-3" /> Instant
+            <Settings className="w-3.5 h-3.5" /> Settings
           </button>
-        </div>
+        </nav>
+      </header>
 
-        {/* Auto-play Toggle */}
-        <button
-          type="button"
-          onClick={() => dispatch({ type: 'TOGGLE_AUTO_PLAY' })}
-          className={`p-1.5 rounded-lg border transition-all ${
-            state.isAutoPlaying
-              ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-              : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
-          }`}
-          title={state.isAutoPlaying ? 'Pause bots' : 'Resume bots'}
-        >
-          {state.isAutoPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-        </button>
+      {/* Fixed top-right Play Game / Pause Game Button */}
+      <button
+        type="button"
+        onClick={toggleAutonomous}
+        className={`fixed top-3 right-4 z-50 select-none shadow-xs transition-all duration-150 active:translate-y-px ${
+          isAutonomousRunning
+            ? "bg-[#a5cd39] text-black border-2 border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#94b833]"
+            : "bg-[#ffc905] text-black border-2 border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#e6b504]"
+        }`}
+        title={
+          isAutonomousRunning
+            ? "Pause autonomous match"
+            : "Start autonomous match"
+        }
+      >
+        {isAutonomousRunning ? (
+          <>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
+            </span>
+            <Pause className="w-3.5 h-3.5 fill-black" />
+            <span>Pause Game ({secondsUntilNextTurn}s)</span>
+          </>
+        ) : (
+          <>
+            <Play className="w-3.5 h-3.5 fill-black" />
+            <span>Play Game</span>
+          </>
+        )}
+      </button>
 
-        {/* New Game / Restart */}
-        <button
-          type="button"
-          onClick={() => {
-            if (window.confirm('Start a fresh 8-player match?')) {
-              dispatch({ type: 'RESET_GAME' });
-            }
-          }}
-          className="p-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition-all"
-          title="Restart match"
-        >
-          <RotateCcw className="w-4 h-4" />
-        </button>
-      </div>
-    </header>
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => {
+          setIsSettingsOpen(false);
+          setActiveMenu("board");
+        }}
+      />
+    </>
   );
 };

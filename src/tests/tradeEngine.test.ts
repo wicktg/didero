@@ -1,11 +1,15 @@
-import { describe, it, expect } from 'vitest';
-import { createInitialGameState } from '../engine/gameEngine';
-import { proposeTrade, acceptTrade, validateTradeOffer } from '../engine/tradeEngine';
-import { TradeOffer } from '../types/game';
+import { describe, it, expect } from "vitest";
+import { createInitialGameState } from "../engine/gameEngine";
+import {
+  proposeTrade,
+  acceptTrade,
+  validateTradeOffer,
+} from "../engine/tradeEngine";
+import { TradeOffer } from "../types/game";
 
-describe('Trade Negotiation Engine', () => {
+describe("Trade Negotiation Engine", () => {
   const createMockTrade = (overrides?: Partial<TradeOffer>): TradeOffer => ({
-    id: 'test_trade_1',
+    id: "test_trade_1",
     initiatorId: 0,
     recipientId: 1,
     offeredMoney: 100,
@@ -17,7 +21,7 @@ describe('Trade Negotiation Engine', () => {
     ...overrides,
   });
 
-  it('validates and executes asset transfer on trade acceptance', () => {
+  it("validates and executes asset transfer on trade acceptance", () => {
     let state = createInitialGameState();
     state.properties[1].ownerId = 0;
     state.properties[3].ownerId = 1;
@@ -41,7 +45,7 @@ describe('Trade Negotiation Engine', () => {
     expect(state.players[1].money).toBe(1600); // 1500 + 100
   });
 
-  it('transfers get out of jail cards properly', () => {
+  it("transfers get out of jail cards properly", () => {
     let state = createInitialGameState();
     state.players[0].getOutOfJailCards.chance = 1;
 
@@ -62,7 +66,7 @@ describe('Trade Negotiation Engine', () => {
     expect(state.players[1].money).toBe(1450);
   });
 
-  it('rejects trading properties if houses exist in the color group', () => {
+  it("rejects trading properties if houses exist in the color group", () => {
     const state = createInitialGameState();
     state.properties[1].ownerId = 0;
     state.properties[3].ownerId = 0;
@@ -75,10 +79,10 @@ describe('Trade Negotiation Engine', () => {
 
     const validation = validateTradeOffer(state, trade);
     expect(validation.valid).toBe(false);
-    expect(validation.reason).toContain('houses');
+    expect(validation.reason).toContain("houses");
   });
 
-  it('rejects trade if initiator has insufficient funds', () => {
+  it("rejects trade if initiator has insufficient funds", () => {
     const state = createInitialGameState();
     state.players[0].money = 50;
 

@@ -1,11 +1,13 @@
 # Autonomous Agent-vs-Agent Gameplay Design Specification
 
 ## 1. Overview & Objective
+
 Transition the game from human-vs-bot to a fully autonomous, head-to-head AI agent match (Agent 1 vs Agent 2) powered by Groq LLM API with `qwen/qwen3.8-27b`. The system operates on a strict **Engine → State Serialization → LLM Agent Action → Engine Validation/Application** loop, maintaining the Monopoly game engine as the immutable, sole source of truth.
 
 ---
 
 ## 2. API & Model Configuration
+
 - **Model**: `qwen/qwen3.8-27b`
 - **Provider**: Groq Chat Completions API (`https://api.groq.com/openai/v1/chat/completions`)
 - **Agent 1 (Player 0)** API Key: `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`
@@ -17,7 +19,9 @@ Transition the game from human-vs-bot to a fully autonomous, head-to-head AI age
 ## 3. Communication Protocol & JSON Schema
 
 ### 3.1 State Serialization (`Engine -> Agent`)
+
 The engine serializes comprehensive situational awareness into JSON:
+
 ```json
 {
   "activePlayerId": 0,
@@ -60,13 +64,18 @@ The engine serializes comprehensive situational awareness into JSON:
   },
   "legalActions": [
     { "type": "BUY_PROPERTY", "description": "Buy St. James Place for $180" },
-    { "type": "DECLINE_BUY", "description": "Decline purchase and trigger public auction" }
+    {
+      "type": "DECLINE_BUY",
+      "description": "Decline purchase and trigger public auction"
+    }
   ]
 }
 ```
 
 ### 3.2 Agent Action Response (`Agent -> Engine`)
+
 The agent returns a structured JSON object containing strategic reasoning and the desired action:
+
 ```json
 {
   "thought": "St. James Place is the first Orange street. Owning it blocks Agent Beta from building a monopoly and fits within my $1340 cash buffer.",
@@ -80,6 +89,7 @@ The agent returns a structured JSON object containing strategic reasoning and th
 ---
 
 ## 4. Engine Validation & Safety Fallbacks
+
 1. **Source of Truth**: The LLM output is purely advisory; the game engine validates every payload before dispatch.
 2. **Affordability**: Ensures `player.money >= price` before purchases, house construction, or auction bids.
 3. **Phase Legality**: Checks that proposed actions match `state.turnPhase` (`ROLL`, `LANDED_ACTION`, `AUCTION`, `DEBT_RESOLUTION`, `END_TURN`).
@@ -106,6 +116,7 @@ The agent returns a structured JSON object containing strategic reasoning and th
 ---
 
 ## 6. Verification & Testing Plan
+
 - **Unit Tests**:
   - `agentStateSerializer.test.ts`: Validates serialization completeness and legal actions generator.
   - `agentActionValidator.test.ts`: Verifies rejection of illegal moves (e.g., buying without funds, bidding out of phase) and fallback execution.

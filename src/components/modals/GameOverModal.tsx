@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { useGame } from '../../context/GameContext';
-import { SQUARES } from '../../data/boardData';
-import confetti from 'canvas-confetti';
-import { Trophy, RotateCcw } from 'lucide-react';
+import React, { useEffect } from "react";
+import { useGame } from "../../context/GameContext";
+import { SQUARES } from "../../data/boardData";
+import confetti from "canvas-confetti";
+import { Trophy, RotateCcw } from "lucide-react";
+import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
 export const GameOverModal: React.FC = () => {
   const { state, dispatch } = useGame();
 
-  if (state.turnPhase !== 'GAME_OVER') return null;
+  if (state.turnPhase !== "GAME_OVER") return null;
 
   // Trigger celebration confetti
   useEffect(() => {
@@ -22,7 +23,10 @@ export const GameOverModal: React.FC = () => {
     }
   }, []);
 
-  const winner = state.gameWinnerId !== null ? state.players[state.gameWinnerId] : state.players[0];
+  const winner =
+    state.gameWinnerId !== null
+      ? state.players[state.gameWinnerId]
+      : state.players[0];
 
   // Calculate Net Worth for each player
   const playerRankings = state.players
@@ -34,7 +38,9 @@ export const GameOverModal: React.FC = () => {
         if (prop.ownerId === p.id) {
           const sq = SQUARES[prop.index];
           if (sq) {
-            propertyWealth += prop.isMortgaged ? (sq.price || 0) * 0.5 : (sq.price || 0);
+            propertyWealth += prop.isMortgaged
+              ? (sq.price || 0) * 0.5
+              : sq.price || 0;
             if (prop.houses > 0) {
               houseCount += prop.houses;
               propertyWealth += prop.houses * (sq.housePrice || 0) * 0.5;
@@ -54,28 +60,28 @@ export const GameOverModal: React.FC = () => {
     .sort((a, b) => b.netWorth - a.netWorth);
 
   return (
-    <div className="fixed inset-0 z-50 bg-neutral-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200 flex flex-col">
-        {/* Top Winner Banner */}
-        <div className="p-6 bg-gradient-to-b from-neutral-900 to-neutral-800 text-white text-center flex flex-col items-center select-none relative overflow-hidden">
-          <div className="w-16 h-16 bg-amber-400 text-neutral-950 rounded-2xl flex items-center justify-center mb-3 shadow-lg shadow-amber-400/20">
-            <Trophy className="w-9 h-9 stroke-[2.2]" />
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white rounded-lg border-2 border-black overflow-hidden flex flex-col select-none">
+        {/* Top Winner Banner with Gold Yellow */}
+        <div className="p-5 bg-[#ffc905] text-black text-center flex flex-col items-center border-b-2 border-black">
+          <div className="w-12 h-12 bg-white text-black rounded-md border-2 border-black flex items-center justify-center mb-2">
+            <Trophy className="w-7 h-7" />
           </div>
 
-          <span className="text-[11px] font-extrabold text-amber-400 uppercase tracking-widest">
-            Match Concluded
+          <span className="text-[9px] font-extrabold uppercase tracking-widest text-neutral-800">
+            Tournament Match Concluded
           </span>
-          <h2 className="text-2xl font-black tracking-tight mt-0.5">
+          <h2 className="text-xl font-black uppercase tracking-wide mt-0.5">
             {winner?.name} is the Victor!
           </h2>
-          <p className="text-xs text-neutral-400 mt-1 max-w-xs">
-            Survived all 8 players to establish the ultimate real estate empire.
+          <p className="text-[11px] font-bold text-neutral-800 mt-1 max-w-xs">
+            Established the ultimate real estate monopoly against all opponents.
           </p>
         </div>
 
         {/* Standings List */}
-        <div className="p-5 flex flex-col gap-2 max-h-72 overflow-y-auto">
-          <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1">
+        <div className="p-4 flex flex-col gap-2 max-h-72 overflow-y-auto bg-neutral-50/50">
+          <span className="text-[10px] font-extrabold text-neutral-700 uppercase tracking-widest mb-1">
             Final Standings & Net Worth
           </span>
 
@@ -86,41 +92,41 @@ export const GameOverModal: React.FC = () => {
             return (
               <div
                 key={p.id}
-                className={`flex items-center justify-between p-3 rounded-xl border text-xs transition-all ${
+                className={`flex items-center justify-between p-2.5 rounded-md border-[1.5px] border-black text-xs font-bold ${
                   isWinner
-                    ? 'bg-amber-50/70 border-amber-300 font-bold text-amber-950 shadow-xs'
+                    ? "bg-[#c9daf8] text-black"
                     : p.isBankrupt
-                    ? 'bg-neutral-50 border-neutral-200 text-neutral-400'
-                    : 'bg-white border-neutral-200 text-neutral-800'
+                    ? "bg-neutral-100 text-neutral-400 opacity-60"
+                    : "bg-white text-black"
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${
-                      isWinner ? 'bg-amber-400 text-neutral-950' : 'bg-neutral-200 text-neutral-700'
-                    }`}
-                  >
-                    #{idx + 1}
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="w-5 h-5 bg-white text-black border border-black rounded text-[11px] font-black flex items-center justify-center shrink-0">
+                    {idx + 1}
                   </span>
-
-                  <span className="text-base">{p.token.icon}</span>
-
-                  <div className="flex flex-col">
-                    <span className="font-bold">
-                      {p.name} {p.id === 0 && '(You)'}
+                  <IdenticonAvatar
+                    name={p.name}
+                    size={22}
+                    color={p.token.color}
+                  />
+                  <div className="flex flex-col min-w-0">
+                    <span className="uppercase tracking-wide truncate">
+                      {p.name} {p.id === 0 ? "(You)" : ""}
                     </span>
-                    {p.isBankrupt && (
-                      <span className="text-[10px] text-red-500 font-medium">Bankrupt</span>
-                    )}
+                    <span className="text-[9px] text-neutral-600 font-bold uppercase tracking-wider">
+                      {p.isBankrupt
+                        ? "Bankrupted"
+                        : `${rank.houseCount} houses built`}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end">
-                  <span className="font-extrabold text-sm tabular-nums text-neutral-900">
+                <div className="flex flex-col items-end shrink-0 pl-2">
+                  <span className="font-extrabold tabular-nums text-xs">
                     ${rank.netWorth}
                   </span>
-                  <span className="text-[10px] text-neutral-500">
-                    Cash: ${p.money}
+                  <span className="text-[8px] font-bold text-neutral-600 uppercase tracking-widest">
+                    Net Worth
                   </span>
                 </div>
               </div>
@@ -129,13 +135,13 @@ export const GameOverModal: React.FC = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-neutral-50 border-t border-neutral-200 flex justify-center">
+        <div className="p-4 bg-white border-t-2 border-black flex justify-end">
           <button
             type="button"
-            onClick={() => dispatch({ type: 'RESET_GAME' })}
-            className="px-6 py-3 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition-all active:scale-[0.98]"
+            onClick={() => dispatch({ type: "RESET_GAME" })}
+            className="w-full py-2.5 bg-[#a5cd39] hover:bg-[#94b833] text-black border-2 border-black rounded-md text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-colors active:translate-y-px"
           >
-            <RotateCcw className="w-4 h-4" /> Start New 8-Player Match
+            <RotateCcw className="w-4 h-4" /> Start New Tournament Match
           </button>
         </div>
       </div>

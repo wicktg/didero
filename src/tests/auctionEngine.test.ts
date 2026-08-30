@@ -1,21 +1,26 @@
-import { describe, it, expect } from 'vitest';
-import { createInitialGameState } from '../engine/gameEngine';
-import { startAuction, placeBid, passBid, exitAuction } from '../engine/auctionEngine';
+import { describe, it, expect } from "vitest";
+import { createInitialGameState } from "../engine/gameEngine";
+import {
+  startAuction,
+  placeBid,
+  passBid,
+  exitAuction,
+} from "../engine/auctionEngine";
 
-describe('Auction Engine', () => {
-  it('starts an auction with all 8 eligible players', () => {
+describe("Auction Engine", () => {
+  it("starts an auction with all eligible players", () => {
     let state = createInitialGameState();
     state = startAuction(state, 39); // Boardwalk
 
-    expect(state.turnPhase).toBe('AUCTION');
+    expect(state.turnPhase).toBe("AUCTION");
     expect(state.activeAuction).toBeDefined();
     expect(state.activeAuction?.propertyIndex).toBe(39);
     expect(state.activeAuction?.highestBid).toBe(0);
     expect(state.activeAuction?.highestBidderId).toBeNull();
-    expect(state.activeAuction?.activeParticipants).toHaveLength(8);
+    expect(state.activeAuction?.activeParticipants).toHaveLength(state.players.length);
   });
 
-  it('records valid bids and advances current bidder', () => {
+  it("records valid bids and advances current bidder", () => {
     let state = createInitialGameState();
     state = startAuction(state, 39);
 
@@ -29,34 +34,33 @@ describe('Auction Engine', () => {
     state = placeBid(state, 1, 150);
     expect(state.activeAuction?.highestBid).toBe(150);
     expect(state.activeAuction?.highestBidderId).toBe(1);
-    expect(state.activeAuction?.currentBidderId).toBe(2);
+    expect(state.activeAuction?.currentBidderId).toBe(0);
   });
 
-  it('rejects bids lower than highest bid + increment or exceeding money', () => {
+  it("rejects bids lower than highest bid + increment or exceeding money", () => {
     let state = createInitialGameState();
     state = startAuction(state, 39);
 
-    state = placeBid(state, 0, 200);
+    state = placeBid(state, 0, 100);
 
-    // Player 1 bids $150 (too low)
-    const stateTooLow = placeBid(state, 1, 150);
-    expect(stateTooLow.activeAuction?.highestBid).toBe(200);
-    expect(stateTooLow.activeAuction?.highestBidderId).toBe(0);
+    // Bid lower than min required ($110)
+    const stateUnderbid = placeBid(state, 1, 105);
+    expect(stateUnderbid.activeAuction?.highestBid).toBe(100);
 
-    // Player 1 bids $5000 (exceeds $1500 money)
-    const stateTooHigh = placeBid(state, 1, 5000);
-    expect(stateTooHigh.activeAuction?.highestBid).toBe(200);
+    // Bid more than player has ($1500)
+    const stateOverbid = placeBid(state, 1, 2000);
+    expect(stateOverbid.activeAuction?.highestBid).toBe(100);
   });
 
-  it('awards property to highest bidder when all others pass', () => {
+  it("finalizes auction when all other participants pass", () => {
     let state = createInitialGameState();
     state = startAuction(state, 39);
 
     // Player 0 bids $300
     state = placeBid(state, 0, 300);
 
-    // All players from 1 to 7 pass
-    for (let i = 1; i <= 7; i++) {
+    // All other players pass
+    for (let i = 1; i < state.players.length; i++) {
       state = passBid(state, i);
     }
 
@@ -66,11 +70,11 @@ describe('Auction Engine', () => {
     expect(state.players[0].money).toBe(1200); // 1500 - 300
   });
 
-  it('removes players who exit the auction', () => {
+  it("removes players who exit the auction", () => {
     let state = createInitialGameState();
     state = startAuction(state, 39);
 
-    state = exitAuction(state, 7);
-    expect(state.activeAuction?.activeParticipants).not.toContain(7);
+    state = exitAuction(state, 1);
+    expect(state.activeAuction?.activeParticipants).not.toContain(1);
   });
 });

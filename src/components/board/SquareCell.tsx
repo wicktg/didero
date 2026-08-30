@@ -27,7 +27,6 @@ export const SquareCell: React.FC<SquareCellProps> = ({
   const square = SQUARES[index];
   if (!square) return null;
 
-  // Determine edge orientation
   let orientation: 'bottom' | 'left' | 'top' | 'right' = 'bottom';
   if (index > 0 && index < 10) orientation = 'bottom';
   else if (index > 10 && index < 20) orientation = 'left';
@@ -36,37 +35,35 @@ export const SquareCell: React.FC<SquareCellProps> = ({
 
   const owner = propState.ownerId !== null ? allPlayers[propState.ownerId] : null;
 
-  // Render specific icon for special types
   const renderSquareIcon = () => {
     switch (square.type) {
       case 'RAILROAD':
-        return <Train className="w-3.5 h-3.5 text-neutral-700" />;
+        return <Train className="w-4 h-4 text-neutral-700" />;
       case 'UTILITY':
         return index === 12 ? (
-          <Zap className="w-3.5 h-3.5 text-amber-600" />
+          <Zap className="w-4 h-4 text-amber-600" />
         ) : (
-          <Droplets className="w-3.5 h-3.5 text-blue-600" />
+          <Droplets className="w-4 h-4 text-blue-600" />
         );
       case 'CHANCE':
         return <HelpCircle className="w-4 h-4 text-amber-700" />;
       case 'COMMUNITY_CHEST':
-        return <Box className="w-3.5 h-3.5 text-blue-800" />;
+        return <Box className="w-4 h-4 text-blue-800" />;
       case 'TAX':
-        return <DollarSign className="w-3.5 h-3.5 text-neutral-800" />;
+        return <DollarSign className="w-4 h-4 text-neutral-700" />;
       default:
         return null;
     }
   };
 
-  // Color Band styling based on orientation
   const renderColorBand = () => {
     if (square.type !== 'STREET' || !square.color) return null;
 
     const bandClasses = {
-      bottom: 'h-4 w-full border-b border-neutral-300',
-      left: 'w-4 h-full border-l border-neutral-300 order-last',
-      top: 'h-4 w-full border-t border-neutral-300 order-last',
-      right: 'w-4 h-full border-r border-neutral-300',
+      bottom: 'h-[18px] w-full border-b border-black/15 shrink-0',
+      left: 'w-[18px] h-full border-l border-black/15 shrink-0',
+      top: 'h-[18px] w-full border-t border-black/15 shrink-0',
+      right: 'w-[18px] h-full border-r border-black/15 shrink-0',
     }[orientation];
 
     return (
@@ -83,61 +80,62 @@ export const SquareCell: React.FC<SquareCellProps> = ({
     <button
       type="button"
       onClick={() => onInspect(index)}
-      className={`group border border-neutral-300 bg-white relative flex select-none text-left transition-all duration-150 hover:bg-neutral-50/90 focus:outline-none focus:ring-1 focus:ring-blue-500 overflow-hidden shadow-2xs ${
-        orientation === 'left' || orientation === 'right' ? 'flex-row' : 'flex-col'
+      className={`group relative flex select-none text-left transition-colors duration-150 hover:bg-[#faf8f5] focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white overflow-hidden ${
+        orientation === 'left' || orientation === 'right'
+          ? 'flex-row'
+          : 'flex-col'
       } ${gridAreaClass}`}
-      title={`Click to inspect ${square.name}${owner ? ` (Owned by ${owner.name})` : ''}`}
+      title={`${square.name}${owner ? ` — Owned by ${owner.name}` : ''}`}
     >
-      {/* Top or Right Color Band */}
+      {/* Color band placed on the inner board edge */}
       {(orientation === 'bottom' || orientation === 'right') && renderColorBand()}
 
-      {/* Main Square Body */}
       <div className="flex-1 flex flex-col justify-between p-1 w-full h-full min-h-0 min-w-0">
-        {/* Name & Special Icon */}
         <div className="flex flex-col items-center text-center">
           {renderSquareIcon()}
-          <span className="text-[9px] font-semibold text-neutral-800 leading-tight line-clamp-2 mt-0.5 max-w-full">
+          <span className="text-[8px] font-bold text-neutral-800 leading-tight line-clamp-2 mt-0.5 max-w-full tracking-tight font-sans">
             {square.shortName || square.name}
           </span>
         </div>
 
-        {/* Owner Indicator Pip & Price/Tax */}
-        <div className="flex items-center justify-between mt-auto pt-0.5 border-t border-neutral-100 w-full text-[8px]">
+        <div className="flex items-center justify-between mt-auto pt-0.5 w-full text-[7px] font-sans">
           {owner ? (
-            <div className="flex items-center gap-0.5" title={`Owner: ${owner.name}`}>
-              <span
-                className="w-2 h-2 rounded-full inline-block border border-white shadow-xs"
-                style={{ backgroundColor: owner.token.color }}
-              />
-              <span className="truncate max-w-[36px] text-neutral-600 font-medium">{owner.name.split(' ')[0]}</span>
-            </div>
+            <span
+              className="w-2.5 h-2.5 rounded-full inline-block border border-white shadow-xs"
+              style={{ backgroundColor: owner.token.color }}
+              title={`Owner: ${owner.name}`}
+            />
           ) : (
-            <span className="text-neutral-400 font-normal">Unowned</span>
+            <span className="text-neutral-300 font-normal">—</span>
           )}
 
           {square.price ? (
-            <span className="font-bold text-neutral-900 tabular-nums">${square.price}</span>
+            <span className="font-bold text-neutral-800 tabular-nums">
+              ${square.price}
+            </span>
           ) : square.taxAmount ? (
-            <span className="font-bold text-neutral-700 tabular-nums">${square.taxAmount}</span>
+            <span className="font-bold text-neutral-700 tabular-nums">
+              ${square.taxAmount}
+            </span>
           ) : null}
         </div>
       </div>
 
-      {/* Bottom or Left Color Band */}
+      {/* Color band placed on the inner board edge for top/left */}
       {(orientation === 'top' || orientation === 'left') && renderColorBand()}
 
-      {/* Mortgaged Overlay Banner */}
+      {/* Mortgaged Overlay */}
       {propState.isMortgaged && (
-        <div className="absolute inset-0 bg-neutral-900/60 flex items-center justify-center text-white backdrop-blur-xs">
-          <span className="bg-red-700 text-white text-[8px] font-bold px-1 py-0.5 rounded uppercase tracking-wider -rotate-12">
+        <div className="absolute inset-0 bg-neutral-900/60 flex items-center justify-center text-white backdrop-blur-[0.5px] z-10">
+          <span className="bg-red-700 text-white text-[7px] font-bold px-1 py-0.5 rounded uppercase tracking-wider -rotate-12 shadow-xs">
             Mortgaged
           </span>
         </div>
       )}
 
-      {/* Tokens tray on cell */}
+      {/* Player Tokens on this square */}
       {playersOnSquare.length > 0 && (
-        <div className="absolute top-1 right-1 flex flex-wrap gap-0.5 max-w-[40px] justify-end pointer-events-none z-10">
+        <div className="absolute top-0.5 right-0.5 flex flex-wrap gap-0.5 max-w-[38px] justify-end pointer-events-none z-10">
           {playersOnSquare.map((p) => (
             <TokenBadge
               key={p.id}

@@ -1,12 +1,26 @@
-import React from 'react';
-import { useGame } from '../../context/GameContext';
-import { SQUARES } from '../../data/boardData';
-import { canBuildHouse, canSellHouse, canMortgageProperty, canUnmortgageProperty } from '../../engine/gameEngine';
-import { X, Plus, Minus, KeyRound, ShieldAlert, Check, Train, Zap, Droplets } from 'lucide-react';
+import React from "react";
+import { useGame } from "../../context/GameContext";
+import { SQUARES } from "../../data/boardData";
+import {
+  canBuildHouse,
+  canSellHouse,
+  canMortgageProperty,
+  canUnmortgageProperty,
+} from "../../engine/gameEngine";
+import {
+  X,
+  Plus,
+  Minus,
+  KeyRound,
+  Check,
+  Train,
+  Zap,
+  Droplets,
+} from "lucide-react";
 
 export const DeedModal: React.FC = () => {
-  const { state, dispatch, inspectedPropertyIndex, setInspectedPropertyIndex } = useGame();
-
+  const { state, dispatch, inspectedPropertyIndex, setInspectedPropertyIndex } =
+    useGame();
   if (inspectedPropertyIndex === null) return null;
 
   const square = SQUARES[inspectedPropertyIndex];
@@ -17,288 +31,300 @@ export const DeedModal: React.FC = () => {
   const isHumanOwner = prop.ownerId === 0;
   const isCurrentTurnHuman = state.currentTurnPlayerId === 0;
 
-  const canBuild = isHumanOwner && isCurrentTurnHuman && canBuildHouse(state, 0, inspectedPropertyIndex);
-  const canSell = isHumanOwner && isCurrentTurnHuman && canSellHouse(state, 0, inspectedPropertyIndex);
-  const canMortgage = isHumanOwner && isCurrentTurnHuman && canMortgageProperty(state, 0, inspectedPropertyIndex);
-  const canUnmortgage = isHumanOwner && isCurrentTurnHuman && canUnmortgageProperty(state, 0, inspectedPropertyIndex);
+  const canBuild =
+    isHumanOwner &&
+    isCurrentTurnHuman &&
+    canBuildHouse(state, 0, inspectedPropertyIndex);
+  const canSell =
+    isHumanOwner &&
+    isCurrentTurnHuman &&
+    canSellHouse(state, 0, inspectedPropertyIndex);
+  const canMortgage =
+    isHumanOwner &&
+    isCurrentTurnHuman &&
+    canMortgageProperty(state, 0, inspectedPropertyIndex);
+  const canUnmortgage =
+    isHumanOwner &&
+    isCurrentTurnHuman &&
+    canUnmortgageProperty(state, 0, inspectedPropertyIndex);
 
   const mortgageValue = Math.round((square.price || 0) * 0.5);
   const unmortgageCost = Math.round((square.price || 0) * 0.55);
 
   const renderDeedBody = () => {
-    // 1. Street Property Deed
-    if (square.type === 'STREET' && square.rent) {
+    if (square.type === "STREET" && square.rent) {
+      const rentLabels = [
+        "Base Rent",
+        "With 1 House",
+        "With 2 Houses",
+        "With 3 Houses",
+        "With 4 Houses",
+        "With Hotel",
+      ];
       return (
-        <div className="flex flex-col gap-2 text-xs text-neutral-800">
-          <div className="flex justify-between py-1 border-b border-neutral-200">
-            <span className="text-neutral-600">Rent (Base)</span>
-            <span className="font-bold tabular-nums">${square.rent[0]}</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>With 1 House</span>
-            <span className="font-semibold tabular-nums text-neutral-900">${square.rent[1]}</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>With 2 Houses</span>
-            <span className="font-semibold tabular-nums text-neutral-900">${square.rent[2]}</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>With 3 Houses</span>
-            <span className="font-semibold tabular-nums text-neutral-900">${square.rent[3]}</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>With 4 Houses</span>
-            <span className="font-semibold tabular-nums text-neutral-900">${square.rent[4]}</span>
-          </div>
-          <div className="flex justify-between py-1 border-t border-neutral-200 text-red-900 font-bold bg-red-50/50 px-1 rounded">
-            <span>With HOTEL</span>
-            <span className="tabular-nums">${square.rent[5]}</span>
+        <div className="flex flex-col text-xs text-black">
+          <div className="divide-y-[1.5px] divide-black border-b-[1.5px] border-black">
+            {square.rent.map((r, i) => (
+              <div
+                key={i}
+                className={`flex justify-between py-1.5 px-2 ${
+                  i === 5
+                    ? "font-bold bg-[#eb1c24] text-white"
+                    : i % 2 === 0
+                      ? "bg-neutral-50"
+                      : "bg-white"
+                }`}
+              >
+                <span className="font-semibold">{rentLabels[i]}</span>
+                <span className="font-extrabold tabular-nums">${r}</span>
+              </div>
+            ))}
           </div>
 
-          <div className="mt-2 pt-2 border-t border-neutral-200 grid grid-cols-2 gap-2 text-[10px] text-neutral-500">
-            <div>House Cost: <span className="font-bold text-neutral-800 tabular-nums">${square.housePrice}</span></div>
-            <div>Hotel Cost: <span className="font-bold text-neutral-800 tabular-nums">${square.housePrice} + 4 Houses</span></div>
-            <div>Mortgage Value: <span className="font-bold text-neutral-800 tabular-nums">${mortgageValue}</span></div>
-            <div>Unmortgage Fee: <span className="font-bold text-neutral-800 tabular-nums">${unmortgageCost}</span></div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-[10px] font-bold uppercase tracking-wider text-black">
+            <div className="p-1.5 bg-neutral-100 border border-black rounded">
+              House Cost:{" "}
+              <span className="font-extrabold tabular-nums">
+                ${square.housePrice}
+              </span>
+            </div>
+            <div className="p-1.5 bg-neutral-100 border border-black rounded">
+              Hotel Cost:{" "}
+              <span className="font-extrabold tabular-nums">
+                ${square.housePrice}
+              </span>
+            </div>
+            <div className="p-1.5 bg-neutral-100 border border-black rounded">
+              Mortgage:{" "}
+              <span className="font-extrabold tabular-nums">
+                ${mortgageValue}
+              </span>
+            </div>
+            <div className="p-1.5 bg-neutral-100 border border-black rounded">
+              Unmortgage:{" "}
+              <span className="font-extrabold tabular-nums">
+                ${unmortgageCost}
+              </span>
+            </div>
           </div>
         </div>
       );
     }
-
-    // 2. Railroad Deed
-    if (square.type === 'RAILROAD') {
+    if (square.type === "RAILROAD") {
       return (
-        <div className="flex flex-col gap-2 text-xs text-neutral-800">
+        <div className="flex flex-col gap-1 text-xs text-black py-2">
           <div className="flex justify-center my-2">
-            <Train className="w-8 h-8 text-neutral-700" />
+            <Train className="w-8 h-8 text-black" />
           </div>
-          <div className="flex justify-between py-1 border-b border-neutral-200">
-            <span>Rent</span>
-            <span className="font-bold tabular-nums">$25</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>If 2 Railroads are owned</span>
-            <span className="font-semibold tabular-nums text-neutral-900">$50</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>If 3 Railroads are owned</span>
-            <span className="font-semibold tabular-nums text-neutral-900">$100</span>
-          </div>
-          <div className="flex justify-between py-0.5 text-neutral-600">
-            <span>If 4 Railroads are owned</span>
-            <span className="font-semibold tabular-nums text-neutral-900">$200</span>
-          </div>
-          <div className="mt-2 pt-2 border-t border-neutral-200 text-center text-[10px] text-neutral-500">
-            Mortgage Value: <span className="font-bold text-neutral-800 tabular-nums">$100</span>
+          <div className="divide-y-[1.5px] divide-black border-y-[1.5px] border-black">
+            {[
+              ["1 Railroad", 25],
+              ["2 Railroads", 50],
+              ["3 Railroads", 100],
+              ["4 Railroads", 200],
+            ].map(([label, rent], i) => (
+              <div
+                key={i}
+                className="flex justify-between py-1.5 px-2 bg-white"
+              >
+                <span className="font-semibold">{label}</span>
+                <span className="font-extrabold tabular-nums">${rent}</span>
+              </div>
+            ))}
           </div>
         </div>
       );
     }
-
-    // 3. Utility Deed
-    if (square.type === 'UTILITY') {
+    if (square.type === "UTILITY") {
       return (
-        <div className="flex flex-col gap-3 text-xs text-neutral-800 py-2 text-center">
+        <div className="flex flex-col gap-3 text-xs text-black py-4 text-center">
           <div className="flex justify-center my-1">
             {square.index === 12 ? (
-              <Zap className="w-8 h-8 text-amber-600" />
+              <Zap className="w-8 h-8 text-black" />
             ) : (
-              <Droplets className="w-8 h-8 text-blue-600" />
+              <Droplets className="w-8 h-8 text-black" />
             )}
           </div>
-          <p className="text-neutral-600 leading-relaxed">
-            If one "Utility" is owned, rent is <strong>4 times</strong> amount shown on dice.
-          </p>
-          <p className="text-neutral-600 leading-relaxed">
-            If both "Utilities" are owned, rent is <strong>10 times</strong> amount shown on dice.
-          </p>
-          <div className="mt-2 pt-2 border-t border-neutral-200 text-[10px] text-neutral-500">
-            Mortgage Value: <span className="font-bold text-neutral-800 tabular-nums">$75</span>
+          <div className="p-2 bg-neutral-100 border-[1.5px] border-black rounded font-bold">
+            If 1 Utility is owned: Rent is 4× dice roll
+          </div>
+          <div className="p-2 bg-neutral-100 border-[1.5px] border-black rounded font-bold">
+            If 2 Utilities are owned: Rent is 10× dice roll
           </div>
         </div>
       );
     }
-
-    // 4. Other Squares
     return (
-      <div className="py-4 text-center text-neutral-500 text-xs">
-        {square.type === 'GO' && 'Collect $200 salary when you pass or land on GO.'}
-        {square.type === 'JAIL' && 'Just visiting, or locked in cell until bail/doubles.'}
-        {square.type === 'FREE_PARKING' && 'Rest stop. Safe haven with no fees or rents.'}
-        {square.type === 'GO_TO_JAIL' && 'Send player directly to Jail without passing GO.'}
-        {square.type === 'TAX' && `Pay $${square.taxAmount} to the Bank.`}
-        {square.type === 'CHANCE' && 'Draw an official Chance card.'}
-        {square.type === 'COMMUNITY_CHEST' && 'Draw an official Community Chest card.'}
+      <div className="py-6 text-center text-black font-semibold text-xs">
+        {square.type === "GO" && "Collect $200 salary when you pass."}
+        {square.type === "JAIL" &&
+          "Just visiting, or locked until bail/doubles."}
+        {square.type === "FREE_PARKING" && "Safe haven. No fees."}
+        {square.type === "GO_TO_JAIL" && "Go directly to Jail."}
+        {square.type === "TAX" && `Pay $${square.taxAmount} to the Bank.`}
+        {square.type === "CHANCE" && "Draw a Chance card."}
+        {square.type === "COMMUNITY_CHEST" && "Draw a Community Chest card."}
       </div>
     );
   };
 
+  const btnBase =
+    "py-2 px-3 rounded-md text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 border-[1.5px] border-black transition-colors active:translate-y-px";
+  const btnDisabled =
+    "bg-neutral-200 text-neutral-400 border-neutral-300 cursor-not-allowed";
+
   return (
-    <div className="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl border border-neutral-300 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <div
+      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      onClick={() => setInspectedPropertyIndex(null)}
+    >
+      <div
+        className="relative w-full max-w-sm bg-white rounded-lg border-2 border-black overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Close Button */}
         <button
           type="button"
           onClick={() => setInspectedPropertyIndex(null)}
-          className="absolute top-3 right-3 p-1.5 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all z-20"
+          className="absolute top-3 right-3 p-1 rounded bg-white hover:bg-neutral-100 text-black border border-black transition-colors z-20"
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Deed Header Band */}
+        {/* Title Deed Header */}
         {square.color ? (
           <div
-            className="p-4 text-center text-white border-b-2 border-neutral-900/10 select-none"
+            className="p-4 text-center text-white border-b-2 border-black select-none"
             style={{ backgroundColor: square.color }}
           >
-            <span className="text-[10px] font-bold tracking-widest uppercase text-white/90">
+            <span className="text-[9px] font-extrabold tracking-widest uppercase text-white/90">
               TITLE DEED
             </span>
-            <h3 className="text-base font-extrabold tracking-tight mt-0.5 drop-shadow-xs">
+            <h3 className="text-base font-extrabold uppercase tracking-wide mt-0.5">
               {square.name}
             </h3>
           </div>
         ) : (
-          <div className="p-4 text-center bg-neutral-100 border-b border-neutral-200 select-none">
-            <h3 className="text-base font-extrabold text-neutral-900 tracking-tight">
+          <div className="p-4 text-center bg-[#c9daf8] border-b-2 border-black select-none">
+            <span className="text-[9px] font-extrabold tracking-widest uppercase text-neutral-700">
+              BOARD SQUARE
+            </span>
+            <h3 className="text-base font-extrabold text-black uppercase tracking-wide mt-0.5">
               {square.name}
             </h3>
           </div>
         )}
 
         {/* Deed Body */}
-        <div className="p-5">
-          {/* Ownership Status Banner */}
-          <div className="flex items-center justify-between p-2 mb-3 bg-neutral-50 rounded-lg border border-neutral-200 text-xs">
-            <span className="text-neutral-500 font-medium">Owner:</span>
-            {owner ? (
-              <div className="flex items-center gap-1.5 font-bold text-neutral-900">
-                <span
-                  className="w-2.5 h-2.5 rounded-full border border-white shadow-2xs"
-                  style={{ backgroundColor: owner.token.color }}
-                />
-                {owner.name} {isHumanOwner && '(You)'}
-              </div>
-            ) : (
-              <span className="text-neutral-400 font-semibold">Unowned (Bank)</span>
-            )}
-          </div>
+        <div className="p-4">{renderDeedBody()}</div>
 
-          {/* Mortgaged Warning */}
-          {prop.isMortgaged && (
-            <div className="mb-3 p-2 bg-red-50 border border-red-200 text-red-800 rounded-lg text-xs font-semibold flex items-center gap-1.5">
-              <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" />
-              This property is Mortgaged. No rent can be collected.
-            </div>
+        {/* Ownership Status */}
+        <div className="px-4 py-2 bg-neutral-100 border-t-2 border-black flex items-center justify-between text-xs font-bold select-none">
+          <span className="text-neutral-600 uppercase tracking-wider text-[10px]">
+            Owner
+          </span>
+          {owner ? (
+            <span className="text-black uppercase tracking-wide">
+              {owner.name} {isHumanOwner ? "(You)" : ""}
+            </span>
+          ) : (
+            <span className="text-neutral-500 uppercase tracking-wider">
+              Unowned (${square.price || "N/A"})
+            </span>
           )}
+        </div>
 
-          {/* Rent & Info Table */}
-          {renderDeedBody()}
+        {/* Interactive Management Controls */}
+        {isHumanOwner && (
+          <div className="p-3 bg-[#c9daf8] border-t-2 border-black flex flex-col gap-2">
+            <span className="text-[9px] font-extrabold uppercase tracking-wider text-black text-center">
+              Property Actions
+            </span>
 
-          {/* Interactive Management Controls (For Human Owner) */}
-          {isHumanOwner && square.type === 'STREET' && (
-            <div className="mt-4 pt-3 border-t border-neutral-200 flex flex-col gap-2">
-              <div className="text-[11px] font-bold text-neutral-700 uppercase tracking-wider">
-                Manage Property
-              </div>
-
-              {/* Build / Sell Houses */}
+            {/* Build & Sell Houses */}
+            {square.type === "STREET" && (
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
                   disabled={!canBuild}
-                  onClick={() => dispatch({ type: 'BUILD_HOUSE', payload: { propertyIndex: inspectedPropertyIndex } })}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${
+                  onClick={() =>
+                    dispatch({
+                      type: "BUILD_HOUSE",
+                      payload: { propertyIndex: inspectedPropertyIndex },
+                    })
+                  }
+                  className={`${btnBase} ${
                     canBuild
-                      ? 'bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200'
+                      ? "bg-[#a5cd39] hover:bg-[#94b833] text-black"
+                      : btnDisabled
                   }`}
-                  title={canBuild ? `Build House for $${square.housePrice}` : 'Cannot build house (needs full monopoly and even building)'}
                 >
-                  <Plus className="w-3.5 h-3.5" /> Build House (${square.housePrice})
+                  <Plus className="w-3.5 h-3.5" /> Build ( ${square.housePrice})
                 </button>
 
                 <button
                   type="button"
                   disabled={!canSell}
-                  onClick={() => dispatch({ type: 'SELL_HOUSE', payload: { propertyIndex: inspectedPropertyIndex } })}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${
+                  onClick={() =>
+                    dispatch({
+                      type: "SELL_HOUSE",
+                      payload: { propertyIndex: inspectedPropertyIndex },
+                    })
+                  }
+                  className={`${btnBase} ${
                     canSell
-                      ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200'
+                      ? "bg-[#ffc905] hover:bg-[#e6b504] text-black"
+                      : btnDisabled
                   }`}
-                  title={canSell ? `Sell House for $${Math.round((square.housePrice || 0) * 0.5)}` : 'No houses to sell'}
                 >
-                  <Minus className="w-3.5 h-3.5" /> Sell House (+${Math.round((square.housePrice || 0) * 0.5)})
+                  <Minus className="w-3.5 h-3.5" /> Sell ( $
+                  {Math.round((square.housePrice || 0) * 0.5)})
                 </button>
               </div>
+            )}
 
-              {/* Mortgage / Unmortgage */}
-              <div className="mt-1">
-                {!prop.isMortgaged ? (
-                  <button
-                    type="button"
-                    disabled={!canMortgage}
-                    onClick={() => dispatch({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: inspectedPropertyIndex } })}
-                    className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${
-                      canMortgage
-                        ? 'bg-neutral-800 hover:bg-neutral-900 text-white shadow-xs'
-                        : 'bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200'
-                    }`}
-                  >
-                    <KeyRound className="w-3.5 h-3.5" /> Mortgage Property (+${mortgageValue})
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    disabled={!canUnmortgage}
-                    onClick={() => dispatch({ type: 'UNMORTGAGE_PROPERTY', payload: { propertyIndex: inspectedPropertyIndex } })}
-                    className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-all ${
-                      canUnmortgage
-                        ? 'bg-blue-700 hover:bg-blue-800 text-white shadow-xs'
-                        : 'bg-neutral-100 text-neutral-400 cursor-not-allowed border border-neutral-200'
-                    }`}
-                  >
-                    <Check className="w-3.5 h-3.5" /> Unmortgage Property (-${unmortgageCost})
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
+            {/* Mortgage & Unmortgage */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                disabled={!canMortgage}
+                onClick={() =>
+                  dispatch({
+                    type: "MORTGAGE_PROPERTY",
+                    payload: { propertyIndex: inspectedPropertyIndex },
+                  })
+                }
+                className={`${btnBase} ${
+                  canMortgage
+                    ? "bg-[#eb1c24] hover:bg-[#d61920] text-white"
+                    : btnDisabled
+                }`}
+              >
+                <KeyRound className="w-3.5 h-3.5" /> Mortgage (+ $
+                {mortgageValue})
+              </button>
 
-          {/* Mortgage Button for Railroads/Utilities */}
-          {isHumanOwner && (square.type === 'RAILROAD' || square.type === 'UTILITY') && (
-            <div className="mt-4 pt-3 border-t border-neutral-200">
-              {!prop.isMortgaged ? (
-                <button
-                  type="button"
-                  disabled={!canMortgage}
-                  onClick={() => dispatch({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: inspectedPropertyIndex } })}
-                  className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 ${
-                    canMortgage
-                      ? 'bg-neutral-800 hover:bg-neutral-900 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-                  }`}
-                >
-                  <KeyRound className="w-3.5 h-3.5" /> Mortgage Property (+${mortgageValue})
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  disabled={!canUnmortgage}
-                  onClick={() => dispatch({ type: 'UNMORTGAGE_PROPERTY', payload: { propertyIndex: inspectedPropertyIndex } })}
-                  className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 ${
-                    canUnmortgage
-                      ? 'bg-blue-700 hover:bg-blue-800 text-white shadow-xs'
-                      : 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-                  }`}
-                >
-                  <Check className="w-3.5 h-3.5" /> Unmortgage Property (-${unmortgageCost})
-                </button>
-              )}
+              <button
+                type="button"
+                disabled={!canUnmortgage}
+                onClick={() =>
+                  dispatch({
+                    type: "UNMORTGAGE_PROPERTY",
+                    payload: { propertyIndex: inspectedPropertyIndex },
+                  })
+                }
+                className={`${btnBase} ${
+                  canUnmortgage
+                    ? "bg-[#008ed2] hover:bg-[#007cb8] text-white"
+                    : btnDisabled
+                }`}
+              >
+                <Check className="w-3.5 h-3.5" /> Unmortgage (- $
+                {unmortgageCost})
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,18 @@
-import { describe, it, expect } from 'vitest';
-import { createInitialGameState } from '../engine/gameEngine';
+import { describe, it, expect } from "vitest";
+import { createInitialGameState } from "../engine/gameEngine";
 import {
   evaluateBotBuy,
   evaluateBotAuctionBid,
   evaluateBotHouseBuilding,
   evaluateBotDebtLiquidation,
-} from '../ai/botDecisionEngine';
-import { calculatePropertyValuation } from '../ai/propertyValuation';
-import { evaluateTradeForBot } from '../ai/tradeEvaluator';
-import { TradeOffer } from '../types/game';
+} from "../ai/botDecisionEngine";
+import { calculatePropertyValuation } from "../ai/propertyValuation";
+import { evaluateTradeForBot } from "../ai/tradeEvaluator";
+import { TradeOffer } from "../types/game";
 
-describe('7-AI Bot Decision Engine', () => {
-  it('evaluates property buy decision with personality cash reserves', () => {
-    const state = createInitialGameState();
+describe("7-AI Bot Decision Engine", () => {
+  it("evaluates property buy decision with personality cash reserves", () => {
+    const state = createInitialGameState(8);
     // Bot 1 (Vanderbilt - aggressive, reserve $120) with $300 money
     state.players[1].money = 300;
     // Boardwalk (index 39, cost $400) -> Cannot afford
@@ -27,8 +27,8 @@ describe('7-AI Bot Decision Engine', () => {
     expect(evaluateBotBuy(state, 2, 11)).toBe(false);
   });
 
-  it('calculates higher valuation when property completes or nears monopoly', () => {
-    const state = createInitialGameState();
+  it("calculates higher valuation when property completes or nears monopoly", () => {
+    const state = createInitialGameState(8);
     // Bot 1 owns Mediterranean (1)
     state.properties[1].ownerId = 1;
 
@@ -39,10 +39,10 @@ describe('7-AI Bot Decision Engine', () => {
     expect(valBalticForBot1).toBeGreaterThan(valBalticForBot2);
   });
 
-  it('bids strategically in auctions based on valuation', () => {
+  it("bids strategically in auctions based on valuation", () => {
     let state = createInitialGameState();
     // Start auction on Boardwalk (index 39, price $400)
-    state.turnPhase = 'AUCTION';
+    state.turnPhase = "AUCTION";
     state.activeAuction = {
       propertyIndex: 39,
       highestBid: 200,
@@ -54,10 +54,10 @@ describe('7-AI Bot Decision Engine', () => {
 
     // Bot 1 (Vanderbilt) evaluates auction with $1500 money
     const decision = evaluateBotAuctionBid(state, 1);
-    expect(typeof decision === 'number' && decision > 200).toBe(true);
+    expect(typeof decision === "number" && decision > 200).toBe(true);
   });
 
-  it('identifies valid house building candidates for owned monopolies', () => {
+  it("identifies valid house building candidates for owned monopolies", () => {
     const state = createInitialGameState();
     // Give Bot 1 (Vanderbilt) the Orange monopoly (16, 18, 19)
     state.properties[16].ownerId = 1;
@@ -70,14 +70,14 @@ describe('7-AI Bot Decision Engine', () => {
     expect([16, 18, 19]).toContain(buildTargets[0]);
   });
 
-  it('evaluates trades objectively with net gain thresholds', () => {
+  it("evaluates trades objectively with net gain thresholds", () => {
     const state = createInitialGameState();
     state.properties[1].ownerId = 0; // Human owns Mediterranean
     state.properties[3].ownerId = 1; // Bot 1 owns Baltic
 
     // Human offers $500 for Baltic (price $60)
     const generousTrade: TradeOffer = {
-      id: 'trade_test',
+      id: "trade_test",
       initiatorId: 0,
       recipientId: 1,
       offeredMoney: 500,
@@ -99,7 +99,7 @@ describe('7-AI Bot Decision Engine', () => {
     expect(evaluateTradeForBot(state, 1, lowballTrade)).toBe(false);
   });
 
-  it('formulates liquidation actions for debt resolution', () => {
+  it("formulates liquidation actions for debt resolution", () => {
     const state = createInitialGameState();
     state.players[1].money = -100; // In debt
     // Bot 1 owns Reading RR (index 5, price $200, mortgage $100)
@@ -108,7 +108,7 @@ describe('7-AI Bot Decision Engine', () => {
     const liquidation = evaluateBotDebtLiquidation(state, 1, 100);
     expect(liquidation.canSurvive).toBe(true);
     expect(liquidation.actions).toEqual([
-      { type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: 5 } },
+      { type: "MORTGAGE_PROPERTY", payload: { propertyIndex: 5 } },
     ]);
   });
 });

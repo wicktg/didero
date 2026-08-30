@@ -1,46 +1,58 @@
-import React from 'react';
-import { useGame } from '../../context/GameContext';
-import { SQUARES } from '../../data/boardData';
-import { Gavel, ArrowRight, UserX } from 'lucide-react';
+import React from "react";
+import { useGame } from "../../context/GameContext";
+import { SQUARES } from "../../data/boardData";
+import { Gavel, UserX } from "lucide-react";
+import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
 export const AuctionModal: React.FC = () => {
   const { state, dispatch } = useGame();
   const auction = state.activeAuction;
 
-  if (state.turnPhase !== 'AUCTION' || !auction) return null;
+  if (state.turnPhase !== "AUCTION" || !auction) return null;
 
   const square = SQUARES[auction.propertyIndex];
-  const highestBidder = auction.highestBidderId !== null ? state.players[auction.highestBidderId] : null;
+  const highestBidder =
+    auction.highestBidderId !== null
+      ? state.players[auction.highestBidderId]
+      : null;
   const currentBidder = state.players[auction.currentBidderId];
   const isHumanCurrentBidder = auction.currentBidderId === 0;
   const human = state.players[0];
 
-  const minRequiredBid = auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
+  const minRequiredBid =
+    auction.highestBid === 0
+      ? 10
+      : auction.highestBid + auction.minIncrement;
 
   const handlePlaceBid = (amount: number) => {
     if (amount >= minRequiredBid && amount <= human.money) {
-      dispatch({ type: 'PLACE_AUCTION_BID', payload: { playerId: 0, amount } });
+      dispatch({
+        type: "PLACE_AUCTION_BID",
+        payload: { playerId: 0, amount },
+      });
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-neutral-900/70 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-neutral-300 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        {/* Header */}
-        <div className="p-4 bg-neutral-900 text-white flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white rounded-lg border-2 border-black overflow-hidden select-none">
+        {/* Light Header with Board Blue */}
+        <div className="p-3.5 bg-[#c9daf8] text-black flex items-center justify-between border-b-2 border-black">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-neutral-800 rounded-lg">
-              <Gavel className="w-4 h-4 text-amber-400" />
-            </div>
+            <Gavel className="w-5 h-5 text-black" />
             <div>
-              <h3 className="text-sm font-bold tracking-tight">Public Property Auction</h3>
-              <p className="text-[10px] text-neutral-400">Official tournament bidding rules</p>
+              <h3 className="text-sm font-extrabold uppercase tracking-wider text-black">
+                Public Auction
+              </h3>
+              <p className="text-[9px] font-bold text-neutral-700 uppercase tracking-widest">
+                Tournament Bidding
+              </p>
             </div>
           </div>
 
           {square.color && (
             <span
-              className="px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-2xs"
+              className="px-2.5 py-1 rounded text-xs font-bold text-white uppercase border border-black"
               style={{ backgroundColor: square.color }}
             >
               {square.name}
@@ -49,63 +61,78 @@ export const AuctionModal: React.FC = () => {
         </div>
 
         {/* Current Bid Arena */}
-        <div className="p-5 flex flex-col items-center text-center border-b border-neutral-200 bg-neutral-50/50">
-          <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-500">
+        <div className="p-4 flex flex-col items-center text-center border-b-2 border-black bg-white">
+          <span className="text-[9px] uppercase tracking-widest font-extrabold text-neutral-600">
             Highest Bid
           </span>
-          <div className="text-3xl font-extrabold text-neutral-900 tracking-tight my-1 tabular-nums">
+          <div className="text-3xl font-black text-black tracking-tight my-1 tabular-nums">
             ${auction.highestBid}
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-neutral-700 mt-0.5">
-            <span>Held by:</span>
+          <div className="flex items-center gap-2 text-xs text-black mt-0.5 font-bold">
+            <span>Leader:</span>
             {highestBidder ? (
-              <span className="font-bold flex items-center gap-1">
-                <span
-                  className="w-2 h-2 rounded-full inline-block"
-                  style={{ backgroundColor: highestBidder.token.color }}
+              <div className="flex items-center gap-1.5 uppercase">
+                <IdenticonAvatar
+                  name={highestBidder.name}
+                  size={18}
+                  color={highestBidder.token.color}
                 />
-                {highestBidder.name}
-              </span>
+                <span>{highestBidder.name}</span>
+              </div>
             ) : (
-              <span className="text-neutral-400 font-medium">No bids yet</span>
+              <span className="text-neutral-500 uppercase font-medium">
+                No bids yet
+              </span>
             )}
           </div>
         </div>
 
-        {/* Participant Turn Indicator */}
-        <div className="p-4 bg-white border-b border-neutral-200">
+        {/* Turn Status */}
+        <div className="p-3 bg-[#c9daf8]/40 border-b-2 border-black">
           <div className="flex items-center justify-between text-xs mb-2">
-            <span className="font-bold text-neutral-700">Current Turn:</span>
-            <span className="flex items-center gap-1.5 font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full">
-              <span
-                className="w-2 h-2 rounded-full inline-block animate-ping"
-                style={{ backgroundColor: currentBidder?.token.color || '#3B82F6' }}
-              />
-              {currentBidder?.name} {isHumanCurrentBidder && '(You)'}
+            <span className="font-extrabold uppercase tracking-wider text-black">
+              Current Turn:
             </span>
+            <div className="flex items-center gap-1.5 font-bold text-black uppercase bg-[#ffc905] px-2 py-0.5 rounded border border-black text-[11px]">
+              {currentBidder && (
+                <IdenticonAvatar
+                  name={currentBidder.name}
+                  size={16}
+                  color={currentBidder.token.color}
+                />
+              )}
+              <span>
+                {currentBidder?.name} {isHumanCurrentBidder && "(You)"}
+              </span>
+            </div>
           </div>
 
-          {/* Active Participants Pills */}
+          {/* Active Participants */}
           <div className="flex flex-wrap gap-1">
-            {state.players.map((p) => {
-              if (p.isBankrupt) return null;
-              const isActive = auction.activeParticipants.includes(p.id);
-              const isTurn = auction.currentBidderId === p.id;
+            {auction.activeParticipants.map((pid: number) => {
+              const p = state.players[pid];
+              const isTurn = pid === auction.currentBidderId;
+              const isLeader = pid === auction.highestBidderId;
 
               return (
                 <div
-                  key={p.id}
-                  className={`text-[10px] px-2 py-1 rounded-md flex items-center gap-1 transition-all ${
+                  key={pid}
+                  className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide flex items-center gap-1.5 border-[1.5px] border-black transition-colors ${
                     isTurn
-                      ? 'bg-blue-600 text-white font-bold shadow-xs scale-105'
-                      : isActive
-                      ? 'bg-neutral-100 text-neutral-700 font-medium border border-neutral-200'
-                      : 'bg-neutral-50 text-neutral-400 line-through'
+                      ? "bg-[#008ed2] text-white"
+                      : isLeader
+                      ? "bg-[#a5cd39] text-black"
+                      : "bg-white text-black"
                   }`}
                 >
-                  <span>{p.token.icon}</span>
-                  <span>{p.name.split(' ')[0]}</span>
+                  <IdenticonAvatar
+                    name={p.name}
+                    size={14}
+                    color={p.token.color}
+                  />
+                  <span>{p.name}</span>
+                  {isLeader && <span>★</span>}
                 </div>
               );
             })}
@@ -114,65 +141,79 @@ export const AuctionModal: React.FC = () => {
 
         {/* Human Interactive Controls */}
         {isHumanCurrentBidder ? (
-          <div className="p-4 bg-neutral-50 flex flex-col gap-3">
-            <div className="text-[11px] font-bold text-neutral-700 flex items-center justify-between">
-              <span>Your Turn to Bid</span>
-              <span className="text-emerald-700 font-bold tabular-nums">Balance: ${human.money}</span>
+          <div className="p-4 bg-white flex flex-col gap-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-extrabold uppercase tracking-wider text-black">
+                Your Balance:{" "}
+                <strong className="text-black tabular-nums">
+                  ${human.money}
+                </strong>
+              </span>
+              <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-wide">
+                Min Bid:{" "}
+                <strong className="text-black tabular-nums">
+                  ${minRequiredBid}
+                </strong>
+              </span>
             </div>
 
-            {/* Quick Bid Increment Buttons */}
+            {/* Bid Amount Buttons */}
             <div className="grid grid-cols-3 gap-1.5">
-              <button
-                type="button"
-                disabled={human.money < minRequiredBid}
-                onClick={() => handlePlaceBid(minRequiredBid)}
-                className="py-2 bg-emerald-700 hover:bg-emerald-800 disabled:bg-neutral-200 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-1"
-              >
-                Bid ${minRequiredBid}
-              </button>
-
-              <button
-                type="button"
-                disabled={human.money < auction.highestBid + 50}
-                onClick={() => handlePlaceBid(Math.max(minRequiredBid, auction.highestBid + 50))}
-                className="py-2 bg-neutral-800 hover:bg-neutral-900 disabled:bg-neutral-200 text-white font-bold text-xs rounded-lg shadow-xs transition-all"
-              >
-                + $50
-              </button>
-
-              <button
-                type="button"
-                disabled={human.money < auction.highestBid + 100}
-                onClick={() => handlePlaceBid(Math.max(minRequiredBid, auction.highestBid + 100))}
-                className="py-2 bg-neutral-800 hover:bg-neutral-900 disabled:bg-neutral-200 text-white font-bold text-xs rounded-lg shadow-xs transition-all"
-              >
-                + $100
-              </button>
+              {[minRequiredBid, minRequiredBid + 25, minRequiredBid + 50].map(
+                (amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    disabled={amt > human.money}
+                    onClick={() => handlePlaceBid(amt)}
+                    className={`py-2 rounded-md font-extrabold text-xs uppercase tracking-wider border-[1.5px] border-black transition-colors active:translate-y-px ${
+                      amt <= human.money
+                        ? "bg-[#a5cd39] hover:bg-[#94b833] text-black"
+                        : "bg-neutral-100 text-neutral-400 border-neutral-300 cursor-not-allowed"
+                    }`}
+                  >
+                    Bid ${amt}
+                  </button>
+                )
+              )}
             </div>
 
-            {/* Pass / Exit Buttons */}
-            <div className="grid grid-cols-2 gap-2 pt-1 border-t border-neutral-200">
+            {/* Pass & Exit Buttons */}
+            <div className="grid grid-cols-2 gap-2 pt-1 border-t-2 border-black">
               <button
                 type="button"
-                onClick={() => dispatch({ type: 'PASS_AUCTION_BID', payload: { playerId: 0 } })}
-                className="py-2 bg-white hover:bg-neutral-100 text-neutral-700 border border-neutral-300 rounded-lg text-xs font-semibold shadow-xs flex items-center justify-center gap-1"
+                onClick={() =>
+                  dispatch({
+                    type: "PASS_AUCTION_BID",
+                    payload: { playerId: 0 },
+                  })
+                }
+                className="py-2 bg-white hover:bg-neutral-100 text-black border-[1.5px] border-black rounded-md text-xs font-extrabold uppercase tracking-wider transition-colors active:translate-y-px"
               >
-                <ArrowRight className="w-3.5 h-3.5" /> Pass This Round
+                Pass Round
               </button>
-
               <button
                 type="button"
-                onClick={() => dispatch({ type: 'EXIT_AUCTION', payload: { playerId: 0 } })}
-                className="py-2 bg-white hover:bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs font-semibold shadow-xs flex items-center justify-center gap-1"
+                onClick={() =>
+                  dispatch({
+                    type: "EXIT_AUCTION",
+                    payload: { playerId: 0 },
+                  })
+                }
+                className="py-2 bg-[#eb1c24] hover:bg-[#d61920] text-white border-[1.5px] border-black rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors active:translate-y-px"
               >
-                <UserX className="w-3.5 h-3.5" /> Exit Auction
+                <UserX className="w-3.5 h-3.5" /> Drop Out
               </button>
             </div>
           </div>
         ) : (
-          <div className="p-5 bg-neutral-50 text-center flex flex-col items-center justify-center text-neutral-600 text-xs gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-blue-600 animate-ping" />
-            <span className="font-semibold">{currentBidder?.name} is evaluating their bid...</span>
+          <div className="p-6 bg-white text-center flex flex-col items-center justify-center gap-1.5 text-xs text-black">
+            <span className="font-extrabold uppercase tracking-wide">
+              {currentBidder?.name} is deciding...
+            </span>
+            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">
+              Automated AI Decision Engine
+            </span>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
-import { SQUARES, GROUP_MEMBERS } from '../data/boardData';
-import { ColorGroup, PropertyState } from '../types/game';
+import { SQUARES, GROUP_MEMBERS } from "../data/boardData";
+import { ColorGroup, PropertyState } from "../types/game";
 
 export function getOwnedCountInGroup(
   ownerId: number,
@@ -32,36 +32,47 @@ export function calculateRent(
   if (!square) return 0;
 
   const propState = properties[squareIndex];
-  if (!propState || propState.ownerId === null || propState.ownerId === landingPlayerId || propState.isMortgaged) {
+  if (
+    !propState ||
+    propState.ownerId === null ||
+    propState.ownerId === landingPlayerId ||
+    propState.isMortgaged
+  ) {
     return 0;
   }
 
   const ownerId = propState.ownerId;
 
   // 1. Street Property Rent
-  if (square.type === 'STREET' && square.rent && square.group) {
+  if (square.type === "STREET" && square.rent && square.group) {
     // If developed with houses (1-4) or hotel (5)
     if (propState.houses > 0) {
       return square.rent[propState.houses] || 0;
     }
 
     // Unimproved street
-    const hasMonopoly = doesPlayerOwnMonopoly(ownerId, square.group, properties);
+    const hasMonopoly = doesPlayerOwnMonopoly(
+      ownerId,
+      square.group,
+      properties,
+    );
     const baseRent = square.rent[0] || 0;
     return hasMonopoly ? baseRent * 2 : baseRent;
   }
 
   // 2. Railroad Rent
-  if (square.type === 'RAILROAD') {
+  if (square.type === "RAILROAD") {
     const railroadsOwned = getOwnedCountInGroup(ownerId, 2, properties); // Group 2 = Railroads
     // 1 RR: 25, 2 RR: 50, 3 RR: 100, 4 RR: 200
     const standardRentTable = [0, 25, 50, 100, 200];
     const baseRent = standardRentTable[Math.min(railroadsOwned, 4)] || 25;
-    return railroadMultiplierOverride ? baseRent * railroadMultiplierOverride : baseRent;
+    return railroadMultiplierOverride
+      ? baseRent * railroadMultiplierOverride
+      : baseRent;
   }
 
   // 3. Utility Rent
-  if (square.type === 'UTILITY') {
+  if (square.type === "UTILITY") {
     if (utilityMultiplierOverride) {
       return diceTotal * utilityMultiplierOverride;
     }

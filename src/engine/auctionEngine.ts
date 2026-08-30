@@ -1,8 +1,11 @@
-import { GameState, AuctionState } from '../types/game';
-import { SQUARES } from '../data/boardData';
-import { createLogEntry } from './gameEngine';
+import { GameState, AuctionState } from "../types/game";
+import { SQUARES } from "../data/boardData";
+import { createLogEntry } from "./gameEngine";
 
-export function startAuction(state: GameState, propertyIndex: number): GameState {
+export function startAuction(
+  state: GameState,
+  propertyIndex: number,
+): GameState {
   const square = SQUARES[propertyIndex];
   if (!square) return state;
 
@@ -14,7 +17,7 @@ export function startAuction(state: GameState, propertyIndex: number): GameState
   if (activeParticipants.length === 0) {
     return {
       ...state,
-      turnPhase: 'END_TURN',
+      turnPhase: "END_TURN",
     };
   }
 
@@ -32,10 +35,13 @@ export function startAuction(state: GameState, propertyIndex: number): GameState
 
   const nextState: GameState = {
     ...state,
-    turnPhase: 'AUCTION',
+    turnPhase: "AUCTION",
     activeAuction: auction,
     gameLog: [
-      createLogEntry(`Auction started for ${square.name}! Starting bid is $10.`, 'auction'),
+      createLogEntry(
+        `Auction started for ${square.name}! Starting bid is $10.`,
+        "auction",
+      ),
       ...state.gameLog,
     ],
   };
@@ -43,7 +49,11 @@ export function startAuction(state: GameState, propertyIndex: number): GameState
   return nextState;
 }
 
-export function placeBid(state: GameState, playerId: number, amount: number): GameState {
+export function placeBid(
+  state: GameState,
+  playerId: number,
+  amount: number,
+): GameState {
   if (!state.activeAuction) return state;
   const auction = { ...state.activeAuction };
   const player = state.players[playerId];
@@ -53,7 +63,8 @@ export function placeBid(state: GameState, playerId: number, amount: number): Ga
     return state;
   }
 
-  const minRequired = auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
+  const minRequired =
+    auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
   if (amount < minRequired) {
     return state;
   }
@@ -70,7 +81,11 @@ export function placeBid(state: GameState, playerId: number, amount: number): Ga
     ...state,
     activeAuction: auction,
     gameLog: [
-      createLogEntry(`${player.name} bid $${amount} for ${square.name}.`, 'auction', playerId),
+      createLogEntry(
+        `${player.name} bid $${amount} for ${square.name}.`,
+        "auction",
+        playerId,
+      ),
       ...state.gameLog,
     ],
   };
@@ -89,12 +104,20 @@ export function passBid(state: GameState, playerId: number): GameState {
   const nextBidderId = auction.activeParticipants[nextIdx];
 
   // If next bidder is the current highest bidder, they won!
-  if (auction.highestBidderId !== null && nextBidderId === auction.highestBidderId) {
+  if (
+    auction.highestBidderId !== null &&
+    nextBidderId === auction.highestBidderId
+  ) {
     return finalizeAuction(state);
   }
 
   // If everyone passed without any bids and we completed a full circle
-  if (auction.highestBidderId === null && nextIdx === 0 && playerId === auction.activeParticipants[auction.activeParticipants.length - 1]) {
+  if (
+    auction.highestBidderId === null &&
+    nextIdx === 0 &&
+    playerId ===
+      auction.activeParticipants[auction.activeParticipants.length - 1]
+  ) {
     return finalizeAuction(state);
   }
 
@@ -112,18 +135,27 @@ export function exitAuction(state: GameState, playerId: number): GameState {
   const player = state.players[playerId];
   const square = SQUARES[auction.propertyIndex];
 
-  auction.activeParticipants = auction.activeParticipants.filter((id) => id !== playerId);
+  auction.activeParticipants = auction.activeParticipants.filter(
+    (id) => id !== playerId,
+  );
 
   const nextState: GameState = {
     ...state,
     gameLog: [
-      createLogEntry(`${player.name} withdrew from the auction for ${square.name}.`, 'auction', playerId),
+      createLogEntry(
+        `${player.name} withdrew from the auction for ${square.name}.`,
+        "auction",
+        playerId,
+      ),
       ...state.gameLog,
     ],
   };
 
   // If only 1 bidder left and there's a bid
-  if (auction.activeParticipants.length === 1 && auction.highestBidderId === auction.activeParticipants[0]) {
+  if (
+    auction.activeParticipants.length === 1 &&
+    auction.highestBidderId === auction.activeParticipants[0]
+  ) {
     return finalizeAuction(nextState);
   }
 
@@ -171,21 +203,27 @@ export function finalizeAuction(state: GameState): GameState {
     nextState.gameLog = [
       createLogEntry(
         `${winner.name} won the auction for ${square.name} with a winning bid of $${auction.highestBid}!`,
-        'auction',
+        "auction",
         winner.id,
       ),
       ...nextState.gameLog,
     ];
   } else {
     nextState.gameLog = [
-      createLogEntry(`No bids placed on ${square.name}. Property remains unowned with the Bank.`, 'auction'),
+      createLogEntry(
+        `No bids placed on ${square.name}. Property remains unowned with the Bank.`,
+        "auction",
+      ),
       ...nextState.gameLog,
     ];
   }
 
   const currentTurnPlayer = nextState.players[nextState.currentTurnPlayerId];
-  const isDoubles = nextState.dice[0] === nextState.dice[1] && !currentTurnPlayer.inJail && nextState.consecutiveDoubles > 0;
-  nextState.turnPhase = isDoubles ? 'ROLL' : 'END_TURN';
+  const isDoubles =
+    nextState.dice[0] === nextState.dice[1] &&
+    !currentTurnPlayer.inJail &&
+    nextState.consecutiveDoubles > 0;
+  nextState.turnPhase = isDoubles ? "ROLL" : "END_TURN";
 
   return nextState;
 }

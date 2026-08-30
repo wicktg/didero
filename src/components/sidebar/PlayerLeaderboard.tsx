@@ -1,29 +1,25 @@
-import React from 'react';
-import { useGame } from '../../context/GameContext';
-import { ArrowLeftRight, Building, Shield, UserX } from 'lucide-react';
+import React from "react";
+import { useGame } from "../../context/GameContext";
+import { ArrowLeftRight, Shield, UserX } from "lucide-react";
+import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
 export const PlayerLeaderboard: React.FC = () => {
-  const { state, setIsTradeModalOpen, setTradeRecipientId } = useGame();
-
-  const handleTradeWithPlayer = (playerId: number) => {
-    if (playerId === 0) return;
-    setTradeRecipientId(playerId);
-    setIsTradeModalOpen(true);
-  };
+  const { state, setIsTradeModalOpen, setTradeRecipientId, moneyDeltas } =
+    useGame();
 
   return (
     <div className="flex flex-col gap-2 p-3">
-      <div className="flex items-center justify-between text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1">
-        <span>Players (8)</span>
-        <span>Balance & Assets</span>
+      <div className="flex items-center justify-between text-[9px] font-extrabold text-neutral-700 uppercase tracking-widest px-1">
+        <span>Player Standings</span>
+        <span>Balance</span>
       </div>
 
-      <div className="flex flex-col gap-1.5 max-h-[480px] overflow-y-auto pr-1">
+      <div className="flex flex-col gap-1.5 max-h-[700px] overflow-y-auto pr-1">
         {state.players.map((player) => {
           const isCurrentTurn = state.currentTurnPlayerId === player.id;
           const isHuman = player.id === 0;
+          const delta = moneyDeltas[player.id];
 
-          // Count owned properties & houses
           let propCount = 0;
           let houseCount = 0;
           Object.values(state.properties).forEach((prop) => {
@@ -36,78 +32,89 @@ export const PlayerLeaderboard: React.FC = () => {
           return (
             <div
               key={player.id}
-              className={`p-2.5 rounded-xl border text-xs flex items-center justify-between transition-all select-none ${
+              className={`p-2.5 rounded-md border-[1.5px] border-black text-xs flex items-center justify-between transition-colors select-none ${
                 isCurrentTurn
-                  ? 'bg-blue-50/80 border-blue-400 font-bold shadow-xs'
+                  ? "bg-[#c9daf8] font-bold"
                   : player.isBankrupt
-                  ? 'bg-neutral-50 border-neutral-200 text-neutral-400 opacity-60'
-                  : 'bg-white border-neutral-200 text-neutral-800 hover:border-neutral-300'
+                  ? "bg-neutral-100 opacity-50 grayscale"
+                  : "bg-white hover:bg-neutral-50"
               }`}
             >
-              {/* Left Info: Avatar + Name + Badges */}
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-sm shadow-2xs shrink-0"
-                  style={{ backgroundColor: player.token.color, color: '#FFF' }}
-                  title={player.token.name}
-                >
-                  {player.token.icon}
-                </span>
+              <div className="flex items-center gap-2.5 min-w-0">
+                {/* GitHub-style Identicon Avatar */}
+                <IdenticonAvatar
+                  name={player.name}
+                  size={28}
+                  color={player.token.color}
+                />
 
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="font-bold text-neutral-900 truncate max-w-[100px]">
+                    <span
+                      className={`font-bold text-black uppercase tracking-wide truncate max-w-[100px] ${
+                        player.isBankrupt ? "line-through text-neutral-400" : ""
+                      }`}
+                    >
                       {player.name}
                     </span>
                     {isHuman && (
-                      <span className="bg-blue-100 text-blue-800 text-[9px] font-extrabold px-1.5 py-0.2 rounded">
+                      <span className="bg-[#008ed2] text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
                         YOU
                       </span>
                     )}
-                    {isCurrentTurn && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping" />
-                    )}
                   </div>
-
-                  {/* Badges & Property Counts */}
-                  <div className="flex items-center gap-1.5 text-[10px] text-neutral-500 mt-0.5">
+                  <div className="flex items-center gap-1 text-[9px] font-bold text-neutral-600 uppercase tracking-wider mt-0.5">
                     {player.isBankrupt ? (
-                      <span className="text-red-600 font-bold flex items-center gap-0.5">
+                      <span className="text-[#eb1c24] font-bold flex items-center gap-0.5">
                         <UserX className="w-3 h-3" /> Bankrupt
                       </span>
                     ) : player.inJail ? (
-                      <span className="text-amber-600 font-bold flex items-center gap-0.5">
-                        <Shield className="w-3 h-3" /> In Jail ({player.jailTurns + 1}/3)
+                      <span className="text-black font-bold flex items-center gap-0.5">
+                        <Shield className="w-3 h-3" /> Jail (
+                        {player.jailTurns + 1}/3)
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1">
-                        <Building className="w-3 h-3 text-neutral-400" /> {propCount} props {houseCount > 0 && `(${houseCount}H)`}
+                      <span>
+                        {propCount} Props {houseCount > 0 && `• ${houseCount} Houses`}
                       </span>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Right Side: Cash + Trade Button */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <div className="flex flex-col items-end">
                   <span
-                    className={`font-black tabular-nums text-sm ${
-                      player.money < 0 ? 'text-red-600' : 'text-neutral-900'
+                    className={`font-extrabold tabular-nums text-xs ${
+                      player.money < 0 ? "text-[#eb1c24]" : "text-black"
                     }`}
                   >
                     ${player.money}
                   </span>
+                  {delta !== undefined && delta !== 0 && (
+                    <span
+                      className={`text-[8px] font-bold tabular-nums px-1 py-px rounded border border-black ${
+                        delta > 0
+                          ? "bg-[#a5cd39] text-black"
+                          : "bg-[#eb1c24] text-white"
+                      }`}
+                    >
+                      {delta > 0 ? `+$${delta}` : `-$${Math.abs(delta)}`}
+                    </span>
+                  )}
                 </div>
 
                 {!isHuman && !player.isBankrupt && (
                   <button
                     type="button"
-                    onClick={() => handleTradeWithPlayer(player.id)}
-                    className="p-1 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-600 hover:text-neutral-900 transition-all"
+                    onClick={() => {
+                      setTradeRecipientId(player.id);
+                      setIsTradeModalOpen(true);
+                    }}
+                    className="p-1.5 rounded bg-white hover:bg-neutral-100 text-black border border-black transition-colors"
                     title={`Trade with ${player.name}`}
                   >
-                    <ArrowLeftRight className="w-3.5 h-3.5" />
+                    <ArrowLeftRight className="w-3 h-3" />
                   </button>
                 )}
               </div>
