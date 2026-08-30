@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useState, ReactNode } from 'react';
-import { GameState, TradeOffer } from '../types/game';
+import { GameState } from '../types/game';
 import { createInitialGameState } from '../engine/gameEngine';
 import { gameReducer, GameAction } from '../engine/gameReducer';
 import { useBotRunner } from '../hooks/useBotRunner';

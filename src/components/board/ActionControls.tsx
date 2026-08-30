@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SQUARES } from '../../data/boardData';
-import { Dices, ShoppingCart, Gavel, CheckCircle2, ArrowRight, Shield, AlertTriangle } from 'lucide-react';
+import { Dices, ShoppingCart, Gavel, ArrowRight, Shield, AlertTriangle } from 'lucide-react';
 
 export const ActionControls: React.FC = () => {
-  const { state, dispatch, setInspectedPropertyIndex, setIsTradeModalOpen } = useGame();
+  const { state, dispatch } = useGame();
 
   const isHumanTurn = state.currentTurnPlayerId === 0;
   const human = state.players[0];
   const currentSquare = SQUARES[human.position];
-  const currentProp = state.properties[human.position];
 
   // Keyboard shortcut listener (Space to roll, Enter to end turn)
   useEffect(() => {

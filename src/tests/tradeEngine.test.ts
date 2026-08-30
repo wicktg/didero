@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createInitialGameState } from '../engine/gameEngine';
-import { proposeTrade, acceptTrade, rejectTrade, validateTradeOffer } from '../engine/tradeEngine';
+import { proposeTrade, acceptTrade, validateTradeOffer } from '../engine/tradeEngine';
 import { TradeOffer } from '../types/game';
 
 describe('Trade Negotiation Engine', () => {

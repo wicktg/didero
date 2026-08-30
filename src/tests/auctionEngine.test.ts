@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createInitialGameState } from '../engine/gameEngine';
-import { startAuction, placeBid, passBid, exitAuction, finalizeAuction } from '../engine/auctionEngine';
+import { startAuction, placeBid, passBid, exitAuction } from '../engine/auctionEngine';
 
 describe('Auction Engine', () => {
   it('starts an auction with all 8 eligible players', () => {

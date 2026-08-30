@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SQUARES, COLOR_GROUPS } from '../data/boardData';
+import { SQUARES } from '../data/boardData';
 import { CHANCE_CARDS, COMMUNITY_CHEST_CARDS } from '../data/cardsData';
 import { BOT_PROFILES, PLAYER_TOKENS } from '../data/botProfiles';
 

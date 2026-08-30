@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGame } from '../../context/GameContext';
-import { SQUARES, GROUP_MEMBERS } from '../../data/boardData';
-import { canBuildHouse, canSellHouse, canMortgageProperty, canUnmortgageProperty, ownsFullGroup } from '../../engine/gameEngine';
+import { SQUARES } from '../../data/boardData';
+import { canBuildHouse, canSellHouse, canMortgageProperty, canUnmortgageProperty } from '../../engine/gameEngine';
 import { X, Plus, Minus, KeyRound, ShieldAlert, Check, Train, Zap, Droplets } from 'lucide-react';
 
 export const DeedModal: React.FC = () => {

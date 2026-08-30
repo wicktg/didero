@@ -1,5 +1,5 @@
 import { GameState, ColorGroup } from '../types/game';
-import { SQUARES, COLOR_GROUPS, GROUP_MEMBERS } from '../data/boardData';
+import { SQUARES, COLOR_GROUPS } from '../data/boardData';
 import { BOT_PROFILES } from '../data/botProfiles';
 import { calculatePropertyValuation } from './propertyValuation';
 import { canBuildHouse, canMortgageProperty, canSellHouse, ownsFullGroup } from '../engine/gameEngine';
@@ -7,8 +7,8 @@ import { canBuildHouse, canMortgageProperty, canSellHouse, ownsFullGroup } from 
 export interface LiquidationPlan {
   canSurvive: boolean;
   actions: Array<
-    | { type: 'MORTGAGE_PROPERTY'; propertyIndex: number }
-    | { type: 'SELL_HOUSE'; propertyIndex: number }
+    | { type: 'MORTGAGE_PROPERTY'; payload: { propertyIndex: number } }
+    | { type: 'SELL_HOUSE'; payload: { propertyIndex: number } }
   >;
 }
 
@@ -107,7 +107,7 @@ export function evaluateBotHouseBuilding(state: GameState, botId: number): numbe
 export function evaluateBotDebtLiquidation(
   state: GameState,
   botId: number,
-  debtAmount: number,
+  _debtAmount: number,
 ): LiquidationPlan {
   const bot = state.players[botId];
   const actions: LiquidationPlan['actions'] = [];
@@ -123,7 +123,7 @@ export function evaluateBotDebtLiquidation(
     // If not a monopoly or railroad/utility, mortgage first
     const isMono = sq.group ? ownsFullGroup(state, botId, sq.group) : false;
     if (!isMono && canMortgageProperty(state, botId, prop.index)) {
-      actions.push({ type: 'MORTGAGE_PROPERTY', propertyIndex: prop.index });
+      actions.push({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: prop.index } });
       fundsRaised += Math.round((sq.price || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };
@@ -139,7 +139,7 @@ export function evaluateBotDebtLiquidation(
   for (const prop of developedProps) {
     const sq = SQUARES[prop.index];
     if (canSellHouse(state, botId, prop.index)) {
-      actions.push({ type: 'SELL_HOUSE', propertyIndex: prop.index });
+      actions.push({ type: 'SELL_HOUSE', payload: { propertyIndex: prop.index } });
       fundsRaised += Math.round((sq.housePrice || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };
@@ -151,7 +151,7 @@ export function evaluateBotDebtLiquidation(
   for (const prop of ownedProps) {
     const sq = SQUARES[prop.index];
     if (canMortgageProperty(state, botId, prop.index)) {
-      actions.push({ type: 'MORTGAGE_PROPERTY', propertyIndex: prop.index });
+      actions.push({ type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: prop.index } });
       fundsRaised += Math.round((sq.price || 0) * 0.5);
       if (fundsRaised >= 0) {
         return { canSurvive: true, actions };

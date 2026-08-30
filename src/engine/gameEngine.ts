@@ -1,5 +1,5 @@
-import { GameState, PlayerState, PropertyState, Card, ColorGroup } from '../types/game';
-import { SQUARES, COLOR_GROUPS, GROUP_MEMBERS } from '../data/boardData';
+import { GameState, PlayerState, PropertyState, ColorGroup } from '../types/game';
+import { SQUARES } from '../data/boardData';
 import { CHANCE_CARDS, COMMUNITY_CHEST_CARDS } from '../data/cardsData';
 import { BOT_PROFILES, PLAYER_TOKENS } from '../data/botProfiles';
 

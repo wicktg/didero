@@ -4,7 +4,6 @@ import {
   evaluateBotBuy,
   evaluateBotAuctionBid,
   evaluateBotHouseBuilding,
-  evaluateBotJail,
   evaluateBotDebtLiquidation,
 } from '../ai/botDecisionEngine';
 import { calculatePropertyValuation } from '../ai/propertyValuation';
@@ -109,7 +108,7 @@ describe('7-AI Bot Decision Engine', () => {
     const liquidation = evaluateBotDebtLiquidation(state, 1, 100);
     expect(liquidation.canSurvive).toBe(true);
     expect(liquidation.actions).toEqual([
-      { type: 'MORTGAGE_PROPERTY', propertyIndex: 5 },
+      { type: 'MORTGAGE_PROPERTY', payload: { propertyIndex: 5 } },
     ]);
   });
 });

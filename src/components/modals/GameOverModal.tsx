@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
 import { SQUARES } from '../../data/boardData';
 import confetti from 'canvas-confetti';
-import { Trophy, Award, RotateCcw, Building, DollarSign } from 'lucide-react';
+import { Trophy, RotateCcw } from 'lucide-react';
 
 export const GameOverModal: React.FC = () => {
   const { state, dispatch } = useGame();

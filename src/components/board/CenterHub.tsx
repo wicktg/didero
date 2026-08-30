@@ -3,7 +3,7 @@ import { useGame } from '../../context/GameContext';
 import { DiceCup } from './DiceCup';
 import { ActionControls } from './ActionControls';
 import { CardReveal } from './CardReveal';
-import { ArrowLeftRight, Building, Volume2, Sparkles } from 'lucide-react';
+import { ArrowLeftRight, Building } from 'lucide-react';
 
 export const CenterHub: React.FC = () => {
   const { state, setIsTradeModalOpen, setSelectedTab } = useGame();

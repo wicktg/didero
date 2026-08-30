@@ -1,8 +1,7 @@
 import React from 'react';
-import { SQUARES } from '../../data/boardData';
 import { PlayerState } from '../../types/game';
 import { TokenBadge } from './TokenBadge';
-import { ArrowLeft, ShieldAlert, Car, Building2 } from 'lucide-react';
+import { ArrowLeft, ShieldAlert, Car } from 'lucide-react';
 
 interface CornerCellProps {
   index: number;
@@ -17,8 +16,6 @@ export const CornerCell: React.FC<CornerCellProps> = ({
   currentTurnPlayerId,
   gridAreaClass,
 }) => {
-  const square = SQUARES[index];
-
   // Specific corner renderers
   const renderCornerContent = () => {
     switch (index) {

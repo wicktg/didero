@@ -4,10 +4,10 @@ import { SQUARES } from '../../data/boardData';
 import { TradeOffer } from '../../types/game';
 import { evaluateTradeForBot } from '../../ai/tradeEvaluator';
 import { validateTradeOffer } from '../../engine/tradeEngine';
-import { X, ArrowLeftRight, CheckCircle2, XCircle, ShieldCheck } from 'lucide-react';
+import { X, ArrowLeftRight, CheckCircle2, XCircle } from 'lucide-react';
 
 export const TradeModal: React.FC = () => {
-  const { state, dispatch, isTradeModalOpen, setIsTradeModalOpen, tradeRecipientId, setTradeRecipientId } = useGame();
+  const { state, dispatch, isTradeModalOpen, setIsTradeModalOpen, tradeRecipientId } = useGame();
 
   const human = state.players[0];
   const eligiblePartners = state.players.filter((p) => p.id !== 0 && !p.isBankrupt);

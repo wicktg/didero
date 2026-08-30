@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { createInitialGameState, canBuildHouse, canSellHouse, canMortgageProperty, canUnmortgageProperty } from '../engine/gameEngine';
+import { createInitialGameState, canBuildHouse, canMortgageProperty, canUnmortgageProperty } from '../engine/gameEngine';
 import { gameReducer } from '../engine/gameReducer';
-import { GameState } from '../types/game';
 
 describe('Monopoly Game Engine & Rules Reducer', () => {
   it('initializes game with 8 players, $1500 each, and 40 unowned properties', () => {

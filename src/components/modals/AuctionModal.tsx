@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useGame } from '../../context/GameContext';
 import { SQUARES } from '../../data/boardData';
-import { Gavel, ArrowRight, UserX, Plus } from 'lucide-react';
+import { Gavel, ArrowRight, UserX } from 'lucide-react';
 
 export const AuctionModal: React.FC = () => {
   const { state, dispatch } = useGame();
@@ -16,12 +16,10 @@ export const AuctionModal: React.FC = () => {
   const human = state.players[0];
 
   const minRequiredBid = auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
-  const [customBid, setCustomBid] = useState<number>(minRequiredBid);
 
   const handlePlaceBid = (amount: number) => {
     if (amount >= minRequiredBid && amount <= human.money) {
       dispatch({ type: 'PLACE_AUCTION_BID', payload: { playerId: 0, amount } });
-      setCustomBid(amount + 10);
     }
   };
 

@@ -151,12 +151,15 @@ export function applyCardEffect(state: GameState, card: Card, playerId: number):
 
     case 'GENERAL_REPAIRS': {
       let totalCost = 0;
+      const perHouse = card.action.perHouse;
+      const perHotel = card.action.perHotel;
+
       Object.values(nextState.properties).forEach((prop) => {
         if (prop.ownerId === playerId && prop.houses > 0) {
           if (prop.houses === 5) {
-            totalCost += card.action.perHotel;
+            totalCost += perHotel;
           } else {
-            totalCost += prop.houses * card.action.perHouse;
+            totalCost += prop.houses * perHouse;
           }
         }
       });
