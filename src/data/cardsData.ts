@@ -1,0 +1,205 @@
+import { Card } from '../types/game';
+
+export const CHANCE_CARDS: Card[] = [
+  {
+    id: 'ch_advance_go',
+    deck: 'chance',
+    text: 'Advance to "GO". (Collect $200)',
+    action: { type: 'ADVANCE_TO', targetIndex: 0, passGoCheck: true },
+  },
+  {
+    id: 'ch_advance_illinois',
+    deck: 'chance',
+    text: 'Advance to Illinois Ave. If you pass GO, collect $200.',
+    action: { type: 'ADVANCE_TO', targetIndex: 24, passGoCheck: true },
+  },
+  {
+    id: 'ch_advance_st_charles',
+    deck: 'chance',
+    text: 'Advance to St. Charles Place. If you pass GO, collect $200.',
+    action: { type: 'ADVANCE_TO', targetIndex: 11, passGoCheck: true },
+  },
+  {
+    id: 'ch_advance_utility',
+    deck: 'chance',
+    text: 'Advance token to nearest Utility. If unowned, you may buy it. If owned, throw dice and pay owner 10 times the amount thrown.',
+    action: { type: 'ADVANCE_TO_NEAREST_UTILITY' },
+  },
+  {
+    id: 'ch_advance_railroad_1',
+    deck: 'chance',
+    text: 'Advance token to the nearest Railroad. If unowned, you may buy it. If owned, pay owner twice the rental to which they are otherwise entitled.',
+    action: { type: 'ADVANCE_TO_NEAREST_RAILROAD' },
+  },
+  {
+    id: 'ch_advance_railroad_2',
+    deck: 'chance',
+    text: 'Advance token to the nearest Railroad. If unowned, you may buy it. If owned, pay owner twice the rental to which they are otherwise entitled.',
+    action: { type: 'ADVANCE_TO_NEAREST_RAILROAD' },
+  },
+  {
+    id: 'ch_dividend',
+    deck: 'chance',
+    text: 'Bank pays you dividend of $50.',
+    action: { type: 'COLLECT_MONEY', amount: 50 },
+  },
+  {
+    id: 'ch_jail_free',
+    deck: 'chance',
+    text: 'Get Out of Jail Free. This card may be kept until needed or traded.',
+    action: { type: 'GET_OUT_OF_JAIL_FREE' },
+  },
+  {
+    id: 'ch_go_back_3',
+    deck: 'chance',
+    text: 'Go Back 3 Spaces.',
+    action: { type: 'GO_BACK_3_SPACES' },
+  },
+  {
+    id: 'ch_go_to_jail',
+    deck: 'chance',
+    text: 'Go to Jail. Go directly to Jail. Do not pass GO, do not collect $200.',
+    action: { type: 'GO_TO_JAIL' },
+  },
+  {
+    id: 'ch_general_repairs',
+    deck: 'chance',
+    text: 'Make general repairs on all your property. For each house pay $25. For each hotel $100.',
+    action: { type: 'GENERAL_REPAIRS', perHouse: 25, perHotel: 100 },
+  },
+  {
+    id: 'ch_poor_tax',
+    deck: 'chance',
+    text: 'Pay poor tax of $15.',
+    action: { type: 'PAY_MONEY', amount: 15 },
+  },
+  {
+    id: 'ch_reading_railroad',
+    deck: 'chance',
+    text: 'Take a trip to Reading Railroad. If you pass GO, collect $200.',
+    action: { type: 'ADVANCE_TO', targetIndex: 5, passGoCheck: true },
+  },
+  {
+    id: 'ch_boardwalk',
+    deck: 'chance',
+    text: 'Take a walk on the Boardwalk. Advance token to Boardwalk.',
+    action: { type: 'ADVANCE_TO', targetIndex: 39, passGoCheck: false },
+  },
+  {
+    id: 'ch_elected_chairman',
+    deck: 'chance',
+    text: 'You have been elected Chairman of the Board. Pay each player $50.',
+    action: { type: 'PAY_EACH_PLAYER', amount: 50 },
+  },
+  {
+    id: 'ch_building_loan',
+    deck: 'chance',
+    text: 'Your building loan matures. Collect $150.',
+    action: { type: 'COLLECT_MONEY', amount: 150 },
+  },
+];
+
+export const COMMUNITY_CHEST_CARDS: Card[] = [
+  {
+    id: 'cc_advance_go',
+    deck: 'communityChest',
+    text: 'Advance to "GO". (Collect $200)',
+    action: { type: 'ADVANCE_TO', targetIndex: 0, passGoCheck: true },
+  },
+  {
+    id: 'cc_bank_error',
+    deck: 'communityChest',
+    text: 'Bank error in your favor. Collect $200.',
+    action: { type: 'COLLECT_MONEY', amount: 200 },
+  },
+  {
+    id: 'cc_doctor_fee',
+    deck: 'communityChest',
+    text: "Doctor's fee. Pay $50.",
+    action: { type: 'PAY_MONEY', amount: 50 },
+  },
+  {
+    id: 'cc_stock_sale',
+    deck: 'communityChest',
+    text: 'From sale of stock you get $50.',
+    action: { type: 'COLLECT_MONEY', amount: 50 },
+  },
+  {
+    id: 'cc_jail_free',
+    deck: 'communityChest',
+    text: 'Get Out of Jail Free. This card may be kept until needed or traded.',
+    action: { type: 'GET_OUT_OF_JAIL_FREE' },
+  },
+  {
+    id: 'cc_go_to_jail',
+    deck: 'communityChest',
+    text: 'Go to Jail. Go directly to Jail. Do not pass GO, do not collect $200.',
+    action: { type: 'GO_TO_JAIL' },
+  },
+  {
+    id: 'cc_grand_opera',
+    deck: 'communityChest',
+    text: 'Grand Opera Night. Collect $50 from every player for opening night seats.',
+    action: { type: 'COLLECT_FROM_EACH_PLAYER', amount: 50 },
+  },
+  {
+    id: 'cc_holiday_fund',
+    deck: 'communityChest',
+    text: 'Holiday Fund matures. Receive $100.',
+    action: { type: 'COLLECT_MONEY', amount: 100 },
+  },
+  {
+    id: 'cc_tax_refund',
+    deck: 'communityChest',
+    text: 'Income tax refund. Collect $20.',
+    action: { type: 'COLLECT_MONEY', amount: 20 },
+  },
+  {
+    id: 'cc_birthday',
+    deck: 'communityChest',
+    text: 'It is your birthday. Collect $10 from every player.',
+    action: { type: 'COLLECT_FROM_EACH_PLAYER', amount: 10 },
+  },
+  {
+    id: 'cc_life_insurance',
+    deck: 'communityChest',
+    text: 'Life insurance matures. Collect $100.',
+    action: { type: 'COLLECT_MONEY', amount: 100 },
+  },
+  {
+    id: 'cc_hospital_fee',
+    deck: 'communityChest',
+    text: 'Hospital Fees. Pay $50.',
+    action: { type: 'PAY_MONEY', amount: 50 },
+  },
+  {
+    id: 'cc_school_fee',
+    deck: 'communityChest',
+    text: 'School fees. Pay $50.',
+    action: { type: 'PAY_MONEY', amount: 50 },
+  },
+  {
+    id: 'cc_consultancy_fee',
+    deck: 'communityChest',
+    text: 'Receive $25 consultancy fee.',
+    action: { type: 'COLLECT_MONEY', amount: 25 },
+  },
+  {
+    id: 'cc_street_repairs',
+    deck: 'communityChest',
+    text: 'You are assessed for street repairs. $40 per house. $115 per hotel.',
+    action: { type: 'GENERAL_REPAIRS', perHouse: 40, perHotel: 115 },
+  },
+  {
+    id: 'cc_beauty_contest',
+    deck: 'communityChest',
+    text: 'You have won second prize in a beauty contest. Collect $10.',
+    action: { type: 'COLLECT_MONEY', amount: 10 },
+  },
+  {
+    id: 'cc_inherit',
+    deck: 'communityChest',
+    text: 'You inherit $100.',
+    action: { type: 'COLLECT_MONEY', amount: 100 },
+  },
+];
