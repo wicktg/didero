@@ -2,12 +2,14 @@
 
 **Date:** 2026-08-30  
 **Status:** Approved  
-**Reference:** `intrepidcoder/monopoly`  
+**Reference:** `intrepidcoder/monopoly`
 
 ---
 
 ## 1. Overview & Goals
+
 Build a complete, browser-based Monopoly game adhering strictly to official Monopoly tournament rules, featuring:
+
 - **8 Fixed Players**: 1 Human Player (Player 1) vs 7 Distinct AI Bot Opponents.
 - **Rules Fidelity**: Complete implementation of all standard rules (auctions upon buy rejection, housing/hotel limits, even building rule, 50% mortgage + 10% unmortgage fee, jail mechanics with 3-turn max / doubles / $50 fine, Chance and Community Chest decks, bankruptcy asset transfer/liquidation).
 - **Modern Minimalist Aesthetic**: A polished, responsive, tactile board game interface replacing the legacy 1990s black-and-white look with warm parchment tones, crisp typography, authentic color swatches, clear tokens, and zero AI tropes or tacky gradients.
@@ -18,6 +20,7 @@ Build a complete, browser-based Monopoly game adhering strictly to official Mono
 ## 2. System Architecture & State Machine
 
 ### 2.1 State Model (`MonopolyEngine`)
+
 The game engine maintains pure immutable state transitions:
 
 ```typescript
@@ -79,7 +82,13 @@ export interface GameState {
   dice: [number, number];
   isDiceRolled: boolean;
   consecutiveDoubles: number;
-  turnPhase: 'ROLL' | 'LANDED_ACTION' | 'AUCTION' | 'TRADE' | 'DEBT_RESOLUTION' | 'END_TURN';
+  turnPhase:
+    | "ROLL"
+    | "LANDED_ACTION"
+    | "AUCTION"
+    | "TRADE"
+    | "DEBT_RESOLUTION"
+    | "END_TURN";
   chanceDeck: number[]; // Shuffled card indices
   chanceDiscard: number[];
   communityChestDeck: number[];
@@ -87,11 +96,25 @@ export interface GameState {
   activeAuction: AuctionState | null;
   activeTrade: TradeOffer | null;
   gameWinnerId: number | null;
-  gameLog: Array<{ id: string; timestamp: number; text: string; type: 'move' | 'buy' | 'rent' | 'card' | 'auction' | 'trade' | 'jail' | 'bankruptcy' }>;
+  gameLog: Array<{
+    id: string;
+    timestamp: number;
+    text: string;
+    type:
+      | "move"
+      | "buy"
+      | "rent"
+      | "card"
+      | "auction"
+      | "trade"
+      | "jail"
+      | "bankruptcy";
+  }>;
 }
 ```
 
 ### 2.2 Board Squares (0 to 39)
+
 - **0**: GO (Collect $200)
 - **1**: Mediterranean Avenue (Brown, $60, Rent: $2/$10/$30/$90/$160/$250, House: $50)
 - **2**: Community Chest
@@ -181,6 +204,7 @@ export interface GameState {
 ---
 
 ## 5. Verification & Testing Strategy
+
 - **Engine Unit Tests**:
   - Dice roll & doubles movement logic (including 3 doubles -> Jail).
   - Passing GO salary collection ($200).
