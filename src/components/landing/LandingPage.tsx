@@ -5,16 +5,11 @@ import {
   PinnedNote,
   AirplaneIllustration,
   IsometricDice,
-  HeroCartoonScene,
-  DapperDiceJumper,
-  CrownedTycoonArmchair,
+  MagicRentCardSketch,
+  GrandmaMuscleSketch,
+  ChickenStreetSketch,
 } from "./HandDrawnIllustrations";
-import {
-  ChevronDown,
-  ChevronUp,
-  Play,
-  ArrowRight,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Play, ArrowRight } from "lucide-react";
 
 export const LandingPage: React.FC = () => {
   const { setActiveView } = useGame();
@@ -158,7 +153,10 @@ export const LandingPage: React.FC = () => {
 
         {/* Airplane Illustration + Pinned Note Header Row */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
-          <AirplaneIllustration size={90} className="hover:-rotate-3 transition-transform" />
+          <AirplaneIllustration
+            size={90}
+            className="hover:-rotate-3 transition-transform"
+          />
           <PinnedNote
             title="Start Monopoly Game"
             body="Play the autonomous A2A Monopoly game on Flop Network testnet. 4 AI agents, 1 winner!"
@@ -185,9 +183,13 @@ export const LandingPage: React.FC = () => {
           <span>Start Playing</span>
         </button>
 
-        {/* Hand-Drawn Hero Landscape Scene */}
-        <div className="w-full mt-4">
-          <HeroCartoonScene />
+        {/* Hand-Drawn Hero Landscape Image */}
+        <div className="w-full mt-6 rounded-2xl border-2 border-black overflow-hidden shadow-xs bg-white">
+          <img
+            src="/images/hero_cartoon_landscape.jpg"
+            alt="Monopoly Cartoon Landscape"
+            className="w-full h-auto object-cover select-none"
+          />
         </div>
       </section>
 
@@ -207,7 +209,8 @@ export const LandingPage: React.FC = () => {
             <p className="text-base sm:text-lg font-black text-neutral-800 leading-snug mt-3">
               Spin the dice and step into autonomous chaos.
               <br />
-              Buy properties like &apos;Banana Tower&apos; or &apos;Chicken Street&apos; and survive clown taxes and space rent!
+              Buy properties like &apos;Banana Tower&apos; or &apos;Chicken
+              Street&apos; and survive clown taxes and space rent!
             </p>
 
             {/* 3 Steps Hand-Drawn Cards */}
@@ -222,7 +225,8 @@ export const LandingPage: React.FC = () => {
                     Escrow Staking & Bankroll
                   </h4>
                   <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    Four AI agents stake 5,000 $FLOP each into the decentralized escrow smart pot ($20,000 $FLOP total).
+                    Four AI agents stake 5,000 $FLOP each into the decentralized
+                    escrow smart pot ($20,000 $FLOP total).
                   </p>
                 </div>
               </div>
@@ -237,7 +241,8 @@ export const LandingPage: React.FC = () => {
                     Proof of Useful Inference (PoUI)
                   </h4>
                   <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    Every turn executes real-world LLM inference jobs on Flop Network, burning testnet $FLOP per decision cycle.
+                    Every turn executes real-world LLM inference jobs on Flop
+                    Network, burning testnet $FLOP per decision cycle.
                   </p>
                 </div>
               </div>
@@ -252,7 +257,8 @@ export const LandingPage: React.FC = () => {
                     Winner Claims Escrow & Airdrop
                   </h4>
                   <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    The last solvent tycoon claims 100% of the escrow prize pot and unlocks Mainnet $FLOP airdrop multiplier tiers.
+                    The last solvent tycoon claims 100% of the escrow prize pot
+                    and unlocks Mainnet $FLOP airdrop multiplier tiers.
                   </p>
                 </div>
               </div>
@@ -261,14 +267,18 @@ export const LandingPage: React.FC = () => {
 
           {/* Right Column: Hand-Drawn Tycoon Leaping on 3D Dice */}
           <div className="md:col-span-5 flex flex-col items-center justify-center relative">
-            <div className="relative">
-              <DapperDiceJumper size={260} />
+            <div className="relative bg-white rounded-2xl border-2 border-black overflow-hidden shadow-xs p-2 w-full max-w-[340px]">
+              <img
+                src="/images/dice_tycoon_jumper.jpg"
+                alt="Dapper Tycoon with Dice"
+                className="w-full h-auto rounded-xl object-cover select-none"
+              />
               {/* Floating Cash */}
-              <div className="absolute -top-4 right-2 pointer-events-none">
+              <div className="absolute -top-3 right-2 pointer-events-none">
                 <FlyingCash size={56} rotation={20} />
               </div>
-              <div className="absolute bottom-2 -left-4 pointer-events-none">
-                <IsometricDice size={50} rotation={-15} />
+              <div className="absolute bottom-2 -left-3 pointer-events-none">
+                <IsometricDice size={46} rotation={-15} />
               </div>
             </div>
           </div>
@@ -296,21 +306,15 @@ export const LandingPage: React.FC = () => {
           {/* Feature Card 1 */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-40 bg-[#f7fafc] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-2">
-                <div className="flex flex-col items-center">
-                  <span className="text-4xl">🎩</span>
-                  <div className="flex items-center gap-1 mt-2">
-                    <span className="text-xs font-black bg-[#ffc905] px-2 py-0.5 border border-black rounded">
-                      Magic Rent Cards
-                    </span>
-                  </div>
-                </div>
+              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
+                <MagicRentCardSketch size={150} />
               </div>
               <h3 className="text-sm font-black uppercase text-black">
                 Magic Rent Cards
               </h3>
               <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                Pull a mystical rent card and triple someone&apos;s bill. Instant power. Zero friendships left.
+                Pull a mystical rent card and triple someone&apos;s bill.
+                Instant power. Zero friendships left.
               </p>
             </div>
             <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
@@ -322,21 +326,15 @@ export const LandingPage: React.FC = () => {
           {/* Feature Card 2 */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-40 bg-[#f7fafc] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-2">
-                <div className="flex flex-col items-center">
-                  <span className="text-4xl">👵🔍</span>
-                  <div className="flex items-center gap-1 mt-2">
-                    <span className="text-xs font-black bg-[#6ccef5] px-2 py-0.5 border border-black rounded">
-                      Hire Grandma Muscle
-                    </span>
-                  </div>
-                </div>
+              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
+                <GrandmaMuscleSketch size={150} />
               </div>
               <h3 className="text-sm font-black uppercase text-black">
                 Hire Grandma Muscle
               </h3>
               <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                Call in Granny. She may bake cookies, but she breaks legs too. Collect unpaid rent with a smile and a cane.
+                Call in Granny. She may bake cookies, but she breaks legs too.
+                Collect unpaid rent with a smile and a cane.
               </p>
             </div>
             <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
@@ -348,21 +346,15 @@ export const LandingPage: React.FC = () => {
           {/* Feature Card 3 */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-40 bg-[#f7fafc] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-2">
-                <div className="flex flex-col items-center">
-                  <span className="text-4xl">🐔🌴</span>
-                  <div className="flex items-center gap-1 mt-2">
-                    <span className="text-xs font-black bg-[#a5cd39] px-2 py-0.5 border border-black rounded">
-                      Chicken Street
-                    </span>
-                  </div>
-                </div>
+              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
+                <ChickenStreetSketch size={150} />
               </div>
               <h3 className="text-sm font-black uppercase text-black">
                 Chicken Street
               </h3>
               <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                It&apos;s noisy. It&apos;s chaotic. It&apos;s cheap real estate with feathered surprises. Watch where you step.
+                It&apos;s noisy. It&apos;s chaotic. It&apos;s cheap real estate
+                with feathered surprises. Watch where you step.
               </p>
             </div>
             <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
@@ -387,7 +379,8 @@ export const LandingPage: React.FC = () => {
               Community & FAQs
             </h2>
             <p className="text-sm sm:text-base font-black text-neutral-800 mt-1 mb-6">
-              Play Monopoly and enjoy your day! It&apos;s playful for fresh minds!
+              Play Monopoly and enjoy your day! It&apos;s playful for fresh
+              minds!
             </p>
 
             <div className="flex flex-col gap-2.5">
@@ -428,9 +421,13 @@ export const LandingPage: React.FC = () => {
 
           {/* Right Column: Crowned King Tycoon on Armchair */}
           <div className="md:col-span-5 flex flex-col items-center justify-center relative pt-4">
-            <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col items-center shadow-xs w-full max-w-sm">
-              <CrownedTycoonArmchair size={180} />
-              <div className="text-center mt-2">
+            <div className="bg-white rounded-2xl border-2 border-black p-3 flex flex-col items-center shadow-xs w-full max-w-sm overflow-hidden">
+              <img
+                src="/images/crowned_tycoon_armchair.jpg"
+                alt="Crowned Monopoly King"
+                className="w-full h-auto rounded-xl border-[1.5px] border-black object-cover select-none"
+              />
+              <div className="text-center mt-3">
                 <span className="text-xs font-black uppercase text-black block">
                   Crowned Monopoly King
                 </span>
@@ -482,7 +479,10 @@ export const LandingPage: React.FC = () => {
             <a href="#hero" className="hover:text-black transition-colors">
               Home
             </a>
-            <a href="#how-it-works" className="hover:text-black transition-colors">
+            <a
+              href="#how-it-works"
+              className="hover:text-black transition-colors"
+            >
               How it works
             </a>
             <a href="#features" className="hover:text-black transition-colors">

@@ -49,9 +49,7 @@ describe("LandingPage Component", () => {
     expect(screen.getByText("01")).toBeInTheDocument();
     expect(screen.getByText("02")).toBeInTheDocument();
     expect(screen.getByText("03")).toBeInTheDocument();
-    expect(
-      screen.getByText(/Escrow Staking & Bankroll/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Escrow Staking & Bankroll/i)).toBeInTheDocument();
   });
 
   it("renders Our Features section with 3 illustrated cards", () => {
@@ -63,7 +61,9 @@ describe("LandingPage Component", () => {
 
     expect(screen.getAllByText(/Our Features/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Magic Rent Cards/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Hire Grandma Muscle/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Hire Grandma Muscle/i).length).toBeGreaterThan(
+      0,
+    );
     expect(screen.getAllByText(/Chicken Street/i).length).toBeGreaterThan(0);
   });
 
@@ -111,7 +111,9 @@ describe("LandingPage Component", () => {
 
     expect(screen.getByTestId("current-view").textContent).toBe("landing");
 
-    const startPlayingBtn = screen.getByRole("button", { name: /Start Playing/i });
+    const startPlayingBtn = screen.getByRole("button", {
+      name: /Start Playing/i,
+    });
     fireEvent.click(startPlayingBtn);
 
     expect(screen.getByTestId("current-view").textContent).toBe("board");
