@@ -24,6 +24,12 @@ export const GameLayout: React.FC = () => {
         <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-20 sm:pt-20 overflow-y-auto max-h-[calc(100vh-1rem)]">
           <StatsPage />
         </main>
+      ) : activeView === "settings" ? (
+        <main className="flex-1 w-full mx-auto flex items-center justify-center p-4">
+          <span className="text-xl sm:text-2xl font-black uppercase tracking-wider text-black select-none">
+            Coming soon.
+          </span>
+        </main>
       ) : (
         <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-20 sm:pt-20 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start overflow-hidden">
           {/* Board */}

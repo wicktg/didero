@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { useGame } from "../../context/GameContext";
-import { SettingsModal } from "../modals/SettingsModal";
 import { LayoutGrid, BarChart2, Settings, Play, Pause } from "lucide-react";
 
 export const TopNav: React.FC = () => {
@@ -11,16 +10,9 @@ export const TopNav: React.FC = () => {
     toggleAutonomous,
     secondsUntilNextTurn,
   } = useGame();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleMenuClick = (menu: "board" | "stats" | "settings") => {
-    if (menu === "board") {
-      setActiveView("board");
-    } else if (menu === "stats") {
-      setActiveView("stats");
-    } else if (menu === "settings") {
-      setIsSettingsOpen(true);
-    }
+    setActiveView(menu);
   };
 
   return (
@@ -73,7 +65,7 @@ export const TopNav: React.FC = () => {
             type="button"
             onClick={() => handleMenuClick("settings")}
             className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
-              isSettingsOpen
+              activeView === "settings"
                 ? "bg-[#c9daf8] text-black border-black font-black"
                 : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
@@ -123,12 +115,6 @@ export const TopNav: React.FC = () => {
           </>
         )}
       </button>
-
-      {/* Settings Modal */}
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
     </>
   );
 };

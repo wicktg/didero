@@ -45,7 +45,8 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
                 Match #{match.matchNumber} Performance Dossier
               </span>
               <span className="text-[10px] font-bold text-neutral-700">
-                {match.winnerName} • {match.date} • {match.totalTurns} Turns ({match.durationSeconds}s)
+                {match.winnerName} • {match.date} • {match.totalTurns} Turns (
+                {match.durationSeconds}s)
               </span>
             </div>
           </div>

@@ -38,10 +38,7 @@ describe("StatsPage and Match Analytics Suite", () => {
   it("renders PortfolioLineChart SVG polyline path for agent's own portfolio", () => {
     const mockData = MOCK_MATCH_RECORDS[0].portfolioHistory;
     const { container } = render(
-      <PortfolioLineChart
-        data={mockData}
-        color="#008ed2"
-      />,
+      <PortfolioLineChart data={mockData} color="#008ed2" />,
     );
 
     expect(container.querySelector("svg")).toBeDefined();

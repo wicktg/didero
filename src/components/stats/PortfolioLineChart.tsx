@@ -24,7 +24,9 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
   const minTurn = Math.min(...data.map((d) => d.turn));
   const maxTurn = Math.max(...data.map((d) => d.turn));
 
-  const values = data.map((d) => (isAgent2 ? d.agent2NetWorth : d.agent1NetWorth));
+  const values = data.map((d) =>
+    isAgent2 ? d.agent2NetWorth : d.agent1NetWorth,
+  );
   const maxVal = Math.max(4000, ...values);
   const minVal = 0;
 
@@ -43,7 +45,10 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
 
   // Generate single SVG path string for agent's own portfolio
   const linePoints = data
-    .map((d) => `${getX(d.turn)},${getY(isAgent2 ? d.agent2NetWorth : d.agent1NetWorth)}`)
+    .map(
+      (d) =>
+        `${getX(d.turn)},${getY(isAgent2 ? d.agent2NetWorth : d.agent1NetWorth)}`,
+    )
     .join(" ");
 
   // Grid tick values for Y axis
