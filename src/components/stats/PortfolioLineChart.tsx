@@ -3,14 +3,12 @@ import { PortfolioPoint } from "../../types/stats";
 
 interface PortfolioLineChartProps {
   data: PortfolioPoint[];
-  agentName?: string;
   color?: string;
   isAgent2?: boolean;
 }
 
 export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
   data,
-  agentName = "Agent Alpha",
   color = "#008ed2",
   isAgent2 = false,
 }) => {
@@ -53,20 +51,11 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
 
   return (
     <div className="w-full bg-white rounded-lg border-[1.5px] border-black p-3 select-none">
-      {/* Legend & Header */}
-      <div className="flex items-center justify-between pb-2 border-b-[1.5px] border-black text-[11px] font-bold">
+      {/* Header */}
+      <div className="pb-2 border-b-[1.5px] border-black text-[11px] font-bold">
         <span className="uppercase tracking-wider text-black">
           Portfolio Growth Trajectory
         </span>
-        <div className="flex items-center gap-1.5">
-          <span
-            className="w-2.5 h-2.5 rounded-xs border border-black inline-block"
-            style={{ backgroundColor: color }}
-          />
-          <span className="text-black uppercase tracking-wider text-[10px]">
-            {agentName} Net Worth ($)
-          </span>
-        </div>
       </div>
 
       {/* SVG Canvas */}

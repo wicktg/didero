@@ -135,9 +135,6 @@ export const StatsPage: React.FC = () => {
                     <span className="text-xs font-black uppercase tracking-wide text-black truncate">
                       Lobby #{match.matchNumber}
                     </span>
-                    <span className="text-[11px] font-bold text-neutral-600 truncate mt-0.5">
-                      {match.date}
-                    </span>
                   </div>
                 </div>
 

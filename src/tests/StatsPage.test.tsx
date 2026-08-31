@@ -40,7 +40,6 @@ describe("StatsPage and Match Analytics Suite", () => {
     const { container } = render(
       <PortfolioLineChart
         data={mockData}
-        agentName="Agent Alpha"
         color="#008ed2"
       />,
     );

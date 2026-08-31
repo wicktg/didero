@@ -106,7 +106,6 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
           {/* Portfolio Progression Line Chart (Agent's Own Curve) */}
           <PortfolioLineChart
             data={match.portfolioHistory}
-            agentName={match.winnerName}
             color={agentColor}
             isAgent2={isAgent2}
           />
