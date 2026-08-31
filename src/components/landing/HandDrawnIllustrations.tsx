@@ -988,32 +988,117 @@ export const MagicRentCardSketch: React.FC<{
     {/* Vintage Magician Gentleman */}
     <g transform="translate(30, 20)">
       {/* Top Hat */}
-      <polygon points="30,42 70,42 66,12 34,12" fill="#2d3748" stroke="#000" strokeWidth="2" />
-      <ellipse cx="50" cy="42" rx="26" ry="6" fill="#1a202c" stroke="#000" strokeWidth="2" />
+      <polygon
+        points="30,42 70,42 66,12 34,12"
+        fill="#2d3748"
+        stroke="#000"
+        strokeWidth="2"
+      />
+      <ellipse
+        cx="50"
+        cy="42"
+        rx="26"
+        ry="6"
+        fill="#1a202c"
+        stroke="#000"
+        strokeWidth="2"
+      />
       <rect x="33" y="34" width="34" height="4" fill="#eb1c24" />
 
       {/* Head & Monocle */}
-      <ellipse cx="50" cy="62" rx="18" ry="16" fill="#fbd38d" stroke="#000" strokeWidth="2" />
-      <circle cx="43" cy="60" r="4.5" fill="#e2e8f0" stroke="#000" strokeWidth="1.5" />
+      <ellipse
+        cx="50"
+        cy="62"
+        rx="18"
+        ry="16"
+        fill="#fbd38d"
+        stroke="#000"
+        strokeWidth="2"
+      />
+      <circle
+        cx="43"
+        cy="60"
+        r="4.5"
+        fill="#e2e8f0"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
       <circle cx="57" cy="60" r="2.5" fill="#000" />
-      <path d="M38 70 Q50 78 62 70" stroke="#000" strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M40 66 C45 63, 55 63, 60 66" stroke="#fff" strokeWidth="3" fill="none" />
+      <path
+        d="M38 70 Q50 78 62 70"
+        stroke="#000"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        d="M40 66 C45 63, 55 63, 60 66"
+        stroke="#fff"
+        strokeWidth="3"
+        fill="none"
+      />
 
       {/* Tuxedo Body */}
-      <path d="M22 84 C30 76, 70 76, 78 84 L90 130 L10 130 Z" fill="#2d3748" stroke="#000" strokeWidth="2" />
-      <polygon points="50,84 42,100 58,100" fill="#ffffff" stroke="#000" strokeWidth="1" />
+      <path
+        d="M22 84 C30 76, 70 76, 78 84 L90 130 L10 130 Z"
+        fill="#2d3748"
+        stroke="#000"
+        strokeWidth="2"
+      />
+      <polygon
+        points="50,84 42,100 58,100"
+        fill="#ffffff"
+        stroke="#000"
+        strokeWidth="1"
+      />
       <circle cx="50" cy="95" r="2" fill="#eb1c24" />
 
       {/* Mystical Glowing Rent Card in Hand */}
       <g transform="translate(68, 65) rotate(15)">
-        <rect x="0" y="0" width="26" height="38" rx="2" fill="#ffc905" stroke="#000" strokeWidth="2" />
-        <rect x="3" y="3" width="20" height="32" rx="1" fill="#fff" stroke="#000" strokeWidth="1" strokeDasharray="2 1" />
-        <text x="13" y="22" textAnchor="middle" fontSize="14" fontWeight="900" fill="#eb1c24">
+        <rect
+          x="0"
+          y="0"
+          width="26"
+          height="38"
+          rx="2"
+          fill="#ffc905"
+          stroke="#000"
+          strokeWidth="2"
+        />
+        <rect
+          x="3"
+          y="3"
+          width="20"
+          height="32"
+          rx="1"
+          fill="#fff"
+          stroke="#000"
+          strokeWidth="1"
+          strokeDasharray="2 1"
+        />
+        <text
+          x="13"
+          y="22"
+          textAnchor="middle"
+          fontSize="14"
+          fontWeight="900"
+          fill="#eb1c24"
+        >
           $
         </text>
         {/* Sparkles */}
-        <polygon points="30,-2 32,-8 34,-2 40,0 34,2 32,8 30,2 24,0" fill="#ffc905" stroke="#000" strokeWidth="0.8" />
-        <polygon points="-6,10 -4,6 -2,10 2,12 -2,14 -4,18 -6,14 -10,12" fill="#ffc905" stroke="#000" strokeWidth="0.8" />
+        <polygon
+          points="30,-2 32,-8 34,-2 40,0 34,2 32,8 30,2 24,0"
+          fill="#ffc905"
+          stroke="#000"
+          strokeWidth="0.8"
+        />
+        <polygon
+          points="-6,10 -4,6 -2,10 2,12 -2,14 -4,18 -6,14 -10,12"
+          fill="#ffc905"
+          stroke="#000"
+          strokeWidth="0.8"
+        />
       </g>
     </g>
   </svg>
@@ -1040,35 +1125,136 @@ export const GrandmaMuscleSketch: React.FC<{
     {/* Grandma Figure */}
     <g transform="translate(35, 18)">
       {/* Hair Bun */}
-      <ellipse cx="45" cy="24" rx="18" ry="14" fill="#cbd5e1" stroke="#000" strokeWidth="2" />
-      <circle cx="45" cy="14" r="8" fill="#94a3b8" stroke="#000" strokeWidth="1.5" />
+      <ellipse
+        cx="45"
+        cy="24"
+        rx="18"
+        ry="14"
+        fill="#cbd5e1"
+        stroke="#000"
+        strokeWidth="2"
+      />
+      <circle
+        cx="45"
+        cy="14"
+        r="8"
+        fill="#94a3b8"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
 
       {/* Head & Spectacles */}
-      <ellipse cx="45" cy="42" rx="17" ry="15" fill="#fbd38d" stroke="#000" strokeWidth="2" />
+      <ellipse
+        cx="45"
+        cy="42"
+        rx="17"
+        ry="15"
+        fill="#fbd38d"
+        stroke="#000"
+        strokeWidth="2"
+      />
       {/* Cat-eye spectacles */}
-      <circle cx="38" cy="40" r="5" fill="#e2e8f0" stroke="#000" strokeWidth="1.5" />
-      <circle cx="52" cy="40" r="5" fill="#e2e8f0" stroke="#000" strokeWidth="1.5" />
+      <circle
+        cx="38"
+        cy="40"
+        r="5"
+        fill="#e2e8f0"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
+      <circle
+        cx="52"
+        cy="40"
+        r="5"
+        fill="#e2e8f0"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
       <line x1="43" y1="40" x2="47" y2="40" stroke="#000" strokeWidth="2" />
-      <path d="M37 50 Q45 56 53 50" stroke="#000" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path
+        d="M37 50 Q45 56 53 50"
+        stroke="#000"
+        strokeWidth="1.8"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* Body & Floral Apron */}
-      <path d="M20 60 C30 54, 60 54, 70 60 L80 120 L10 120 Z" fill="#6ccef5" stroke="#000" strokeWidth="2" />
-      <path d="M28 65 L62 65 L68 120 L22 120 Z" fill="#ffffff" stroke="#000" strokeWidth="1.5" />
+      <path
+        d="M20 60 C30 54, 60 54, 70 60 L80 120 L10 120 Z"
+        fill="#6ccef5"
+        stroke="#000"
+        strokeWidth="2"
+      />
+      <path
+        d="M28 65 L62 65 L68 120 L22 120 Z"
+        fill="#ffffff"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
 
       {/* Hands holding Binoculars / Camera or Rolling Pin */}
       <g transform="translate(30, 68)">
-        <rect x="0" y="0" width="30" height="18" rx="3" fill="#2d3748" stroke="#000" strokeWidth="2" />
-        <circle cx="9" cy="9" r="6" fill="#64748b" stroke="#000" strokeWidth="1.5" />
-        <circle cx="21" cy="9" r="6" fill="#64748b" stroke="#000" strokeWidth="1.5" />
+        <rect
+          x="0"
+          y="0"
+          width="30"
+          height="18"
+          rx="3"
+          fill="#2d3748"
+          stroke="#000"
+          strokeWidth="2"
+        />
+        <circle
+          cx="9"
+          cy="9"
+          r="6"
+          fill="#64748b"
+          stroke="#000"
+          strokeWidth="1.5"
+        />
+        <circle
+          cx="21"
+          cy="9"
+          r="6"
+          fill="#64748b"
+          stroke="#000"
+          strokeWidth="1.5"
+        />
         <circle cx="9" cy="9" r="2.5" fill="#38bdf8" />
         <circle cx="21" cy="9" r="2.5" fill="#38bdf8" />
       </g>
 
       {/* Rolling pin in corner */}
       <g transform="translate(70, 75) rotate(30)">
-        <rect x="0" y="0" width="6" height="36" rx="2" fill="#b45309" stroke="#000" strokeWidth="1.5" />
-        <rect x="1" y="-4" width="4" height="4" fill="#78350f" stroke="#000" strokeWidth="1" />
-        <rect x="1" y="36" width="4" height="4" fill="#78350f" stroke="#000" strokeWidth="1" />
+        <rect
+          x="0"
+          y="0"
+          width="6"
+          height="36"
+          rx="2"
+          fill="#b45309"
+          stroke="#000"
+          strokeWidth="1.5"
+        />
+        <rect
+          x="1"
+          y="-4"
+          width="4"
+          height="4"
+          fill="#78350f"
+          stroke="#000"
+          strokeWidth="1"
+        />
+        <rect
+          x="1"
+          y="36"
+          width="4"
+          height="4"
+          fill="#78350f"
+          stroke="#000"
+          strokeWidth="1"
+        />
       </g>
     </g>
   </svg>
@@ -1110,19 +1296,54 @@ export const ChickenStreetSketch: React.FC<{
     {/* The Cartoon Chicken with Top Hat */}
     <g transform="translate(45, 35)">
       {/* Tiny Red Top Hat */}
-      <polygon points="30,22 46,22 44,8 32,8" fill="#eb1c24" stroke="#000" strokeWidth="1.5" />
-      <ellipse cx="38" cy="22" rx="12" ry="3" fill="#991b1b" stroke="#000" strokeWidth="1.5" />
+      <polygon
+        points="30,22 46,22 44,8 32,8"
+        fill="#eb1c24"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
+      <ellipse
+        cx="38"
+        cy="22"
+        rx="12"
+        ry="3"
+        fill="#991b1b"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
 
       {/* Red Comb */}
-      <path d="M28 24 Q32 16 38 24 Q44 16 48 24" fill="#eb1c24" stroke="#000" strokeWidth="1.5" />
+      <path
+        d="M28 24 Q32 16 38 24 Q44 16 48 24"
+        fill="#eb1c24"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
 
       {/* Head */}
-      <circle cx="38" cy="36" r="14" fill="#ffffff" stroke="#000" strokeWidth="2" />
+      <circle
+        cx="38"
+        cy="36"
+        r="14"
+        fill="#ffffff"
+        stroke="#000"
+        strokeWidth="2"
+      />
       <circle cx="44" cy="34" r="2.5" fill="#000" />
       {/* Orange Beak */}
-      <polygon points="50,34 60,37 50,42" fill="#f97316" stroke="#000" strokeWidth="1.5" />
+      <polygon
+        points="50,34 60,37 50,42"
+        fill="#f97316"
+        stroke="#000"
+        strokeWidth="1.5"
+      />
       {/* Wattle */}
-      <path d="M48 42 Q52 50 46 50 Z" fill="#eb1c24" stroke="#000" strokeWidth="1.2" />
+      <path
+        d="M48 42 Q52 50 46 50 Z"
+        fill="#eb1c24"
+        stroke="#000"
+        strokeWidth="1.2"
+      />
 
       {/* Plump Feather Body */}
       <path
@@ -1140,8 +1361,18 @@ export const ChickenStreetSketch: React.FC<{
       />
 
       {/* Chicken Feet */}
-      <path d="M28 95 L26 108 L20 110 M26 108 L28 112 M26 108 L34 110" stroke="#f97316" strokeWidth="2" strokeLinecap="round" />
-      <path d="M44 95 L46 108 L40 110 M46 108 L48 112 M46 108 L54 110" stroke="#f97316" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M28 95 L26 108 L20 110 M26 108 L28 112 M26 108 L34 110"
+        stroke="#f97316"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M44 95 L46 108 L40 110 M46 108 L48 112 M46 108 L54 110"
+        stroke="#f97316"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </g>
   </svg>
 );

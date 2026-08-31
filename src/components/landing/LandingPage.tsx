@@ -4,12 +4,11 @@ import {
   FlyingCash,
   PinnedNote,
   AirplaneIllustration,
-  IsometricDice,
   MagicRentCardSketch,
   GrandmaMuscleSketch,
   ChickenStreetSketch,
 } from "./HandDrawnIllustrations";
-import { ChevronDown, ChevronUp, Play, ArrowRight } from "lucide-react";
+import { ChevronDown, ChevronUp, Play } from "lucide-react";
 
 export const LandingPage: React.FC = () => {
   const { setActiveView } = useGame();
@@ -273,13 +272,6 @@ export const LandingPage: React.FC = () => {
                 alt="Dapper Tycoon with Dice"
                 className="w-full h-auto rounded-xl object-cover select-none"
               />
-              {/* Floating Cash */}
-              <div className="absolute -top-3 right-2 pointer-events-none">
-                <FlyingCash size={56} rotation={20} />
-              </div>
-              <div className="absolute bottom-2 -left-3 pointer-events-none">
-                <IsometricDice size={46} rotation={-15} />
-              </div>
             </div>
           </div>
         </div>
@@ -366,93 +358,54 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          5. COMMUNITY & FAQS SECTION (Armchair King Tycoon + 8 Expandable FAQs)
+          5. COMMUNITY & FAQS SECTION (Centered Accordion)
          ========================================================================= */}
       <section
         id="faqs"
-        className="py-14 px-4 max-w-5xl mx-auto w-full border-t-2 border-black/20"
+        className="py-14 px-4 max-w-3xl mx-auto w-full border-t-2 border-black/20 flex flex-col items-center"
       >
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          {/* Left Column: FAQs Accordion List */}
-          <div className="md:col-span-7 flex flex-col text-left">
-            <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
-              Community & FAQs
-            </h2>
-            <p className="text-sm sm:text-base font-black text-neutral-800 mt-1 mb-6">
-              Play Monopoly and enjoy your day! It&apos;s playful for fresh
-              minds!
-            </p>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
+            Community & FAQs
+          </h2>
+          <p className="text-sm sm:text-base font-black text-neutral-800 mt-1">
+            Play Monopoly and enjoy your day! It&apos;s playful for fresh minds!
+          </p>
+        </div>
 
-            <div className="flex flex-col gap-2.5">
-              {FAQS.map((faq, idx) => {
-                const isOpen = openFaq === idx;
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-xl border-2 border-black overflow-hidden shadow-2xs transition-colors"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => toggleFaq(idx)}
-                      className="w-full p-3.5 flex items-center justify-between text-left gap-3 hover:bg-neutral-50 transition-colors cursor-pointer"
-                    >
-                      <span className="text-xs sm:text-sm font-black text-black uppercase tracking-tight">
-                        {faq.q}
-                      </span>
-                      <div className="p-1 rounded bg-[#ffc905] border border-black shrink-0">
-                        {isOpen ? (
-                          <ChevronUp className="w-3.5 h-3.5 text-black" />
-                        ) : (
-                          <ChevronDown className="w-3.5 h-3.5 text-black" />
-                        )}
-                      </div>
-                    </button>
-
-                    {isOpen && (
-                      <div className="px-3.5 pb-3.5 pt-1 text-xs text-neutral-700 font-semibold leading-relaxed border-t border-neutral-200">
-                        {faq.a}
-                      </div>
+        <div className="w-full flex flex-col gap-2.5">
+          {FAQS.map((faq, idx) => {
+            const isOpen = openFaq === idx;
+            return (
+              <div
+                key={idx}
+                className="bg-white rounded-xl border-2 border-black overflow-hidden shadow-2xs transition-colors"
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full p-3.5 sm:p-4 flex items-center justify-between text-left gap-3 hover:bg-neutral-50 transition-colors cursor-pointer"
+                >
+                  <span className="text-xs sm:text-sm font-black text-black uppercase tracking-tight">
+                    {faq.q}
+                  </span>
+                  <div className="p-1 rounded bg-[#ffc905] border border-black shrink-0">
+                    {isOpen ? (
+                      <ChevronUp className="w-3.5 h-3.5 text-black" />
+                    ) : (
+                      <ChevronDown className="w-3.5 h-3.5 text-black" />
                     )}
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                </button>
 
-          {/* Right Column: Crowned King Tycoon on Armchair */}
-          <div className="md:col-span-5 flex flex-col items-center justify-center relative pt-4">
-            <div className="bg-white rounded-2xl border-2 border-black p-3 flex flex-col items-center shadow-xs w-full max-w-sm overflow-hidden">
-              <img
-                src="/images/crowned_tycoon_armchair.jpg"
-                alt="Crowned Monopoly King"
-                className="w-full h-auto rounded-xl border-[1.5px] border-black object-cover select-none"
-              />
-              <div className="text-center mt-3">
-                <span className="text-xs font-black uppercase text-black block">
-                  Crowned Monopoly King
-                </span>
-                <span className="text-[11px] font-bold text-neutral-600">
-                  Ready to deploy your agent?
-                </span>
+                {isOpen && (
+                  <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4 pt-1 text-xs sm:text-sm text-neutral-700 font-semibold leading-relaxed border-t border-neutral-200">
+                    {faq.a}
+                  </div>
+                )}
               </div>
-              <button
-                type="button"
-                onClick={() => setActiveView("board")}
-                className="mt-3 w-full py-2 bg-[#ffc905] hover:bg-[#e6b504] text-black border-2 border-black rounded-lg text-xs font-black uppercase tracking-wider shadow-xs transition-all active:translate-y-px cursor-pointer flex items-center justify-center gap-1.5"
-              >
-                <span>Launch Arena Now</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Flying Cash Left & Right */}
-            <div className="absolute -bottom-4 -left-4 hidden sm:block pointer-events-none">
-              <FlyingCash size={60} rotation={-15} />
-            </div>
-            <div className="absolute top-2 -right-4 hidden sm:block pointer-events-none">
-              <FlyingCash size={54} rotation={12} />
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 
