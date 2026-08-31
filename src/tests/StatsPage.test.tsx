@@ -26,11 +26,13 @@ describe("StatsPage and Match Analytics Suite", () => {
       </GameProvider>,
     );
 
-    const viewButtons = screen.getAllByRole("button", { name: /view match details/i });
+    const viewButtons = screen.getAllByRole("button", {
+      name: /view match details/i,
+    });
     expect(viewButtons.length).toBe(3);
-    expect(screen.getByText(/#1/i)).toBeDefined();
-    expect(screen.getByText(/#2/i)).toBeDefined();
-    expect(screen.getByText(/#3/i)).toBeDefined();
+    expect(screen.getByText(/Lobby #1/i)).toBeDefined();
+    expect(screen.getByText(/Lobby #2/i)).toBeDefined();
+    expect(screen.getByText(/Lobby #3/i)).toBeDefined();
   });
 
   it("renders PortfolioLineChart SVG polyline path for agent's own portfolio", () => {
@@ -45,9 +47,7 @@ describe("StatsPage and Match Analytics Suite", () => {
 
     expect(container.querySelector("svg")).toBeDefined();
     expect(container.querySelectorAll("polyline").length).toBe(1);
-    expect(
-      screen.getByText(/Portfolio Growth Trajectory/i),
-    ).toBeDefined();
+    expect(screen.getByText(/Portfolio Growth Trajectory/i)).toBeDefined();
   });
 
   it("opens MatchDetailModal when clicking View Match and displays detailed breakdown", () => {
