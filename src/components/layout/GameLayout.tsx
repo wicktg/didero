@@ -22,22 +22,22 @@ export const GameLayout: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-board-canvas text-neutral-900 flex flex-col font-sans overflow-hidden select-none">
+    <div className="min-h-screen lg:h-screen bg-board-canvas text-neutral-900 flex flex-col font-sans overflow-x-hidden overflow-y-auto lg:overflow-hidden select-none">
       <TopNav />
 
       {/* Board & Sidebar - Kept mounted in DOM to prevent re-render jitter on view toggle */}
       <main
-        className={`flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-20 sm:pt-20 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start overflow-hidden ${
+        className={`flex-1 max-w-[1080px] w-full mx-auto p-2 sm:p-4 lg:p-5 pt-20 sm:pt-20 pb-16 lg:pb-5 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start overflow-visible lg:overflow-hidden ${
           activeView === "board" ? "" : "hidden"
         }`}
       >
         {/* Board */}
-        <section className="lg:col-span-8 flex flex-col items-center justify-start w-full">
+        <section className="lg:col-span-8 flex flex-col items-center justify-start w-full min-w-0">
           <MonopolyBoard />
         </section>
 
         {/* Sidebar */}
-        <aside className="lg:col-span-4 bg-white rounded-lg border-[1.5px] border-black overflow-hidden flex flex-col h-[590px] max-h-[calc(100vh-6rem)]">
+        <aside className="lg:col-span-4 bg-white rounded-lg border-[1.5px] border-black overflow-hidden flex flex-col w-full min-w-0 h-[480px] sm:h-[540px] lg:h-[590px] shadow-xs">
           {/* Tab Switcher */}
           <div className="grid grid-cols-3 bg-white p-1 border-b-[1.5px] border-black text-[11px] font-bold select-none">
             {(["leaderboard", "properties", "log"] as const).map((tab) => {

@@ -154,7 +154,7 @@ export const TradeModal: React.FC = () => {
         </div>
 
         {/* Trade Columns: Left (You) vs Right (Partner) */}
-        <div className="flex-1 grid grid-cols-2 divide-x-2 divide-black overflow-y-auto p-4 gap-4 bg-[#c9daf8]/20">
+        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-black overflow-y-auto p-4 gap-4 bg-[#c9daf8]/20">
           {/* Your Offer */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between pb-2 border-b-2 border-black bg-white p-2 rounded border-[1.5px]">

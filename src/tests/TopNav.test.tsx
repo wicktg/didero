@@ -32,8 +32,8 @@ describe("TopNav Component", () => {
     const playBtn = screen.getByRole("button", { name: /Play Game/i });
     fireEvent.click(playBtn);
 
-    // After clicking, button text changes to Pause Game (Xs) and background is green
-    const pauseBtn = screen.getByRole("button", { name: /Pause Game/i });
+    // After clicking, button text changes to Pause (Xs) and background is green
+    const pauseBtn = screen.getByRole("button", { name: /Pause/i });
     expect(pauseBtn).toBeInTheDocument();
     expect(pauseBtn).toHaveClass("bg-[#a5cd39]");
 
