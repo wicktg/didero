@@ -96,7 +96,10 @@ export const ActionControls: React.FC = () => {
           )}
           <div className="flex items-center gap-1.5">
             <span className="text-xs font-black font-mono text-black uppercase tracking-tight">
-              {formatDID(activeAgent?.did || activeAgent?.name, activeAgent?.id)}
+              {formatDID(
+                activeAgent?.did || activeAgent?.name,
+                activeAgent?.id,
+              )}
             </span>
             {activeAgent?.id === 0 && (
               <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">

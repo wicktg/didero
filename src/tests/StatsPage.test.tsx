@@ -52,7 +52,7 @@ describe("StatsPage and Match Analytics Suite", () => {
 
     render(<MatchDetailModal match={mockMatch} onClose={handleClose} />);
 
-    expect(screen.getByText(/Match #3 Performance Dossier/i)).toBeDefined();
+    expect(screen.getByText(/Performance Dossier/i)).toBeDefined();
     expect(screen.getByText(/Tokens Burned/i)).toBeDefined();
     expect(screen.getByText(/Total Turns/i)).toBeDefined();
   });

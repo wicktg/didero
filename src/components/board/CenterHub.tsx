@@ -27,7 +27,10 @@ export const CenterHub: React.FC = () => {
           <div className="flex flex-col min-w-0">
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-black font-mono text-black uppercase tracking-tight truncate">
-                {formatDID(activePlayer.did || activePlayer.name, activePlayer.id)}
+                {formatDID(
+                  activePlayer.did || activePlayer.name,
+                  activePlayer.id,
+                )}
               </span>
               {activePlayer.id === 0 && (
                 <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">

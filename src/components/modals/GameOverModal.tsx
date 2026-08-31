@@ -98,8 +98,8 @@ export const GameOverModal: React.FC = () => {
                   isWinner
                     ? "bg-[#c9daf8] text-black"
                     : p.isBankrupt
-                    ? "bg-neutral-100 text-neutral-400 opacity-60"
-                    : "bg-white text-black"
+                      ? "bg-neutral-100 text-neutral-400 opacity-60"
+                      : "bg-white text-black"
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">

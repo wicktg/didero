@@ -21,11 +21,11 @@ export const TradeModal: React.FC = () => {
 
   const human = state.players[0];
   const eligiblePartners = state.players.filter(
-    (p) => p.id !== 0 && !p.isBankrupt
+    (p) => p.id !== 0 && !p.isBankrupt,
   );
 
   const [partnerId, setPartnerId] = useState<number>(
-    tradeRecipientId ?? eligiblePartners[0]?.id ?? 1
+    tradeRecipientId ?? eligiblePartners[0]?.id ?? 1,
   );
   const [offeredMoney, setOfferedMoney] = useState<number>(0);
   const [requestedMoney, setRequestedMoney] = useState<number>(0);
@@ -43,10 +43,10 @@ export const TradeModal: React.FC = () => {
 
   // Properties owned by Human & Partner
   const humanProperties = Object.values(state.properties).filter(
-    (p) => p.ownerId === 0
+    (p) => p.ownerId === 0,
   );
   const partnerProperties = Object.values(state.properties).filter(
-    (p) => p.ownerId === partnerId
+    (p) => p.ownerId === partnerId,
   );
 
   // Construct draft trade offer
@@ -74,17 +74,13 @@ export const TradeModal: React.FC = () => {
 
   const handleToggleOfferedProp = (index: number) => {
     setOfferedProps((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
   const handleToggleRequestedProp = (index: number) => {
     setRequestedProps((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -266,19 +262,24 @@ export const TradeModal: React.FC = () => {
           {/* Partner's Offer */}
           <div className="flex flex-col gap-3 pl-4">
             <div className="flex items-center justify-between pb-2 border-b-2 border-black bg-white p-2 rounded border-[1.5px]">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 min-w-0">
                 {partner && (
                   <IdenticonAvatar
-                    name={partner.name}
+                    name={partner.did || partner.name}
                     size={20}
                     color={partner.token.color}
                   />
                 )}
-                <span className="text-xs font-extrabold uppercase tracking-wide text-black">
-                  {partner?.name} Offers
-                </span>
+                <div className="flex items-center gap-1 min-w-0">
+                  <span className="text-xs font-mono font-black uppercase tracking-tight text-black truncate">
+                    {formatDID(partner?.did || partner?.name, partnerId)}
+                  </span>
+                  <span className="text-xs font-extrabold uppercase tracking-wide text-neutral-600 shrink-0">
+                    Offers
+                  </span>
+                </div>
               </div>
-              <span className="text-[10px] font-bold text-neutral-700 tabular-nums">
+              <span className="text-[10px] font-bold text-neutral-700 tabular-nums shrink-0">
                 Cash: ${partner?.money}
               </span>
             </div>

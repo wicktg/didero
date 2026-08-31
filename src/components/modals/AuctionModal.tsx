@@ -21,9 +21,7 @@ export const AuctionModal: React.FC = () => {
   const human = state.players[0];
 
   const minRequiredBid =
-    auction.highestBid === 0
-      ? 10
-      : auction.highestBid + auction.minIncrement;
+    auction.highestBid === 0 ? 10 : auction.highestBid + auction.minIncrement;
 
   const handlePlaceBid = (amount: number) => {
     if (amount >= minRequiredBid && amount <= human.money) {
@@ -79,7 +77,12 @@ export const AuctionModal: React.FC = () => {
                   size={18}
                   color={highestBidder.token.color}
                 />
-                <span>{formatDID(highestBidder.did || highestBidder.name, highestBidder.id)}</span>
+                <span>
+                  {formatDID(
+                    highestBidder.did || highestBidder.name,
+                    highestBidder.id,
+                  )}
+                </span>
                 {highestBidder.id === 0 && (
                   <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
                     YOU
@@ -109,7 +112,10 @@ export const AuctionModal: React.FC = () => {
                 />
               )}
               <span className="font-mono font-black">
-                {formatDID(currentBidder?.did || currentBidder?.name, currentBidder?.id)}
+                {formatDID(
+                  currentBidder?.did || currentBidder?.name,
+                  currentBidder?.id,
+                )}
               </span>
               {isHumanCurrentBidder && (
                 <span className="bg-[#ffc905] text-black text-[8px] font-black px-1 py-0.2 rounded-xs border border-black uppercase tracking-wider">
@@ -133,8 +139,8 @@ export const AuctionModal: React.FC = () => {
                     isTurn
                       ? "bg-[#008ed2] text-white"
                       : isLeader
-                      ? "bg-[#a5cd39] text-black"
-                      : "bg-white text-black"
+                        ? "bg-[#a5cd39] text-black"
+                        : "bg-white text-black"
                   }`}
                 >
                   <IdenticonAvatar
@@ -142,7 +148,9 @@ export const AuctionModal: React.FC = () => {
                     size={14}
                     color={p.token.color}
                   />
-                  <span className="font-mono font-black">{formatDID(p.did || p.name, p.id)}</span>
+                  <span className="font-mono font-black">
+                    {formatDID(p.did || p.name, p.id)}
+                  </span>
                   {pid === 0 && (
                     <span className="bg-[#ffc905] text-black text-[7px] font-black px-1 py-px rounded-xs border border-black uppercase">
                       YOU
@@ -190,7 +198,7 @@ export const AuctionModal: React.FC = () => {
                   >
                     Bid ${amt}
                   </button>
-                )
+                ),
               )}
             </div>
 

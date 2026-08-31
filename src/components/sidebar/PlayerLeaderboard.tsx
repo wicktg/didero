@@ -38,8 +38,8 @@ export const PlayerLeaderboard: React.FC = () => {
                 isCurrentTurn
                   ? "bg-[#c9daf8] font-bold"
                   : player.isBankrupt
-                  ? "bg-neutral-100 opacity-50 grayscale"
-                  : "bg-white hover:bg-neutral-50"
+                    ? "bg-neutral-100 opacity-50 grayscale"
+                    : "bg-white hover:bg-neutral-50"
               }`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
@@ -77,7 +77,8 @@ export const PlayerLeaderboard: React.FC = () => {
                       </span>
                     ) : (
                       <span>
-                        {propCount} Props {houseCount > 0 && `• ${houseCount} Houses`}
+                        {propCount} Props{" "}
+                        {houseCount > 0 && `• ${houseCount} Houses`}
                       </span>
                     )}
                   </div>

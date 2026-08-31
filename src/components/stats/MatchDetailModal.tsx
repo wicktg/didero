@@ -44,11 +44,10 @@ export const MatchDetailModal: React.FC<MatchDetailModalProps> = ({
             </div>
             <div className="flex flex-col">
               <span className="text-xs font-black uppercase tracking-wider text-black">
-                Match #{match.matchNumber} Performance Dossier
+                Performance Dossier
               </span>
-              <span className="text-[10px] font-bold text-neutral-700">
-                {formatDID(match.winnerName, match.winnerId)} • {match.date} • {match.totalTurns} Turns (
-                {match.durationSeconds}s)
+              <span className="text-[10px] font-bold font-mono text-neutral-700">
+                {formatDID(match.winnerName, match.winnerId)}
               </span>
             </div>
           </div>
