@@ -94,16 +94,13 @@ export const StatsPage: React.FC = () => {
 
       {/* 2. Match History Section */}
       <div className="bg-white rounded-lg border-[1.5px] border-black overflow-hidden shadow-xs">
-        <div className="p-3.5 bg-[#c9daf8] text-black border-b-[1.5px] border-black flex items-center justify-between">
+        <div className="p-3 bg-[#c9daf8] text-black border-b-[1.5px] border-black flex items-center">
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-black" />
             <h2 className="text-xs font-black uppercase tracking-wider text-black">
-              Resolved Match History ({MOCK_MATCH_RECORDS.length} Matches)
+              History
             </h2>
           </div>
-          <span className="text-[10px] font-extrabold text-neutral-700 uppercase tracking-widest">
-            Latest Autonomous Duels
-          </span>
         </div>
 
         {/* Match Cards List */}
