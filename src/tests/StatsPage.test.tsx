@@ -26,7 +26,7 @@ describe("StatsPage and Match Analytics Suite", () => {
       </GameProvider>,
     );
 
-    const viewButtons = screen.getAllByRole("button", { name: /View Match/i });
+    const viewButtons = screen.getAllByRole("button", { name: /view match details/i });
     expect(viewButtons.length).toBe(3);
     expect(screen.getByText(/#1/i)).toBeDefined();
     expect(screen.getByText(/#2/i)).toBeDefined();
