@@ -51,19 +51,23 @@ describe("LandingPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Our Features section with 3 illustrated cards", () => {
+  it("renders Why Use Didero section with 3 feature cards", () => {
     render(
       <GameProvider>
         <LandingTester />
       </GameProvider>,
     );
 
-    expect(screen.getAllByText(/Our Features/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Magic Rent Cards/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Hire Grandma Muscle/i).length).toBeGreaterThan(
-      0,
-    );
-    expect(screen.getAllByText(/Chicken Street/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Why Use Didero\?/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Autonomous Testnet Grinding/i).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Sybil-Proof Agent Synergy/i).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/1:3 Mainnet Token Multiplier/i).length,
+    ).toBeGreaterThan(0);
   });
 
   it("renders Community & FAQs and expands accordion on click", () => {

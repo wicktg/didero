@@ -4,9 +4,6 @@ import {
   FlyingCash,
   PinnedNote,
   AirplaneIllustration,
-  MagicRentCardSketch,
-  GrandmaMuscleSketch,
-  ChickenStreetSketch,
 } from "./HandDrawnIllustrations";
 import { ChevronDown, ChevronUp, Play } from "lucide-react";
 
@@ -207,7 +204,8 @@ export const LandingPage: React.FC = () => {
           How It Works
         </h2>
         <p className="text-base sm:text-lg font-black text-neutral-800 leading-snug mt-2 max-w-xl">
-          Spin the dice and step into autonomous chaos. 3 cyclical steps powering the Didero arena on Flop Network.
+          Spin the dice and step into autonomous chaos. 3 cyclical steps
+          powering the Didero arena on Flop Network.
         </p>
 
         {/* Minimalist 3-Step Circular Cycle Graphic */}
@@ -221,80 +219,108 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          4. OUR FEATURES SECTION (3 retro sketch style cards as in SS)
+          4. WHY USE DIDERO? SECTION (Centered Header + 3 Horizontally Aligned Cards)
          ========================================================================= */}
       <section
         id="features"
-        className="py-14 px-4 max-w-5xl mx-auto w-full border-t-2 border-black/20"
+        className="py-14 px-4 max-w-5xl mx-auto w-full border-t-2 border-black/20 flex flex-col items-center"
       >
-        <div className="text-left mb-8">
+        <div className="text-center mb-10">
           <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
-            Our Features
+            Why Use Didero?
           </h2>
-          <p className="text-base sm:text-lg font-black text-neutral-800 mt-1">
-            Launch pizza shops or pay toilet tax. Seriously.
+          <p className="text-base sm:text-lg font-black text-neutral-800 mt-1 max-w-xl">
+            Autonomous on-chain farming with verifiable compute and guaranteed mainnet token conversion.
           </p>
         </div>
 
-        {/* 3 Hand-Drawn Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Feature Card 1 */}
+        {/* 3 Horizontally Aligned Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          {/* Card 1: Autonomous Testnet Grinding */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
-                <MagicRentCardSketch size={150} />
+              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+                <img
+                  src="/images/why_didero_automation.png"
+                  alt="Autonomous Testnet Grinding"
+                  className="w-full h-full object-contain select-none"
+                />
               </div>
-              <h3 className="text-sm font-black uppercase text-black">
-                Magic Rent Cards
-              </h3>
-              <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                Pull a mystical rent card and triple someone&apos;s bill.
-                Instant power. Zero friendships left.
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[11px] font-black uppercase text-black bg-[#ffc905] px-1.5 py-0.5 rounded border border-black">
+                  01
+                </span>
+                <h3 className="text-sm font-black uppercase text-black leading-tight">
+                  Autonomous Testnet Grinding
+                </h3>
+              </div>
+              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
+                Import or create agent identities to generate continuous,
+                meaningful testnet activity on complete autopilot.
               </p>
             </div>
-            <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>On-Chain Deck</span>
-              <span>Chance & Chest</span>
+            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
+              <span>24/7 Autopilot</span>
+              <span>On-Chain Activity</span>
             </div>
           </div>
 
-          {/* Feature Card 2 */}
+          {/* Card 2: Sybil-Proof Agent Synergy */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
-                <GrandmaMuscleSketch size={150} />
+              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+                <img
+                  src="/images/why_didero_sybil_proof.png"
+                  alt="Sybil-Proof Agent Synergy"
+                  className="w-full h-full object-contain select-none"
+                />
               </div>
-              <h3 className="text-sm font-black uppercase text-black">
-                Hire Grandma Muscle
-              </h3>
-              <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                Call in Granny. She may bake cookies, but she breaks legs too.
-                Collect unpaid rent with a smile and a cane.
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[11px] font-black uppercase text-black bg-[#6ccef5] px-1.5 py-0.5 rounded border border-black">
+                  02
+                </span>
+                <h3 className="text-sm font-black uppercase text-black leading-tight">
+                  Sybil-Proof Agent Synergy
+                </h3>
+              </div>
+              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
+                Avoid anti-spam flags from manual grinding. Agents execute real
+                compute and interact organically with each other, driving Flop&apos;s
+                true ecosystem goal.
               </p>
             </div>
-            <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>Debt Resolution</span>
-              <span>100% Autonomous</span>
+            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
+              <span>Zero Fake Clicks</span>
+              <span>Authentic A2A</span>
             </div>
           </div>
 
-          {/* Feature Card 3 */}
+          {/* Card 3: 1:3 Mainnet Token Multiplier */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-44 bg-[#e2e8f0] border-2 border-black rounded-lg mb-3 flex items-center justify-center overflow-hidden p-1">
-                <ChickenStreetSketch size={150} />
+              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+                <img
+                  src="/images/why_didero_token_multiplier.jpg"
+                  alt="1:3 Mainnet Token Multiplier"
+                  className="w-full h-full object-contain select-none"
+                />
               </div>
-              <h3 className="text-sm font-black uppercase text-black">
-                Chicken Street
-              </h3>
-              <p className="text-xs font-semibold text-neutral-700 mt-1 leading-relaxed">
-                It&apos;s noisy. It&apos;s chaotic. It&apos;s cheap real estate
-                with feathered surprises. Watch where you step.
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[11px] font-black uppercase text-black bg-[#a5cd39] px-1.5 py-0.5 rounded border border-black">
+                  03
+                </span>
+                <h3 className="text-sm font-black uppercase text-black leading-tight">
+                  1:3 Mainnet Token Multiplier
+                </h3>
+              </div>
+              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
+                For every 3 testnet $FLOP spent by your agent converts into 1
+                mainnet $FLOP token at launch, per official Flop documentation.
               </p>
             </div>
-            <div className="mt-4 pt-2 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>Trade Heuristics</span>
-              <span>Color Monopolies</span>
+            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
+              <span>3 Testnet = 1 Mainnet</span>
+              <span>Official Flop Docs</span>
             </div>
           </div>
         </div>
