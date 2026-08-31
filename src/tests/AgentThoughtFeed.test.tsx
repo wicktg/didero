@@ -241,8 +241,8 @@ describe("AgentThoughtFeed Component", () => {
       );
 
       // Verify header and entry 1
-      expect(screen.getByText("Tycoon AI")).toBeInTheDocument();
-      expect(screen.getByText("Turn #4")).toBeInTheDocument();
+      expect(screen.getByText("z6Mk...48kM")).toBeInTheDocument();
+      expect(screen.getByText("T#4")).toBeInTheDocument();
       expect(screen.getByText("LANDED")).toBeInTheDocument();
       expect(
         screen.getByText(
@@ -254,7 +254,7 @@ describe("AgentThoughtFeed Component", () => {
       ).toBeInTheDocument();
 
       // Verify entry 2 fallback & error status
-      expect(screen.getByText("Risk Taker")).toBeInTheDocument();
+      expect(screen.getByText("z6Mk...92pL")).toBeInTheDocument();
       expect(
         screen.getByText(
           /Fallback Applied: Agent proposed action invalid during ROLL phase./i,

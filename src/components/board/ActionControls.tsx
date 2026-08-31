@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
+import { formatDID } from "../../utils/didUtils";
 
 export const ActionControls: React.FC = () => {
   const { state, dispatch, isAutonomousRunning, secondsUntilNextTurn } =
@@ -58,9 +59,9 @@ export const ActionControls: React.FC = () => {
               ? "Evaluating trade offer..."
               : state.turnPhase === "DEBT_RESOLUTION"
                 ? "Resolving outstanding debt..."
-                : state.turnPhase === "GAME_OVER"
-                  ? "Match finished!"
-                  : "Concluding turn...";
+                : state.turnPhase === "END_TURN"
+                  ? "Finalizing turn decisions..."
+                  : "Processing state...";
 
     const progressPercent = Math.min(
       100,
@@ -88,14 +89,21 @@ export const ActionControls: React.FC = () => {
         <div className="flex items-center justify-center gap-2">
           {activeAgent && (
             <IdenticonAvatar
-              name={activeAgent.name}
+              name={activeAgent.did || activeAgent.name}
               size={20}
               color={activeAgent.token.color}
             />
           )}
-          <span className="text-xs font-black text-black uppercase tracking-wide">
-            {activeAgent?.name || "Agent"}&apos;s Turn
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-black font-mono text-black uppercase tracking-tight">
+              {formatDID(activeAgent?.did || activeAgent?.name, activeAgent?.id)}
+            </span>
+            {activeAgent?.id === 0 && (
+              <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                YOU
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Current Phase description */}

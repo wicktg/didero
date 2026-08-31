@@ -8,6 +8,7 @@ import { X, ArrowLeftRight, CheckCircle2, XCircle } from "lucide-react";
 import { CustomDropdown } from "../ui/CustomDropdown";
 import { NumberStepper } from "../ui/NumberStepper";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
+import { formatDID } from "../../utils/didUtils";
 
 export const TradeModal: React.FC = () => {
   const {
@@ -96,7 +97,7 @@ export const TradeModal: React.FC = () => {
 
   const partnerOptions = eligiblePartners.map((p) => ({
     value: p.id,
-    label: p.name,
+    label: formatDID(p.did || p.name, p.id),
     sublabel: `$${p.money}`,
   }));
 
@@ -131,7 +132,7 @@ export const TradeModal: React.FC = () => {
           <div className="flex items-center gap-2">
             {partner && (
               <IdenticonAvatar
-                name={partner.name}
+                name={partner.did || partner.name}
                 size={24}
                 color={partner.token.color}
               />
@@ -163,13 +164,18 @@ export const TradeModal: React.FC = () => {
             <div className="flex items-center justify-between pb-2 border-b-2 border-black bg-white p-2 rounded border-[1.5px]">
               <div className="flex items-center gap-1.5">
                 <IdenticonAvatar
-                  name={human.name}
+                  name={human.did || human.name}
                   size={20}
                   color={human.token.color}
                 />
-                <span className="text-xs font-extrabold uppercase tracking-wide text-black">
-                  You Offer
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs font-mono font-black uppercase tracking-tight text-black">
+                    {formatDID(human.did || human.name, 0)}
+                  </span>
+                  <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                    YOU
+                  </span>
+                </div>
               </div>
               <span className="text-[10px] font-bold text-neutral-700 tabular-nums">
                 Cash: ${human.money}

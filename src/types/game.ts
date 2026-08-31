@@ -47,6 +47,7 @@ export interface PlayerToken {
 export interface PlayerState {
   id: number; // 0 for Human, 1-7 for Bots
   name: string;
+  did?: string;
   token: PlayerToken;
   isAI: boolean;
   money: number; // Starts at $1500
@@ -182,6 +183,7 @@ export interface GameState {
 export interface BotProfile {
   id: number;
   name: string;
+  did?: string;
   title: string;
   bio: string;
   avatarColor: string;

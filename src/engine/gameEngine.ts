@@ -8,6 +8,7 @@ import {
 import { SQUARES, COLOR_GROUPS } from "../data/boardData";
 import { CHANCE_CARDS, COMMUNITY_CHEST_CARDS } from "../data/cardsData";
 import { BOT_PROFILES, PLAYER_TOKENS } from "../data/botProfiles";
+import { DEFAULT_AGENT_DIDS } from "../utils/didUtils";
 
 // Fisher-Yates shuffle algorithm
 export function shuffleArray<T>(array: T[]): T[] {
@@ -22,10 +23,11 @@ export function shuffleArray<T>(array: T[]): T[] {
 export function createInitialGameState(playerCount: number = 2): GameState {
   const players: PlayerState[] = [];
 
-  // Player 0 (Human)
+  // Player 0 (Human/Our Agent)
   players.push({
     id: 0,
-    name: "You (Player 1)",
+    name: DEFAULT_AGENT_DIDS[0],
+    did: DEFAULT_AGENT_DIDS[0],
     token: PLAYER_TOKENS[0],
     isAI: false,
     money: 1500,
@@ -41,9 +43,11 @@ export function createInitialGameState(playerCount: number = 2): GameState {
   const botCount = Math.max(1, Math.min(7, playerCount - 1));
   for (let i = 0; i < botCount; i++) {
     const bot = BOT_PROFILES[i];
+    const botDid = DEFAULT_AGENT_DIDS[i + 1] || bot.did || bot.name;
     players.push({
       id: i + 1,
-      name: bot.name,
+      name: botDid,
+      did: botDid,
       token: PLAYER_TOKENS[i + 1],
       isAI: true,
       money: 1500,

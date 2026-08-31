@@ -17,6 +17,7 @@ import {
   Zap,
   Droplets,
 } from "lucide-react";
+import { formatDID } from "../../utils/didUtils";
 
 export const DeedModal: React.FC = () => {
   const { state, dispatch, inspectedPropertyIndex, setInspectedPropertyIndex } =
@@ -224,9 +225,16 @@ export const DeedModal: React.FC = () => {
             Owner
           </span>
           {owner ? (
-            <span className="text-black uppercase tracking-wide">
-              {owner.name} {isHumanOwner ? "(You)" : ""}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-black font-mono font-black uppercase tracking-tight">
+                {formatDID(owner.did || owner.name, owner.id)}
+              </span>
+              {isHumanOwner && (
+                <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                  YOU
+                </span>
+              )}
+            </div>
           ) : (
             <span className="text-neutral-500 uppercase tracking-wider">
               Unowned (${square.price || "N/A"})

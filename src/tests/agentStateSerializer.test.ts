@@ -22,7 +22,7 @@ describe("Agent State Serializer", () => {
 
       // My state (Player 0)
       expect(p0Context.myState.id).toBe(0);
-      expect(p0Context.myState.name).toBe("You (Player 1)");
+      expect(p0Context.myState.name).toContain("did:key:");
       expect(p0Context.myState.money).toBe(1500);
       expect(p0Context.myState.position).toBe(0);
       expect(p0Context.myState.positionName).toBe("GO");

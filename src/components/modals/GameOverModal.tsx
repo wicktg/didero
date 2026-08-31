@@ -4,6 +4,7 @@ import { SQUARES } from "../../data/boardData";
 import confetti from "canvas-confetti";
 import { Trophy, RotateCcw } from "lucide-react";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
+import { formatDID } from "../../utils/didUtils";
 
 export const GameOverModal: React.FC = () => {
   const { state, dispatch } = useGame();
@@ -61,7 +62,7 @@ export const GameOverModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white rounded-lg border-2 border-black overflow-hidden flex flex-col select-none">
+      <div className="w-full max-w-md bg-white rounded-lg border-2 border-black overflow-hidden select-none">
         {/* Top Winner Banner with Gold Yellow */}
         <div className="p-5 bg-[#ffc905] text-black text-center flex flex-col items-center border-b-2 border-black">
           <div className="w-12 h-12 bg-white text-black rounded-md border-2 border-black flex items-center justify-center mb-2">
@@ -71,8 +72,9 @@ export const GameOverModal: React.FC = () => {
           <span className="text-[9px] font-extrabold uppercase tracking-widest text-neutral-800">
             Tournament Match Concluded
           </span>
-          <h2 className="text-xl font-black uppercase tracking-wide mt-0.5">
-            {winner?.name} is the Victor!
+          <h2 className="text-xl font-black uppercase tracking-wide mt-0.5 flex items-center gap-1.5 font-mono">
+            <span>{formatDID(winner?.did || winner?.name, winner?.id)}</span>
+            <span>is Victor!</span>
           </h2>
           <p className="text-[11px] font-bold text-neutral-800 mt-1 max-w-xs">
             Established the ultimate real estate monopoly against all opponents.
@@ -105,14 +107,21 @@ export const GameOverModal: React.FC = () => {
                     {idx + 1}
                   </span>
                   <IdenticonAvatar
-                    name={p.name}
+                    name={p.did || p.name}
                     size={22}
                     color={p.token.color}
                   />
                   <div className="flex flex-col min-w-0">
-                    <span className="uppercase tracking-wide truncate">
-                      {p.name} {p.id === 0 ? "(You)" : ""}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="uppercase font-mono font-black tracking-tight truncate">
+                        {formatDID(p.did || p.name, p.id)}
+                      </span>
+                      {p.id === 0 && (
+                        <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                          YOU
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[9px] text-neutral-600 font-bold uppercase tracking-wider">
                       {p.isBankrupt
                         ? "Bankrupted"

@@ -3,6 +3,7 @@ import { useGame } from "../../context/GameContext";
 import { SQUARES } from "../../data/boardData";
 import { Gavel, UserX } from "lucide-react";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
+import { formatDID } from "../../utils/didUtils";
 
 export const AuctionModal: React.FC = () => {
   const { state, dispatch } = useGame();
@@ -72,13 +73,18 @@ export const AuctionModal: React.FC = () => {
           <div className="flex items-center gap-2 text-xs text-black mt-0.5 font-bold">
             <span>Leader:</span>
             {highestBidder ? (
-              <div className="flex items-center gap-1.5 uppercase">
+              <div className="flex items-center gap-1.5 uppercase font-mono font-black">
                 <IdenticonAvatar
-                  name={highestBidder.name}
+                  name={highestBidder.did || highestBidder.name}
                   size={18}
                   color={highestBidder.token.color}
                 />
-                <span>{highestBidder.name}</span>
+                <span>{formatDID(highestBidder.did || highestBidder.name, highestBidder.id)}</span>
+                {highestBidder.id === 0 && (
+                  <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                    YOU
+                  </span>
+                )}
               </div>
             ) : (
               <span className="text-neutral-500 uppercase font-medium">
@@ -97,14 +103,19 @@ export const AuctionModal: React.FC = () => {
             <div className="flex items-center gap-1.5 font-bold text-black uppercase bg-[#ffc905] px-2 py-0.5 rounded border border-black text-[11px]">
               {currentBidder && (
                 <IdenticonAvatar
-                  name={currentBidder.name}
+                  name={currentBidder.did || currentBidder.name}
                   size={16}
                   color={currentBidder.token.color}
                 />
               )}
-              <span>
-                {currentBidder?.name} {isHumanCurrentBidder && "(You)"}
+              <span className="font-mono font-black">
+                {formatDID(currentBidder?.did || currentBidder?.name, currentBidder?.id)}
               </span>
+              {isHumanCurrentBidder && (
+                <span className="bg-[#ffc905] text-black text-[8px] font-black px-1 py-0.2 rounded-xs border border-black uppercase tracking-wider">
+                  YOU
+                </span>
+              )}
             </div>
           </div>
 
@@ -127,11 +138,16 @@ export const AuctionModal: React.FC = () => {
                   }`}
                 >
                   <IdenticonAvatar
-                    name={p.name}
+                    name={p.did || p.name}
                     size={14}
                     color={p.token.color}
                   />
-                  <span>{p.name}</span>
+                  <span className="font-mono font-black">{formatDID(p.did || p.name, p.id)}</span>
+                  {pid === 0 && (
+                    <span className="bg-[#ffc905] text-black text-[7px] font-black px-1 py-px rounded-xs border border-black uppercase">
+                      YOU
+                    </span>
+                  )}
                   {isLeader && <span>★</span>}
                 </div>
               );

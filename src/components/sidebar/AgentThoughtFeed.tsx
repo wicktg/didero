@@ -4,6 +4,7 @@ import { SQUARES } from "../../data/boardData";
 import { GameAction } from "../../engine/gameReducer";
 import { TurnPhase, AgentTelemetryEntry } from "../../types/game";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
+import { formatDID } from "../../utils/didUtils";
 import {
   BrainCircuit,
   Trash2,
@@ -280,15 +281,20 @@ export const AgentThoughtFeed: React.FC<AgentThoughtFeedProps> = ({
                 <div className="flex items-center justify-between gap-1 border-b border-neutral-100 pb-1.5">
                   <div className="flex items-center gap-1.5 min-w-0">
                     <IdenticonAvatar
-                      name={entry.agentName}
+                      name={player?.did || entry.agentName}
                       size={20}
                       color={tokenColor}
                     />
-                    <span className="font-black text-xs text-black uppercase tracking-wide truncate max-w-[95px]">
-                      {entry.agentName}
+                    <span className="font-black font-mono text-xs text-black uppercase tracking-tight truncate max-w-[100px]">
+                      {formatDID(player?.did || entry.agentName, entry.agentId)}
                     </span>
+                    {entry.agentId === 0 && (
+                      <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                        YOU
+                      </span>
+                    )}
                     <span className="text-[9px] font-extrabold text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded border border-neutral-200">
-                      Turn #{entry.turnNumber}
+                      T#{entry.turnNumber}
                     </span>
                   </div>
 

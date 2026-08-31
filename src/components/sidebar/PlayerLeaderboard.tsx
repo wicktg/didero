@@ -3,6 +3,8 @@ import { useGame } from "../../context/GameContext";
 import { ArrowLeftRight, Shield, UserX } from "lucide-react";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
+import { formatDID } from "../../utils/didUtils";
+
 export const PlayerLeaderboard: React.FC = () => {
   const { state, setIsTradeModalOpen, setTradeRecipientId, moneyDeltas } =
     useGame();
@@ -43,7 +45,7 @@ export const PlayerLeaderboard: React.FC = () => {
               <div className="flex items-center gap-2.5 min-w-0">
                 {/* GitHub-style Identicon Avatar */}
                 <IdenticonAvatar
-                  name={player.name}
+                  name={player.did || player.name}
                   size={28}
                   color={player.token.color}
                 />
@@ -51,14 +53,14 @@ export const PlayerLeaderboard: React.FC = () => {
                 <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5">
                     <span
-                      className={`font-bold text-black uppercase tracking-wide truncate max-w-[100px] ${
+                      className={`font-black font-mono text-black uppercase tracking-tight truncate max-w-[110px] ${
                         player.isBankrupt ? "line-through text-neutral-400" : ""
                       }`}
                     >
-                      {player.name}
+                      {formatDID(player.did || player.name, player.id)}
                     </span>
                     {isHuman && (
-                      <span className="bg-[#008ed2] text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                      <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
                         YOU
                       </span>
                     )}

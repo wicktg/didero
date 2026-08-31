@@ -6,6 +6,8 @@ import { CardReveal } from "./CardReveal";
 import { ArrowLeftRight, Building } from "lucide-react";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 
+import { formatDID } from "../../utils/didUtils";
+
 export const CenterHub: React.FC = () => {
   const { state, setIsTradeModalOpen, setSelectedTab, moneyDeltas } = useGame();
 
@@ -18,16 +20,23 @@ export const CenterHub: React.FC = () => {
       <div className="w-full flex items-center justify-between px-3 py-2 bg-white border-[1.5px] border-black rounded-lg">
         <div className="flex items-center gap-2.5 min-w-0">
           <IdenticonAvatar
-            name={activePlayer.name}
+            name={activePlayer.did || activePlayer.name}
             size={28}
             color={activePlayer.token.color}
           />
           <div className="flex flex-col min-w-0">
-            <span className="text-xs font-extrabold text-black uppercase tracking-wide truncate">
-              {activePlayer.name}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black font-mono text-black uppercase tracking-tight truncate">
+                {formatDID(activePlayer.did || activePlayer.name, activePlayer.id)}
+              </span>
+              {activePlayer.id === 0 && (
+                <span className="bg-[#ffc905] text-black text-[8px] font-black px-1.5 py-0.5 rounded-xs border border-black uppercase tracking-wider">
+                  YOU
+                </span>
+              )}
+            </div>
             <span className="text-[9px] font-bold text-neutral-600 uppercase tracking-wider">
-              {activePlayer.isAI ? "Bot Player" : "Human Player"}
+              {activePlayer.isAI ? "Autonomous Agent" : "Player Agent"}
             </span>
           </div>
         </div>
