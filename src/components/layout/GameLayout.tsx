@@ -12,9 +12,14 @@ import { GameOverModal } from "../modals/GameOverModal";
 import { Users, Building2, BrainCircuit } from "lucide-react";
 
 import { StatsPage } from "../stats/StatsPage";
+import { LandingPage } from "../landing/LandingPage";
 
 export const GameLayout: React.FC = () => {
   const { selectedTab, setSelectedTab, activeView } = useGame();
+
+  if (activeView === "landing") {
+    return <LandingPage />;
+  }
 
   return (
     <div className="h-screen bg-board-canvas text-neutral-900 flex flex-col font-sans overflow-hidden select-none">

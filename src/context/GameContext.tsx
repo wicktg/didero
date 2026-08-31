@@ -24,8 +24,8 @@ export interface GameContextType {
   setTradeRecipientId: (id: number | null) => void;
   selectedTab: "leaderboard" | "log" | "properties";
   setSelectedTab: (tab: "leaderboard" | "log" | "properties") => void;
-  activeView: "board" | "stats" | "settings";
-  setActiveView: (view: "board" | "stats" | "settings") => void;
+  activeView: "landing" | "board" | "stats" | "settings";
+  setActiveView: (view: "landing" | "board" | "stats" | "settings") => void;
   isDiceRolling: boolean;
   moneyDeltas: Record<number, number>;
   // Autonomous Agent Telemetry & Controls
@@ -54,9 +54,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [selectedTab, setSelectedTab] = useState<
     "leaderboard" | "log" | "properties"
   >("leaderboard");
-  const [activeView, setActiveView] = useState<"board" | "stats" | "settings">(
-    "board",
-  );
+  const [activeView, setActiveView] = useState<
+    "landing" | "board" | "stats" | "settings"
+  >("landing");
   const [isDiceRolling, setIsDiceRolling] = useState(false);
   const [moneyDeltas, setMoneyDeltas] = useState<Record<number, number>>({});
 
