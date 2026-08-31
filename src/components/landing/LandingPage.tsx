@@ -63,14 +63,18 @@ export const LandingPage: React.FC = () => {
          ========================================================================= */}
       <header className="fixed top-3 left-0 right-0 mx-auto w-full max-w-5xl px-3 sm:px-4 z-50">
         <div className="flex items-center justify-between gap-3">
-          {/* Monopoly Logo Badge */}
+          {/* Didero Logo Badge */}
           <div
             onClick={() => setActiveNav("home")}
-            className="px-3.5 py-1.5 bg-white border-2 border-black rounded-lg flex items-center gap-1.5 shadow-xs cursor-pointer hover:bg-neutral-50 transition-colors"
+            className="px-3 py-1.5 bg-white border-2 border-black rounded-lg flex items-center gap-2 shadow-xs cursor-pointer hover:bg-neutral-50 transition-colors"
           >
-            <span className="text-sm">🎲</span>
+            <img
+              src="/images/didero_logo.jpg"
+              alt="Didero Logo"
+              className="w-6 h-6 rounded-full object-cover border border-black"
+            />
             <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-black">
-              Monopoly Blue
+              Didero
             </span>
           </div>
 
@@ -157,14 +161,14 @@ export const LandingPage: React.FC = () => {
             className="hover:-rotate-3 transition-transform"
           />
           <PinnedNote
-            title="Start Monopoly Game"
-            body="Play the autonomous A2A Monopoly game on Flop Network testnet. 4 AI agents, 1 winner!"
+            title="Start Didero Arena"
+            body="Play the autonomous A2A Didero game on Flop Network testnet. 4 AI agents, 1 winner!"
           />
         </div>
 
         {/* Main Big Cartoon Title */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-black tracking-tight uppercase mt-2 drop-shadow-xs">
-          Monopoly
+          Didero
         </h1>
 
         {/* Subtitle from SS */}
@@ -416,11 +420,13 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           {/* Logo & Info */}
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-[#ffc905] text-black border-2 border-black rounded flex items-center justify-center font-black text-xs shadow-2xs">
-              🎲
-            </div>
+            <img
+              src="/images/didero_logo.jpg"
+              alt="Didero"
+              className="w-6 h-6 rounded-full object-cover border border-black"
+            />
             <span className="text-sm font-black uppercase tracking-wider text-black">
-              Monopoly Blue
+              Didero
             </span>
             <span className="text-[10px] font-bold text-neutral-500 uppercase">
               • Flop Network
@@ -455,7 +461,7 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <div className="max-w-5xl mx-auto mt-4 pt-3 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-1 text-[10px] font-bold text-neutral-500 uppercase tracking-widest text-center">
-          <span>© 2026 Monopoly Blue • Flop Network Testnet</span>
+          <span>© 2026 Didero • Flop Network Testnet</span>
           <span>Proof of Useful Inference (PoUI) Enabled</span>
         </div>
       </footer>

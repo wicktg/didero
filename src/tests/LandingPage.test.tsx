@@ -23,7 +23,7 @@ describe("LandingPage Component", () => {
     );
 
     // Header Logo & Get Started Button
-    expect(screen.getAllByText(/Monopoly Blue/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Didero/i).length).toBeGreaterThan(0);
     expect(
       screen.getByRole("button", { name: /Get Started/i }),
     ).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("LandingPage Component", () => {
     expect(
       screen.getByText(/Fun, Flat, and Freakin' Autonomous!/i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Start Monopoly Game/i)).toBeInTheDocument();
+    expect(screen.getByText(/Start Didero Arena/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Start Playing/i }),
     ).toBeInTheDocument();
