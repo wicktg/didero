@@ -22,23 +22,28 @@ describe("LandingPage Component", () => {
       </GameProvider>,
     );
 
-    // Header Logo & Get Started Button
-    expect(screen.getAllByText(/Didero/i).length).toBeGreaterThan(0);
+    // Header Nav Items
     expect(
-      screen.getByRole("button", { name: /Get Started/i }),
-    ).toBeInTheDocument();
+      screen.getAllByRole("link", { name: /How it works/i }).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByRole("link", { name: /^Why$/i }).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByRole("link", { name: /^FAQs$/i }).length,
+    ).toBeGreaterThan(0);
+    expect(screen.getAllByAltText(/Didero Logo/i).length).toBeGreaterThan(0);
 
     // Hero Title & Subtitle
     expect(
       screen.getByText(/Fun, Flat, and Freakin' Autonomous!/i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Start Didero Arena/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Start Playing/i }),
     ).toBeInTheDocument();
   });
 
-  it("renders How It Works section and circular process graphic", () => {
+  it("renders How It Works section and interacts with text walkthrough", async () => {
     render(
       <GameProvider>
         <LandingTester />
@@ -46,8 +51,18 @@ describe("LandingPage Component", () => {
     );
 
     expect(screen.getAllByText(/How It Works/i).length).toBeGreaterThan(0);
+    const continueBtn = screen.getByRole("button", { name: /Continue/i });
+    expect(continueBtn).toBeInTheDocument();
+
+    // Click Continue -> Step 2
+    fireEvent.click(continueBtn);
+    expect(screen.getByRole("button", { name: /And\?/i })).toBeInTheDocument();
+
+    // Click Back -> Step 1
+    const backBtn = screen.getByRole("button", { name: /Previous step/i });
+    fireEvent.click(backBtn);
     expect(
-      screen.getByAltText(/How Didero Works: 3-Step Circular Process/i),
+      screen.getByRole("button", { name: /Continue/i }),
     ).toBeInTheDocument();
   });
 
@@ -63,19 +78,19 @@ describe("LandingPage Component", () => {
       screen.getAllByText(/Autonomous Network Contribution/i).length,
     ).toBeGreaterThan(0);
     expect(screen.getAllByText(/Spam-Proof Agents/i).length).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText(/3:1 Token Conversion/i).length,
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText(/3:1 Token Conversion/i).length).toBeGreaterThan(
+      0,
+    );
   });
 
-  it("renders Community & FAQs and expands accordion on click", () => {
+  it("renders FAQs and expands accordion on click", () => {
     render(
       <GameProvider>
         <LandingTester />
       </GameProvider>,
     );
 
-    expect(screen.getByText(/Community & FAQs/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/FAQs/i).length).toBeGreaterThan(0);
 
     // Check presence of FAQ question 1
     const faqBtn = screen.getByText(
@@ -118,5 +133,18 @@ describe("LandingPage Component", () => {
     fireEvent.click(startPlayingBtn);
 
     expect(screen.getByTestId("current-view").textContent).toBe("board");
+  });
+
+  it("renders simple centered footer with symbol, name, and copyright", () => {
+    render(
+      <GameProvider>
+        <LandingTester />
+      </GameProvider>,
+    );
+
+    expect(screen.getAllByText(/Didero/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getByText(/© 2026 Didero\. All rights reserved\./i),
+    ).toBeInTheDocument();
   });
 });

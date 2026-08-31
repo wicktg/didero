@@ -1,13 +1,6 @@
 import React from "react";
 import { useGame } from "../../context/GameContext";
-import {
-  LayoutGrid,
-  BarChart2,
-  Settings,
-  Play,
-  Pause,
-  Home,
-} from "lucide-react";
+import { LayoutGrid, BarChart2, Settings, Play, Pause } from "lucide-react";
 
 export const TopNav: React.FC = () => {
   const {
@@ -18,9 +11,7 @@ export const TopNav: React.FC = () => {
     secondsUntilNextTurn,
   } = useGame();
 
-  const handleMenuClick = (
-    menu: "landing" | "board" | "stats" | "settings",
-  ) => {
+  const handleMenuClick = (menu: "board" | "stats" | "settings") => {
     setActiveView(menu);
   };
 
@@ -44,19 +35,8 @@ export const TopNav: React.FC = () => {
         }}
         className="bg-white border-[1.5px] border-black rounded-lg p-1 flex items-center select-none pointer-events-auto overflow-hidden shadow-xs"
       >
-        {/* Navigation Items: Home, Board, Stats, Settings */}
+        {/* Navigation Items: Board, Stats, Settings */}
         <nav className="flex items-center gap-1 overflow-hidden">
-          <button
-            type="button"
-            onClick={() => handleMenuClick("landing")}
-            className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
-              activeView === "landing"
-                ? "bg-[#c9daf8] text-black border-black font-black"
-                : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent cursor-pointer"
-            }`}
-          >
-            <Home className="w-3.5 h-3.5" /> Home
-          </button>
           <button
             type="button"
             onClick={() => handleMenuClick("board")}

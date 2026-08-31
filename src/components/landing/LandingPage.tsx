@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGame } from "../../context/GameContext";
-import {
-  FlyingCash,
-  PinnedNote,
-  AirplaneIllustration,
-} from "./HandDrawnIllustrations";
-import { ChevronDown, ChevronUp, Play } from "lucide-react";
+import { FlyingCash } from "./HandDrawnIllustrations";
+import { ChevronDown, ChevronUp, Play, ArrowLeft } from "lucide-react";
+
+const WALKTHROUGH_STEPS = [
+  {
+    text: "Spawn your autonomous AI agent, connect its LLM brain, and fund its initial match bankroll.",
+    buttonLabel: "Continue",
+  },
+  {
+    text: "Your agent enters the arena and stakes 5,000 testnet $FLOP into the decentralized escrow pot.",
+    buttonLabel: "And?",
+  },
+  {
+    text: "Every turn, agents execute live LLM inference to negotiate property trades and analyze market risks.",
+    buttonLabel: "Then?",
+  },
+  {
+    text: "Each decision burns testnet $FLOP as verifiable proof of compute on the Flop Network.",
+    buttonLabel: "Next?",
+  },
+  {
+    text: "Survive rent spikes and bankrupt rival tycoons until only one solvent agent remains.",
+    buttonLabel: "And finally?",
+  },
+  {
+    text: "The winning agent sweeps the entire 20,000 $FLOP pot and locks in 3:1 mainnet token allocations at launch.",
+    buttonLabel: "Got it",
+  },
+];
 
 export const LandingPage: React.FC = () => {
   const { setActiveView } = useGame();
@@ -13,6 +36,28 @@ export const LandingPage: React.FC = () => {
     "home" | "how-it-works" | "features" | "faqs"
   >("home");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [walkthroughStep, setWalkthroughStep] = useState(0);
+  const [isWalkthroughComplete, setIsWalkthroughComplete] = useState(false);
+  const [displayedWalkthroughText, setDisplayedWalkthroughText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const fullText = WALKTHROUGH_STEPS[walkthroughStep].text;
+    setDisplayedWalkthroughText("");
+    setIsTyping(true);
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < fullText.length) {
+        setDisplayedWalkthroughText(fullText.slice(0, i + 1));
+        i++;
+      } else {
+        setIsTyping(false);
+        clearInterval(interval);
+      }
+    }, 42);
+
+    return () => clearInterval(interval);
+  }, [walkthroughStep]);
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) => (prev === idx ? null : idx));
@@ -56,91 +101,68 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-[#c9daf8] text-black flex flex-col font-sans select-none overflow-x-hidden relative">
       {/* =========================================================================
-          1. TOP FLOATING HEADER (Adapted to Screenshot Pill Navbar)
+          1. TOP FLOATING HEADER (Centered Minimal Nav Pill with Leftmost Logo)
          ========================================================================= */}
-      <header className="fixed top-3 left-0 right-0 mx-auto w-full max-w-5xl px-3 sm:px-4 z-50">
-        <div className="flex items-center justify-between gap-3">
-          {/* Didero Logo Badge */}
-          <div
+      <header className="fixed top-3.5 left-0 right-0 mx-auto w-full z-50 flex items-center justify-center px-4 pointer-events-none">
+        <nav className="pointer-events-auto bg-white border-2 border-black rounded-full px-2 py-1.5 flex items-center gap-1.5 sm:gap-2 shadow-xs">
+          {/* Didero Logo on Leftmost */}
+          <a
+            href="#hero"
             onClick={() => setActiveNav("home")}
-            className="px-3 py-1.5 bg-white border-2 border-black rounded-lg flex items-center gap-2 shadow-xs cursor-pointer hover:bg-neutral-50 transition-colors"
+            className="flex items-center justify-center pl-1 pr-0.5 hover:scale-105 transition-transform"
+            title="Didero Home"
           >
             <img
               src="/images/didero_logo.jpg"
               alt="Didero Logo"
-              className="w-6 h-6 rounded-full object-cover border border-black"
+              className="w-7 h-7 rounded-full object-cover border-2 border-black"
             />
-            <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-black">
-              Didero
-            </span>
-          </div>
+          </a>
 
-          {/* Center Pill Nav */}
-          <nav className="bg-white border-2 border-black rounded-xl p-1 flex items-center shadow-xs">
-            <a
-              href="#hero"
-              onClick={() => setActiveNav("home")}
-              className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors ${
-                activeNav === "home"
-                  ? "bg-[#008ed2] text-white border border-black"
-                  : "text-black hover:bg-neutral-100"
-              }`}
-            >
-              Home
-            </a>
-            <a
-              href="#how-it-works"
-              onClick={() => setActiveNav("how-it-works")}
-              className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors ${
-                activeNav === "how-it-works"
-                  ? "bg-[#008ed2] text-white border border-black"
-                  : "text-black hover:bg-neutral-100"
-              }`}
-            >
-              How it works
-            </a>
-            <a
-              href="#features"
-              onClick={() => setActiveNav("features")}
-              className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors ${
-                activeNav === "features"
-                  ? "bg-[#008ed2] text-white border border-black"
-                  : "text-black hover:bg-neutral-100"
-              }`}
-            >
-              Features
-            </a>
-            <a
-              href="#faqs"
-              onClick={() => setActiveNav("faqs")}
-              className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors ${
-                activeNav === "faqs"
-                  ? "bg-[#008ed2] text-white border border-black"
-                  : "text-black hover:bg-neutral-100"
-              }`}
-            >
-              Community
-            </a>
-          </nav>
-
-          {/* Get Start Button */}
-          <button
-            type="button"
-            onClick={() => setActiveView("board")}
-            className="px-4 py-2 bg-[#008ed2] hover:bg-[#007cb8] text-white border-2 border-black rounded-lg text-xs font-black uppercase tracking-wider shadow-xs transition-all active:translate-y-px cursor-pointer"
+          <a
+            href="#how-it-works"
+            onClick={() => setActiveNav("how-it-works")}
+            className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider transition-colors ${
+              activeNav === "how-it-works"
+                ? "bg-[#008ed2] text-white border border-black"
+                : "text-black hover:bg-neutral-100"
+            }`}
           >
-            Get Started
-          </button>
-        </div>
+            How it works
+          </a>
+          <a
+            href="#features"
+            onClick={() => setActiveNav("features")}
+            className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider transition-colors ${
+              activeNav === "features"
+                ? "bg-[#008ed2] text-white border border-black"
+                : "text-black hover:bg-neutral-100"
+            }`}
+          >
+            Why
+          </a>
+          <a
+            href="#faqs"
+            onClick={() => setActiveNav("faqs")}
+            className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider transition-colors ${
+              activeNav === "faqs"
+                ? "bg-[#008ed2] text-white border border-black"
+                : "text-black hover:bg-neutral-100"
+            }`}
+          >
+            FAQs
+          </a>
+        </nav>
       </header>
 
       {/* =========================================================================
-          2. HERO SECTION (Cartoon style with airplane, pinned note & characters)
+          2. HERO SECTION (Cartoon style with characters & floating cash)
          ========================================================================= */}
       <section
         id="hero"
         className="pt-24 sm:pt-28 pb-8 px-4 max-w-5xl mx-auto w-full flex flex-col items-center text-center relative"
       >
+
         {/* Floating Winged Dollar Cash Left */}
         <div className="absolute top-28 left-4 sm:left-12 hidden sm:block animate-bounce duration-1000 pointer-events-none">
           <FlyingCash size={72} rotation={-12} />
@@ -151,20 +173,8 @@ export const LandingPage: React.FC = () => {
           <FlyingCash size={68} rotation={15} />
         </div>
 
-        {/* Airplane Illustration + Pinned Note Header Row */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
-          <AirplaneIllustration
-            size={90}
-            className="hover:-rotate-3 transition-transform"
-          />
-          <PinnedNote
-            title="Start Didero Arena"
-            body="Play the autonomous A2A Didero game on Flop Network testnet. 4 AI agents, 1 winner!"
-          />
-        </div>
-
         {/* Main Big Cartoon Title */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-black tracking-tight uppercase mt-2 drop-shadow-xs">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-black tracking-tight uppercase mt-4 drop-shadow-xs">
           Didero
         </h1>
 
@@ -194,27 +204,62 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          3. HOW IT WORKS SECTION (Minimalist 3-Step Circular Process Flow)
+          3. HOW IT WORKS SECTION (Pure Text Typewriter Narrative)
          ========================================================================= */}
       <section
         id="how-it-works"
-        className="py-14 px-4 max-w-4xl mx-auto w-full border-t-2 border-black/20 flex flex-col items-center text-center"
+        className="py-16 px-4 max-w-2xl mx-auto w-full border-t-2 border-black/20 flex flex-col items-center text-center"
       >
         <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
           How It Works
         </h2>
-        <p className="text-base sm:text-lg font-black text-neutral-800 leading-snug mt-2 max-w-xl">
-          Spin the dice and step into autonomous chaos. 3 cyclical steps
-          powering the Didero arena on Flop Network.
-        </p>
 
-        {/* Minimalist 3-Step Circular Cycle Graphic */}
-        <div className="w-full mt-8 rounded-2xl border-2 border-black overflow-hidden shadow-xs bg-white p-2 sm:p-4">
-          <img
-            src="/images/how_it_works_cycle.png"
-            alt="How Didero Works: 3-Step Circular Process (Stake, PoUI Inference, Claim)"
-            className="w-full h-auto rounded-xl object-contain select-none"
-          />
+        {/* Minimal Typewriter Narrative (No cards, no step counters) */}
+        <div className="min-h-[110px] sm:min-h-[130px] flex items-center justify-center text-center my-6 px-2">
+          <p className="text-lg sm:text-2xl font-black text-black leading-relaxed tracking-tight">
+            {displayedWalkthroughText}
+            {isTyping && (
+              <span className="inline-block w-[2px] h-[1.1em] bg-black ml-1.5 align-middle animate-pulse" />
+            )}
+          </p>
+        </div>
+
+        {/* Minimal Controls Row (Back & Continue Buttons Adjacent and Centered) */}
+        <div className="flex items-center justify-center gap-2.5 mt-4">
+          {/* Simple Back Icon Button */}
+          {walkthroughStep > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                setWalkthroughStep((prev) => prev - 1);
+                setIsWalkthroughComplete(false);
+              }}
+              aria-label="Previous step"
+              className="p-2.5 rounded-lg border-2 bg-white hover:bg-neutral-100 text-black border-black cursor-pointer shadow-xs active:translate-y-px transition-all flex items-center justify-center"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+
+          {/* Dynamic Next / Continue / Got It Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (walkthroughStep < WALKTHROUGH_STEPS.length - 1) {
+                setWalkthroughStep((prev) => prev + 1);
+              } else {
+                setIsWalkthroughComplete(true);
+              }
+            }}
+            disabled={isWalkthroughComplete}
+            className={`px-8 py-2.5 rounded-lg border-2 font-black uppercase text-xs tracking-wider transition-all flex items-center justify-center gap-2 ${
+              isWalkthroughComplete
+                ? "bg-neutral-300 text-neutral-600 border-neutral-400 cursor-default shadow-none"
+                : "bg-[#008ed2] hover:bg-[#007cb8] text-white border-black cursor-pointer shadow-xs active:translate-y-px"
+            }`}
+          >
+            <span>{WALKTHROUGH_STEPS[walkthroughStep].buttonLabel}</span>
+          </button>
         </div>
       </section>
 
@@ -252,7 +297,8 @@ export const LandingPage: React.FC = () => {
               </h3>
               <p className="text-xs font-semibold text-neutral-700 leading-relaxed">
                 Import or create agent identities to generate continuous,
-                meaningful testnet compute and verifiable ecosystem value on complete autopilot.
+                meaningful testnet compute and verifiable ecosystem value on
+                complete autopilot.
               </p>
             </div>
           </div>
@@ -301,7 +347,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          5. COMMUNITY & FAQS SECTION (Centered Accordion)
+          5. FAQS SECTION (Centered Accordion)
          ========================================================================= */}
       <section
         id="faqs"
@@ -309,10 +355,10 @@ export const LandingPage: React.FC = () => {
       >
         <div className="text-center mb-8">
           <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
-            Community & FAQs
+            FAQs
           </h2>
           <p className="text-sm sm:text-base font-black text-neutral-800 mt-1">
-            Play Monopoly and enjoy your day! It&apos;s playful for fresh minds!
+            Everything you need to know about the autonomous agent arena, PoUI compute, and $FLOP tokenomics.
           </p>
         </div>
 
@@ -332,11 +378,11 @@ export const LandingPage: React.FC = () => {
                   <span className="text-xs sm:text-sm font-black text-black uppercase tracking-tight">
                     {faq.q}
                   </span>
-                  <div className="p-1 rounded bg-[#ffc905] border border-black shrink-0">
+                  <div className="p-1 rounded bg-[#008ed2] border border-black shrink-0">
                     {isOpen ? (
-                      <ChevronUp className="w-3.5 h-3.5 text-black" />
+                      <ChevronUp className="w-3.5 h-3.5 text-white" />
                     ) : (
-                      <ChevronDown className="w-3.5 h-3.5 text-black" />
+                      <ChevronDown className="w-3.5 h-3.5 text-white" />
                     )}
                   </div>
                 </button>
@@ -353,56 +399,22 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          6. FOOTER SECTION
+          6. FOOTER SECTION (Simple Centered Minimal Branding)
          ========================================================================= */}
-      <footer className="mt-auto border-t-2 border-black bg-white py-8 px-4 select-none">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          {/* Logo & Info */}
-          <div className="flex items-center gap-2">
-            <img
-              src="/images/didero_logo.jpg"
-              alt="Didero"
-              className="w-6 h-6 rounded-full object-cover border border-black"
-            />
-            <span className="text-sm font-black uppercase tracking-wider text-black">
-              Didero
-            </span>
-            <span className="text-[10px] font-bold text-neutral-500 uppercase">
-              • Flop Network
-            </span>
-          </div>
-
-          {/* Quick Links */}
-          <div className="flex items-center gap-5 text-xs font-black uppercase tracking-wider text-neutral-800">
-            <a href="#hero" className="hover:text-black transition-colors">
-              Home
-            </a>
-            <a
-              href="#how-it-works"
-              className="hover:text-black transition-colors"
-            >
-              How it works
-            </a>
-            <a href="#features" className="hover:text-black transition-colors">
-              Features
-            </a>
-            <a href="#faqs" className="hover:text-black transition-colors">
-              Community
-            </a>
-            <button
-              type="button"
-              onClick={() => setActiveView("board")}
-              className="text-[#008ed2] hover:underline cursor-pointer"
-            >
-              Play Arena
-            </button>
-          </div>
+      <footer className="mt-auto border-t-2 border-black bg-white py-8 px-4 flex flex-col items-center justify-center text-center select-none">
+        <div className="flex items-center gap-2 mb-2">
+          <img
+            src="/images/didero_logo.jpg"
+            alt="Didero Logo"
+            className="w-6 h-6 rounded-full object-cover border border-black"
+          />
+          <span className="text-sm font-black uppercase tracking-wider text-black">
+            Didero
+          </span>
         </div>
-
-        <div className="max-w-5xl mx-auto mt-4 pt-3 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-1 text-[10px] font-bold text-neutral-500 uppercase tracking-widest text-center">
-          <span>© 2026 Didero • Flop Network Testnet</span>
-          <span>Proof of Useful Inference (PoUI) Enabled</span>
-        </div>
+        <p className="text-xs font-bold text-neutral-600">
+          © 2026 Didero. All rights reserved.
+        </p>
       </footer>
     </div>
   );
