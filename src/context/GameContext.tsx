@@ -24,6 +24,8 @@ export interface GameContextType {
   setTradeRecipientId: (id: number | null) => void;
   selectedTab: "leaderboard" | "log" | "properties";
   setSelectedTab: (tab: "leaderboard" | "log" | "properties") => void;
+  activeView: "board" | "stats";
+  setActiveView: (view: "board" | "stats") => void;
   isDiceRolling: boolean;
   moneyDeltas: Record<number, number>;
   // Autonomous Agent Telemetry & Controls
@@ -52,6 +54,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   const [selectedTab, setSelectedTab] = useState<
     "leaderboard" | "log" | "properties"
   >("leaderboard");
+  const [activeView, setActiveView] = useState<"board" | "stats">("board");
   const [isDiceRolling, setIsDiceRolling] = useState(false);
   const [moneyDeltas, setMoneyDeltas] = useState<Record<number, number>>({});
 
@@ -115,6 +118,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setTradeRecipientId,
         selectedTab,
         setSelectedTab,
+        activeView,
+        setActiveView,
         isDiceRolling,
         moneyDeltas,
         isAutonomousRunning,

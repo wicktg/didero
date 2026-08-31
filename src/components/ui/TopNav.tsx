@@ -5,26 +5,19 @@ import { LayoutGrid, BarChart2, Settings, Play, Pause } from "lucide-react";
 
 export const TopNav: React.FC = () => {
   const {
-    setSelectedTab,
+    activeView,
+    setActiveView,
     isAutonomousRunning,
     toggleAutonomous,
     secondsUntilNextTurn,
   } = useGame();
-  const [activeMenu, setActiveMenu] = useState<"board" | "stats" | "settings">(
-    "board",
-  );
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const handleMenuClick = (menu: "board" | "stats" | "settings") => {
-    setActiveMenu(menu);
     if (menu === "board") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActiveView("board");
     } else if (menu === "stats") {
-      setSelectedTab("leaderboard");
-      const asideEl = document.querySelector("aside");
-      if (asideEl) {
-        asideEl.scrollIntoView({ behavior: "smooth" });
-      }
+      setActiveView("stats");
     } else if (menu === "settings") {
       setIsSettingsOpen(true);
     }
@@ -32,14 +25,31 @@ export const TopNav: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-3 inset-x-0 mx-auto w-max z-50 bg-white border-2 border-black rounded-lg p-1 flex items-center select-none shadow-xs pointer-events-auto">
+      <header
+        style={{
+          position: "fixed",
+          top: "12px",
+          left: 0,
+          right: 0,
+          marginLeft: "auto",
+          marginRight: "auto",
+          width: "fit-content",
+          maxWidth: "calc(100vw - 2rem)",
+          zIndex: 9999,
+          transform: "none",
+          willChange: "auto",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+        className="bg-white border-[1.5px] border-black rounded-lg p-1 flex items-center select-none pointer-events-auto overflow-hidden shadow-xs"
+      >
         {/* 3 Menu Items: Board, Stats, Settings */}
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-1 overflow-hidden">
           <button
             type="button"
             onClick={() => handleMenuClick("board")}
             className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
-              activeMenu === "board"
+              activeView === "board"
                 ? "bg-[#c9daf8] text-black border-black font-black"
                 : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
@@ -51,7 +61,7 @@ export const TopNav: React.FC = () => {
             type="button"
             onClick={() => handleMenuClick("stats")}
             className={`px-3 py-1.5 rounded-md text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5 transition-colors border ${
-              activeMenu === "stats"
+              activeView === "stats"
                 ? "bg-[#c9daf8] text-black border-black font-black"
                 : "bg-white text-neutral-700 hover:text-black hover:bg-neutral-100 border-transparent"
             }`}
@@ -77,10 +87,19 @@ export const TopNav: React.FC = () => {
       <button
         type="button"
         onClick={toggleAutonomous}
-        className={`fixed top-3 right-4 z-50 select-none shadow-xs transition-all duration-150 active:translate-y-px ${
+        style={{
+          position: "fixed",
+          top: "12px",
+          right: "16px",
+          zIndex: 9999,
+          transform: "none",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
+        className={`select-none transition-colors duration-150 active:translate-y-px overflow-hidden ${
           isAutonomousRunning
-            ? "bg-[#a5cd39] text-black border-2 border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#94b833]"
-            : "bg-[#ffc905] text-black border-2 border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#e6b504]"
+            ? "bg-[#a5cd39] text-black border-[1.5px] border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#94b833]"
+            : "bg-[#ffc905] text-black border-[1.5px] border-black font-black uppercase text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-2 hover:bg-[#e6b504]"
         }`}
         title={
           isAutonomousRunning
@@ -108,10 +127,7 @@ export const TopNav: React.FC = () => {
       {/* Settings Modal */}
       <SettingsModal
         isOpen={isSettingsOpen}
-        onClose={() => {
-          setIsSettingsOpen(false);
-          setActiveMenu("board");
-        }}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </>
   );

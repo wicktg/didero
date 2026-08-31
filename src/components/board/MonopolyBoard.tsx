@@ -118,7 +118,7 @@ export const MonopolyBoard: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full max-w-[660px] relative select-none mx-auto flex items-center justify-center overflow-visible"
+      className="w-full max-w-[590px] relative select-none mx-auto flex items-center justify-center overflow-visible"
       style={{
         height: `${1024 * scale}px`,
         minHeight: "300px",
