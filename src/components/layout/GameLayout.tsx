@@ -27,7 +27,7 @@ export const GameLayout: React.FC = () => {
 
       {/* Board & Sidebar - Kept mounted in DOM to prevent re-render jitter on view toggle */}
       <main
-        className={`flex-1 max-w-[1080px] w-full mx-auto p-2 sm:p-4 lg:p-5 pt-14 sm:pt-14 pb-16 lg:pb-5 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start overflow-visible lg:overflow-hidden ${
+        className={`flex-1 max-w-[1080px] w-full mx-auto p-2 sm:p-4 lg:p-5 pt-16 sm:pt-20 pb-16 lg:pb-5 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start overflow-visible lg:overflow-hidden ${
           activeView === "board" ? "" : "hidden"
         }`}
       >
@@ -80,7 +80,7 @@ export const GameLayout: React.FC = () => {
 
       {/* Stats View */}
       {activeView === "stats" && (
-        <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-14 sm:pt-14 overflow-y-auto max-h-[calc(100vh-1rem)]">
+        <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-16 sm:pt-20 overflow-y-auto max-h-[calc(100vh-1rem)]">
           <StatsPage />
         </main>
       )}
