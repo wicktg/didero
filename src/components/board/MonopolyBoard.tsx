@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useLayoutEffect } from "react";
 import { useGame } from "../../context/GameContext";
 import { TokenBadge } from "./TokenBadge";
 import { HouseHotelPips } from "./HouseHotelPips";
@@ -7,9 +7,9 @@ import { CenterHub } from "./CenterHub";
 export const MonopolyBoard: React.FC = () => {
   const { state, setInspectedPropertyIndex } = useGame();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState<number>(590 / 1024);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updateScale = () => {
       if (containerRef.current) {
         const width = containerRef.current.clientWidth;
