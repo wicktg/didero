@@ -8,6 +8,7 @@ import {
   GrandmaMuscleSketch,
   ChickenStreetSketch,
 } from "./HandDrawnIllustrations";
+import { HeroArenaCityscape } from "./HeroArenaCityscape";
 import { ChevronDown, ChevronUp, Play } from "lucide-react";
 
 export const LandingPage: React.FC = () => {
@@ -182,13 +183,9 @@ export const LandingPage: React.FC = () => {
           <span>Start Playing</span>
         </button>
 
-        {/* Hand-Drawn Hero Showcase Image */}
-        <div className="w-full max-w-xl mt-6 rounded-2xl border-2 border-black overflow-hidden shadow-xs bg-white p-2.5">
-          <img
-            src="/images/crowned_tycoon_armchair.jpg"
-            alt="Crowned Monopoly Tycoon"
-            className="w-full h-auto rounded-xl border-[1.5px] border-black object-cover select-none"
-          />
+        {/* Hand-Drawn Hero Panoramic Artwork */}
+        <div className="w-full max-w-4xl mt-6 rounded-2xl border-2 border-black overflow-hidden shadow-xs bg-white p-1">
+          <HeroArenaCityscape />
         </div>
       </section>
 
