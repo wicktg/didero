@@ -15,7 +15,7 @@ const LandingTester = () => {
 };
 
 describe("LandingPage Component", () => {
-  it("renders floating header, hero title, and escrow preview card", () => {
+  it("renders floating header, hero title, and cartoon elements", () => {
     render(
       <GameProvider>
         <LandingTester />
@@ -30,46 +30,51 @@ describe("LandingPage Component", () => {
 
     // Hero Title & Subtitle
     expect(
-      screen.getByText(/The Autonomous Agent Monopoly Arena/i),
+      screen.getByText(/Fun, Flat, and Freakin' Autonomous!/i),
     ).toBeInTheDocument();
+    expect(screen.getByText(/Start Monopoly Game/i)).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /Four AI agents stake testnet \$FLOP into a central escrow pot/i,
-      ),
-    ).toBeInTheDocument();
-
-    // Live Escrow Simulation Card
-    expect(screen.getByText(/Escrow Pot: 20,000 \$FLOP/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Proof of Useful Inference \(PoUI\) Active/i),
+      screen.getByRole("button", { name: /Start Playing/i }),
     ).toBeInTheDocument();
   });
 
-  it("renders 3 game mechanics steps", () => {
+  it("renders How It Works section and 3 structured steps", () => {
     render(
       <GameProvider>
         <LandingTester />
       </GameProvider>,
     );
 
-    expect(screen.getByText("Step 01")).toBeInTheDocument();
-    expect(screen.getByText("Escrow Staking")).toBeInTheDocument();
-
-    expect(screen.getByText("Step 02")).toBeInTheDocument();
-    expect(screen.getByText("Proof of Useful Inference")).toBeInTheDocument();
-
-    expect(screen.getByText("Step 03")).toBeInTheDocument();
-    expect(screen.getByText("Monopoly Victor & Airdrop")).toBeInTheDocument();
+    expect(screen.getAllByText(/How It Works/i).length).toBeGreaterThan(0);
+    expect(screen.getByText("01")).toBeInTheDocument();
+    expect(screen.getByText("02")).toBeInTheDocument();
+    expect(screen.getByText("03")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Escrow Staking & Bankroll/i),
+    ).toBeInTheDocument();
   });
 
-  it("renders FAQs and expands accordion on click", () => {
+  it("renders Our Features section with 3 illustrated cards", () => {
     render(
       <GameProvider>
         <LandingTester />
       </GameProvider>,
     );
 
-    expect(screen.getByText(/Frequently Asked Questions/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Our Features/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Magic Rent Cards/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Hire Grandma Muscle/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Chicken Street/i).length).toBeGreaterThan(0);
+  });
+
+  it("renders Community & FAQs and expands accordion on click", () => {
+    render(
+      <GameProvider>
+        <LandingTester />
+      </GameProvider>,
+    );
+
+    expect(screen.getByText(/Community & FAQs/i)).toBeInTheDocument();
 
     // Check presence of FAQ question 1
     const faqBtn = screen.getByText(
@@ -80,7 +85,7 @@ describe("LandingPage Component", () => {
     // First FAQ is open by default
     expect(
       screen.getByText(
-        /Four AI agents, each driven by large language models, stake testnet \$FLOP/i,
+        /Four AI agents, powered by large language models, stake testnet \$FLOP/i,
       ),
     ).toBeInTheDocument();
 
@@ -97,7 +102,7 @@ describe("LandingPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("redirects to board arena when clicking Get Started or Launch Game Arena", () => {
+  it("redirects to board arena when clicking Get Started or Start Playing", () => {
     render(
       <GameProvider>
         <LandingTester />
@@ -106,8 +111,8 @@ describe("LandingPage Component", () => {
 
     expect(screen.getByTestId("current-view").textContent).toBe("landing");
 
-    const getStartedBtn = screen.getByRole("button", { name: /Get Started/i });
-    fireEvent.click(getStartedBtn);
+    const startPlayingBtn = screen.getByRole("button", { name: /Start Playing/i });
+    fireEvent.click(startPlayingBtn);
 
     expect(screen.getByTestId("current-view").textContent).toBe("board");
   });

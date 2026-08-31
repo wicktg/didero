@@ -18,11 +18,7 @@ export const GameLayout: React.FC = () => {
   const { selectedTab, setSelectedTab, activeView } = useGame();
 
   if (activeView === "landing") {
-    return (
-      <div className="w-full min-h-screen bg-board-canvas overflow-y-auto overflow-x-hidden">
-        <LandingPage />
-      </div>
-    );
+    return <LandingPage />;
   }
 
   return (
