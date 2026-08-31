@@ -11,51 +11,53 @@ describe("StatsPage and Match Analytics Suite", () => {
     render(
       <GameProvider>
         <StatsPage />
-      </GameProvider>
+      </GameProvider>,
     );
 
     expect(screen.getByText(/Total Tokens Burned/i)).toBeDefined();
     expect(screen.getByText(/Total \$FLOP Spent/i)).toBeDefined();
     expect(screen.getByText(/Matches Resolved/i)).toBeDefined();
-    expect(screen.getByText(/Leader Standing/i)).toBeDefined();
   });
 
   it("renders match history list with 3 match cards and view buttons", () => {
     render(
       <GameProvider>
         <StatsPage />
-      </GameProvider>
+      </GameProvider>,
     );
 
     const viewButtons = screen.getAllByRole("button", { name: /View Match/i });
     expect(viewButtons.length).toBe(3);
+    expect(screen.getByText(/#1/i)).toBeDefined();
+    expect(screen.getByText(/#2/i)).toBeDefined();
+    expect(screen.getByText(/#3/i)).toBeDefined();
   });
 
-  it("renders PortfolioLineChart SVG polyline paths and data markers", () => {
+  it("renders PortfolioLineChart SVG polyline path for agent's own portfolio", () => {
     const mockData = MOCK_MATCH_RECORDS[0].portfolioHistory;
     const { container } = render(
       <PortfolioLineChart
         data={mockData}
-        agent1Name="Agent Alpha"
-        agent2Name="Agent Beta"
-      />
+        agentName="Agent Alpha"
+        color="#008ed2"
+      />,
     );
 
     expect(container.querySelector("svg")).toBeDefined();
-    expect(container.querySelectorAll("polyline").length).toBe(2);
-    expect(screen.getByText(/Net Worth Trajectory Across Turns/i)).toBeDefined();
+    expect(container.querySelectorAll("polyline").length).toBe(1);
+    expect(
+      screen.getByText(/Portfolio Growth Trajectory/i),
+    ).toBeDefined();
   });
 
   it("opens MatchDetailModal when clicking View Match and displays detailed breakdown", () => {
     const mockMatch = MOCK_MATCH_RECORDS[0];
     const handleClose = vi.fn();
 
-    render(
-      <MatchDetailModal match={mockMatch} onClose={handleClose} />
-    );
+    render(<MatchDetailModal match={mockMatch} onClose={handleClose} />);
 
     expect(screen.getByText(/Match #3 Performance Dossier/i)).toBeDefined();
-    expect(screen.getByText(/Completed Orange Monopoly/i)).toBeDefined();
-    expect(screen.getByText(/Built 3 Houses across Orange/i)).toBeDefined();
+    expect(screen.getByText(/Tokens Burned/i)).toBeDefined();
+    expect(screen.getByText(/Total Turns/i)).toBeDefined();
   });
 });

@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { PortfolioPoint } from "../../types/stats";
 
 interface PortfolioLineChartProps {
   data: PortfolioPoint[];
-  agent1Name?: string;
-  agent2Name?: string;
+  agentName?: string;
+  color?: string;
+  isAgent2?: boolean;
 }
 
 export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
   data,
-  agent1Name = "Agent Alpha",
-  agent2Name = "Agent Beta",
+  agentName = "Agent Alpha",
+  color = "#008ed2",
+  isAgent2 = false,
 }) => {
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-
   if (!data || data.length === 0) return null;
 
   const width = 640;
-  const height = 220;
-  const padding = { top: 20, right: 30, bottom: 35, left: 55 };
+  const height = 210;
+  const padding = { top: 15, right: 25, bottom: 30, left: 55 };
 
   const innerWidth = width - padding.left - padding.right;
   const innerHeight = height - padding.top - padding.bottom;
@@ -26,8 +26,8 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
   const minTurn = Math.min(...data.map((d) => d.turn));
   const maxTurn = Math.max(...data.map((d) => d.turn));
 
-  const allValues = data.flatMap((d) => [d.agent1NetWorth, d.agent2NetWorth]);
-  const maxVal = Math.max(4000, ...allValues);
+  const values = data.map((d) => (isAgent2 ? d.agent2NetWorth : d.agent1NetWorth));
+  const maxVal = Math.max(4000, ...values);
   const minVal = 0;
 
   const getX = (turn: number) => {
@@ -36,12 +36,17 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
   };
 
   const getY = (val: number) => {
-    return padding.top + innerHeight - ((val - minVal) / (maxVal - minVal)) * innerHeight;
+    return (
+      padding.top +
+      innerHeight -
+      ((val - minVal) / (maxVal - minVal)) * innerHeight
+    );
   };
 
-  // Generate SVG path strings
-  const line1Points = data.map((d) => `${getX(d.turn)},${getY(d.agent1NetWorth)}`).join(" ");
-  const line2Points = data.map((d) => `${getX(d.turn)},${getY(d.agent2NetWorth)}`).join(" ");
+  // Generate single SVG path string for agent's own portfolio
+  const linePoints = data
+    .map((d) => `${getX(d.turn)},${getY(isAgent2 ? d.agent2NetWorth : d.agent1NetWorth)}`)
+    .join(" ");
 
   // Grid tick values for Y axis
   const yTicks = [0, 1000, 2000, 3000, 4000];
@@ -51,21 +56,16 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
       {/* Legend & Header */}
       <div className="flex items-center justify-between pb-2 border-b-[1.5px] border-black text-[11px] font-bold">
         <span className="uppercase tracking-wider text-black">
-          Net Worth Trajectory Across Turns
+          Portfolio Growth Trajectory
         </span>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-xs bg-[#008ed2] border border-black inline-block" />
-            <span className="text-black uppercase tracking-wider text-[10px]">
-              {agent1Name}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-xs bg-[#f6931e] border border-black inline-block" />
-            <span className="text-black uppercase tracking-wider text-[10px]">
-              {agent2Name}
-            </span>
-          </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="w-2.5 h-2.5 rounded-xs border border-black inline-block"
+            style={{ backgroundColor: color }}
+          />
+          <span className="text-black uppercase tracking-wider text-[10px]">
+            {agentName} Net Worth ($)
+          </span>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
                 />
                 <text
                   x={x}
-                  y={padding.top + innerHeight + 16}
+                  y={padding.top + innerHeight + 14}
                   textAnchor="middle"
                   className="text-[9px] font-extrabold fill-neutral-700 uppercase"
                 >
@@ -146,129 +146,34 @@ export const PortfolioLineChart: React.FC<PortfolioLineChartProps> = ({
             );
           })}
 
-          {/* Agent 1 Polyline (#008ed2) */}
+          {/* Agent's Own Polyline */}
           <polyline
             fill="none"
-            stroke="#008ed2"
+            stroke={color}
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            points={line1Points}
+            points={linePoints}
           />
 
-          {/* Agent 2 Polyline (#f6931e) */}
-          <polyline
-            fill="none"
-            stroke="#f6931e"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            points={line2Points}
-          />
-
-          {/* Data Points */}
+          {/* Data Points on Line */}
           {data.map((d, i) => {
             const x = getX(d.turn);
-            const y1 = getY(d.agent1NetWorth);
-            const y2 = getY(d.agent2NetWorth);
-            const isHovered = hoverIndex === i;
+            const y = getY(isAgent2 ? d.agent2NetWorth : d.agent1NetWorth);
 
             return (
-              <g
+              <circle
                 key={i}
-                className="cursor-pointer"
-                onMouseEnter={() => setHoverIndex(i)}
-                onMouseLeave={() => setHoverIndex(null)}
-              >
-                {/* Event Marker Flag */}
-                {d.event && (
-                  <g transform={`translate(${x}, ${Math.min(y1, y2) - 12})`}>
-                    <rect
-                      x="-25"
-                      y="-12"
-                      width="50"
-                      height="12"
-                      fill="#ffc905"
-                      stroke="#000000"
-                      strokeWidth="1"
-                      rx="2"
-                    />
-                    <text
-                      x="0"
-                      y="-3"
-                      textAnchor="middle"
-                      className="text-[6.5px] font-black fill-black uppercase tracking-tight"
-                    >
-                      {d.event.slice(0, 10)}
-                    </text>
-                  </g>
-                )}
-
-                {/* Point 1 */}
-                <circle
-                  cx={x}
-                  cy={y1}
-                  r={isHovered ? 5 : 3.5}
-                  fill="#008ed2"
-                  stroke="#000000"
-                  strokeWidth="1.5"
-                  className="transition-all duration-100"
-                />
-
-                {/* Point 2 */}
-                <circle
-                  cx={x}
-                  cy={y2}
-                  r={isHovered ? 5 : 3.5}
-                  fill="#f6931e"
-                  stroke="#000000"
-                  strokeWidth="1.5"
-                  className="transition-all duration-100"
-                />
-              </g>
+                cx={x}
+                cy={y}
+                r={3.5}
+                fill={color}
+                stroke="#000000"
+                strokeWidth="1.5"
+              />
             );
           })}
         </svg>
-
-        {/* Hover Tooltip Popup */}
-        {hoverIndex !== null && data[hoverIndex] && (
-          <div
-            className="absolute top-2 right-2 bg-white border-[1.5px] border-black rounded-md p-2 text-xs font-bold pointer-events-none shadow-xs z-10"
-          >
-            <div className="flex items-center justify-between gap-4 border-b border-neutral-300 pb-1 mb-1 text-[10px] uppercase tracking-wider text-black">
-              <span>Turn #{data[hoverIndex].turn}</span>
-              {data[hoverIndex].event && (
-                <span className="bg-[#ffc905] px-1 py-0.5 rounded text-[8px] font-black border border-black">
-                  {data[hoverIndex].event}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col gap-1 text-[11px]">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[#008ed2] font-black flex items-center gap-1">
-                  ● {agent1Name}:
-                </span>
-                <span className="font-extrabold text-black tabular-nums">
-                  ${data[hoverIndex].agent1NetWorth.toLocaleString()}{" "}
-                  <span className="text-[9px] font-normal text-neutral-500">
-                    (${data[hoverIndex].agent1Cash} cash)
-                  </span>
-                </span>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[#f6931e] font-black flex items-center gap-1">
-                  ● {agent2Name}:
-                </span>
-                <span className="font-extrabold text-black tabular-nums">
-                  ${data[hoverIndex].agent2NetWorth.toLocaleString()}{" "}
-                  <span className="text-[9px] font-normal text-neutral-500">
-                    (${data[hoverIndex].agent2Cash} cash)
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

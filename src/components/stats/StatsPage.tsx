@@ -6,7 +6,6 @@ import { MatchDetailModal } from "./MatchDetailModal";
 import {
   Cpu,
   Coins,
-  Trophy,
   History,
   Eye,
   ArrowRight,
@@ -23,6 +22,19 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
 
   // Overview metrics (defaulting tokens burned & $FLOP spent to 0 if none yet)
   const overview = getStatsOverview(MOCK_MATCH_RECORDS, 0, 0);
+
+  const getRankBadgeClass = (rank?: number) => {
+    switch (rank) {
+      case 1:
+        return "bg-[#ffc905] text-black border border-black"; // Gold
+      case 2:
+        return "bg-[#cbd5e1] text-black border border-black"; // Silver
+      case 3:
+        return "bg-[#cd7f32] text-white border border-black"; // Bronze
+      default:
+        return "bg-[#ffc905] text-black border border-black";
+    }
+  };
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-5 select-none pb-8">
@@ -53,8 +65,8 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
         )}
       </div>
 
-      {/* 2. Total Overview 4-Metric Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+      {/* 2. Total Overview 3-Metric Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         {/* Metric 1: Tokens Burned (Default 0) */}
         <div className="bg-white rounded-lg border-[1.5px] border-black p-3.5 flex flex-col justify-between shadow-xs">
           <div className="flex items-center justify-between text-neutral-600">
@@ -117,27 +129,6 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
             Avg {overview.averageTurns} Turns / Match
           </span>
         </div>
-
-        {/* Metric 4: Win Leader */}
-        <div className="bg-white rounded-lg border-[1.5px] border-black p-3.5 flex flex-col justify-between shadow-xs">
-          <div className="flex items-center justify-between text-neutral-600">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider">
-              Leader Standing
-            </span>
-            <Trophy className="w-4 h-4 text-[#ffc905] fill-[#ffc905]" />
-          </div>
-          <div className="flex items-baseline gap-1.5 mt-2">
-            <span className="text-sm font-black text-black uppercase">
-              Agent Alpha
-            </span>
-            <span className="text-xs font-bold text-neutral-600">
-              ({overview.agent1Wins}W - {overview.agent2Wins}L)
-            </span>
-          </div>
-          <span className="text-[9px] font-bold text-[#a5cd39] font-black uppercase mt-1">
-            67% Tournament Winrate
-          </span>
-        </div>
       </div>
 
       {/* 3. Match History Section */}
@@ -158,13 +149,14 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
         <div className="p-4 flex flex-col gap-3">
           {MOCK_MATCH_RECORDS.map((match) => {
             const isAgent1Winner = match.winnerId === 0;
+            const rank = match.rank || match.matchNumber;
 
             return (
               <div
                 key={match.id}
                 className="bg-white rounded-lg border-[1.5px] border-black p-3.5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all duration-150 hover:bg-neutral-50"
               >
-                {/* Left: Winner Info & Badge */}
+                {/* Left: Winner Info & Ranked Badge */}
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <IdenticonAvatar
@@ -172,20 +164,19 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
                       size={40}
                       color={isAgent1Winner ? "#008ed2" : "#f6931e"}
                     />
-                    <span className="absolute -top-1.5 -left-1.5 bg-[#ffc905] text-black border border-black rounded px-1 text-[8px] font-black uppercase">
-                      #{match.matchNumber}
+                    <span
+                      className={`absolute -top-1.5 -left-1.5 rounded px-1 text-[8px] font-black uppercase ${getRankBadgeClass(
+                        rank,
+                      )}`}
+                    >
+                      #{rank}
                     </span>
                   </div>
 
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-black uppercase tracking-wide text-black">
-                        {match.winnerName}
-                      </span>
-                      <span className="bg-[#a5cd39] text-black border border-black rounded px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider">
-                        Victor
-                      </span>
-                    </div>
+                    <span className="text-xs font-black uppercase tracking-wide text-black">
+                      {match.winnerName}
+                    </span>
 
                     <div className="flex items-center gap-2 text-[11px] text-neutral-600 mt-0.5">
                       <span>vs {match.loserName}</span>

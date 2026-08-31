@@ -20,6 +20,7 @@ export interface MatchStrategicMilestone {
 export interface MatchRecord {
   id: string;
   matchNumber: number;
+  rank?: number;
   date: string;
   timestamp: number;
   durationSeconds: number;
