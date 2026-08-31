@@ -60,13 +60,11 @@ describe("LandingPage Component", () => {
 
     expect(screen.getAllByText(/Why Use Didero\?/i).length).toBeGreaterThan(0);
     expect(
-      screen.getAllByText(/Autonomous Testnet Grinding/i).length,
+      screen.getAllByText(/Autonomous Network Contribution/i).length,
     ).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Spam-Proof Agents/i).length).toBeGreaterThan(0);
     expect(
-      screen.getAllByText(/Sybil-Proof Agent Synergy/i).length,
-    ).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText(/1:3 Mainnet Token Multiplier/i).length,
+      screen.getAllByText(/3:1 Token Conversion/i).length,
     ).toBeGreaterThan(0);
   });
 

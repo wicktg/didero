@@ -230,97 +230,71 @@ export const LandingPage: React.FC = () => {
             Why Use Didero?
           </h2>
           <p className="text-base sm:text-lg font-black text-neutral-800 mt-1 max-w-xl">
-            Autonomous on-chain farming with verifiable compute and guaranteed mainnet token conversion.
+            Autonomous on-chain farming with verifiable compute and guaranteed
+            mainnet token conversion.
           </p>
         </div>
 
         {/* 3 Horizontally Aligned Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-          {/* Card 1: Autonomous Testnet Grinding */}
+          {/* Card 1: Autonomous Network Contribution */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+              <div className="h-52 bg-white border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
                 <img
                   src="/images/why_didero_automation.png"
-                  alt="Autonomous Testnet Grinding"
+                  alt="Autonomous Network Contribution"
                   className="w-full h-full object-contain select-none"
                 />
               </div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-black uppercase text-black bg-[#ffc905] px-1.5 py-0.5 rounded border border-black">
-                  01
-                </span>
-                <h3 className="text-sm font-black uppercase text-black leading-tight">
-                  Autonomous Testnet Grinding
-                </h3>
-              </div>
-              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
+              <h3 className="text-sm font-black uppercase text-black leading-tight mb-1.5">
+                Autonomous Network Contribution
+              </h3>
+              <p className="text-xs font-semibold text-neutral-700 leading-relaxed">
                 Import or create agent identities to generate continuous,
-                meaningful testnet activity on complete autopilot.
+                meaningful testnet compute and verifiable ecosystem value on complete autopilot.
               </p>
-            </div>
-            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>24/7 Autopilot</span>
-              <span>On-Chain Activity</span>
             </div>
           </div>
 
-          {/* Card 2: Sybil-Proof Agent Synergy */}
+          {/* Card 2: Spam-Proof Agents */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+              <div className="h-52 bg-white border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
                 <img
                   src="/images/why_didero_sybil_proof.png"
-                  alt="Sybil-Proof Agent Synergy"
+                  alt="Spam-Proof Agents"
                   className="w-full h-full object-contain select-none"
                 />
               </div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-black uppercase text-black bg-[#6ccef5] px-1.5 py-0.5 rounded border border-black">
-                  02
-                </span>
-                <h3 className="text-sm font-black uppercase text-black leading-tight">
-                  Sybil-Proof Agent Synergy
-                </h3>
-              </div>
-              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
-                Avoid anti-spam flags from manual grinding. Agents execute real
-                compute and interact organically with each other, driving Flop&apos;s
-                true ecosystem goal.
+              <h3 className="text-sm font-black uppercase text-black leading-tight mb-1.5">
+                Spam-Proof Agents
+              </h3>
+              <p className="text-xs font-semibold text-neutral-700 leading-relaxed">
+                Avoid anti-spam flags from manual clicking. Agents execute real
+                compute and interact organically with each other, driving
+                Flop&apos;s true ecosystem goal.
               </p>
-            </div>
-            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>Zero Fake Clicks</span>
-              <span>Authentic A2A</span>
             </div>
           </div>
 
-          {/* Card 3: 1:3 Mainnet Token Multiplier */}
+          {/* Card 3: 3:1 Token Conversion */}
           <div className="bg-white rounded-xl border-2 border-black p-4 flex flex-col justify-between shadow-xs hover:-translate-y-1 transition-transform">
             <div>
-              <div className="h-52 bg-[#c9daf8] border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
+              <div className="h-52 bg-white border-2 border-black rounded-lg mb-3.5 flex items-center justify-center overflow-hidden p-2">
                 <img
-                  src="/images/why_didero_token_multiplier.jpg"
-                  alt="1:3 Mainnet Token Multiplier"
+                  src="/images/why_didero_token_multiplier.png"
+                  alt="3:1 Token Conversion"
                   className="w-full h-full object-contain select-none"
                 />
               </div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[11px] font-black uppercase text-black bg-[#a5cd39] px-1.5 py-0.5 rounded border border-black">
-                  03
-                </span>
-                <h3 className="text-sm font-black uppercase text-black leading-tight">
-                  1:3 Mainnet Token Multiplier
-                </h3>
-              </div>
-              <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
+              <h3 className="text-sm font-black uppercase text-black leading-tight mb-1.5">
+                3:1 Token Conversion
+              </h3>
+              <p className="text-xs font-semibold text-neutral-700 leading-relaxed">
                 For every 3 testnet $FLOP spent by your agent converts into 1
                 mainnet $FLOP token at launch, per official Flop documentation.
               </p>
-            </div>
-            <div className="mt-4 pt-2.5 border-t border-neutral-200 text-[10px] font-black uppercase text-neutral-600 flex justify-between">
-              <span>3 Testnet = 1 Mainnet</span>
-              <span>Official Flop Docs</span>
             </div>
           </div>
         </div>
