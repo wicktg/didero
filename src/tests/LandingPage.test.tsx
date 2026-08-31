@@ -38,7 +38,7 @@ describe("LandingPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders How It Works section and 3 structured steps", () => {
+  it("renders How It Works section and circular process graphic", () => {
     render(
       <GameProvider>
         <LandingTester />
@@ -46,10 +46,9 @@ describe("LandingPage Component", () => {
     );
 
     expect(screen.getAllByText(/How It Works/i).length).toBeGreaterThan(0);
-    expect(screen.getByText("01")).toBeInTheDocument();
-    expect(screen.getByText("02")).toBeInTheDocument();
-    expect(screen.getByText("03")).toBeInTheDocument();
-    expect(screen.getByText(/Escrow Staking & Bankroll/i)).toBeInTheDocument();
+    expect(
+      screen.getByAltText(/How Didero Works: 3-Step Circular Process/i),
+    ).toBeInTheDocument();
   });
 
   it("renders Our Features section with 3 illustrated cards", () => {

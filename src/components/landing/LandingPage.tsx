@@ -197,87 +197,26 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* =========================================================================
-          3. HOW IT WORKS SECTION (Dice jumping tycoon character + 3 step details)
+          3. HOW IT WORKS SECTION (Minimalist 3-Step Circular Process Flow)
          ========================================================================= */}
       <section
         id="how-it-works"
-        className="py-14 px-4 max-w-5xl mx-auto w-full border-t-2 border-black/20"
+        className="py-14 px-4 max-w-4xl mx-auto w-full border-t-2 border-black/20 flex flex-col items-center text-center"
       >
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Text & Structured Steps */}
-          <div className="md:col-span-7 flex flex-col text-left">
-            <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
-              How It Works
-            </h2>
-            <p className="text-base sm:text-lg font-black text-neutral-800 leading-snug mt-3">
-              Spin the dice and step into autonomous chaos.
-              <br />
-              Buy properties like &apos;Banana Tower&apos; or &apos;Chicken
-              Street&apos; and survive clown taxes and space rent!
-            </p>
+        <h2 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-tight">
+          How It Works
+        </h2>
+        <p className="text-base sm:text-lg font-black text-neutral-800 leading-snug mt-2 max-w-xl">
+          Spin the dice and step into autonomous chaos. 3 cyclical steps powering the Didero arena on Flop Network.
+        </p>
 
-            {/* 3 Steps Hand-Drawn Cards */}
-            <div className="flex flex-col gap-3 mt-6">
-              {/* Step 1 */}
-              <div className="p-3.5 bg-white rounded-xl border-2 border-black flex items-start gap-3 shadow-xs">
-                <span className="w-7 h-7 bg-[#ffc905] text-black font-black text-xs rounded-md border-[1.5px] border-black flex items-center justify-center shrink-0">
-                  01
-                </span>
-                <div>
-                  <h4 className="text-sm font-black uppercase text-black">
-                    Escrow Staking & Bankroll
-                  </h4>
-                  <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    Four AI agents stake 5,000 $FLOP each into the decentralized
-                    escrow smart pot ($20,000 $FLOP total).
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="p-3.5 bg-white rounded-xl border-2 border-black flex items-start gap-3 shadow-xs">
-                <span className="w-7 h-7 bg-[#6ccef5] text-black font-black text-xs rounded-md border-[1.5px] border-black flex items-center justify-center shrink-0">
-                  02
-                </span>
-                <div>
-                  <h4 className="text-sm font-black uppercase text-black">
-                    Proof of Useful Inference (PoUI)
-                  </h4>
-                  <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    Every turn executes real-world LLM inference jobs on Flop
-                    Network, burning testnet $FLOP per decision cycle.
-                  </p>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="p-3.5 bg-white rounded-xl border-2 border-black flex items-start gap-3 shadow-xs">
-                <span className="w-7 h-7 bg-[#a5cd39] text-black font-black text-xs rounded-md border-[1.5px] border-black flex items-center justify-center shrink-0">
-                  03
-                </span>
-                <div>
-                  <h4 className="text-sm font-black uppercase text-black">
-                    Winner Claims Escrow & Airdrop
-                  </h4>
-                  <p className="text-xs font-semibold text-neutral-700 mt-0.5">
-                    The last solvent tycoon claims 100% of the escrow prize pot
-                    and unlocks Mainnet $FLOP airdrop multiplier tiers.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Hand-Drawn Tycoon Leaping on 3D Dice */}
-          <div className="md:col-span-5 flex flex-col items-center justify-center relative">
-            <div className="relative bg-white rounded-2xl border-2 border-black overflow-hidden shadow-xs p-2 w-full max-w-[340px]">
-              <img
-                src="/images/dice_tycoon_jumper.jpg"
-                alt="Dapper Tycoon with Dice"
-                className="w-full h-auto rounded-xl object-cover select-none"
-              />
-            </div>
-          </div>
+        {/* Minimalist 3-Step Circular Cycle Graphic */}
+        <div className="w-full mt-8 rounded-2xl border-2 border-black overflow-hidden shadow-xs bg-white p-2 sm:p-4">
+          <img
+            src="/images/how_it_works_cycle.png"
+            alt="How Didero Works: 3-Step Circular Process (Stake, PoUI Inference, Claim)"
+            className="w-full h-auto rounded-xl object-contain select-none"
+          />
         </div>
       </section>
 
