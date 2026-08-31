@@ -245,91 +245,99 @@ export const DeedModal: React.FC = () => {
         {/* Interactive Management Controls */}
         {isHumanOwner && (
           <div className="p-3 bg-[#c9daf8] border-t-2 border-black flex flex-col gap-2">
-            <span className="text-[9px] font-extrabold uppercase tracking-wider text-black text-center">
-              Property Actions
-            </span>
+            {/* Mobile Lock Banner */}
+            <div className="flex sm:hidden items-center justify-center gap-1.5 py-1 text-[10px] font-black uppercase text-neutral-800 text-center">
+              <span>Actions locked on mobile</span>
+            </div>
 
-            {/* Build & Sell Houses */}
-            {square.type === "STREET" && (
+            {/* Desktop Property Actions */}
+            <div className="hidden sm:flex flex-col gap-2">
+              <span className="text-[9px] font-extrabold uppercase tracking-wider text-black text-center">
+                Property Actions
+              </span>
+
+              {/* Build & Sell Houses */}
+              {square.type === "STREET" && (
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    disabled={!canBuild}
+                    onClick={() =>
+                      dispatch({
+                        type: "BUILD_HOUSE",
+                        payload: { propertyIndex: inspectedPropertyIndex },
+                      })
+                    }
+                    className={`${btnBase} ${
+                      canBuild
+                        ? "bg-[#a5cd39] hover:bg-[#94b833] text-black"
+                        : btnDisabled
+                    }`}
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Build ( ${square.housePrice})
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={!canSell}
+                    onClick={() =>
+                      dispatch({
+                        type: "SELL_HOUSE",
+                        payload: { propertyIndex: inspectedPropertyIndex },
+                      })
+                    }
+                    className={`${btnBase} ${
+                      canSell
+                        ? "bg-[#ffc905] hover:bg-[#e6b504] text-black"
+                        : btnDisabled
+                    }`}
+                  >
+                    <Minus className="w-3.5 h-3.5" /> Sell ( $
+                    {Math.round((square.housePrice || 0) * 0.5)})
+                  </button>
+                </div>
+              )}
+
+              {/* Mortgage & Unmortgage */}
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  disabled={!canBuild}
+                  disabled={!canMortgage}
                   onClick={() =>
                     dispatch({
-                      type: "BUILD_HOUSE",
+                      type: "MORTGAGE_PROPERTY",
                       payload: { propertyIndex: inspectedPropertyIndex },
                     })
                   }
                   className={`${btnBase} ${
-                    canBuild
-                      ? "bg-[#a5cd39] hover:bg-[#94b833] text-black"
+                    canMortgage
+                      ? "bg-[#eb1c24] hover:bg-[#d61920] text-white"
                       : btnDisabled
                   }`}
                 >
-                  <Plus className="w-3.5 h-3.5" /> Build ( ${square.housePrice})
+                  <KeyRound className="w-3.5 h-3.5" /> Mortgage (+ $
+                  {mortgageValue})
                 </button>
 
                 <button
                   type="button"
-                  disabled={!canSell}
+                  disabled={!canUnmortgage}
                   onClick={() =>
                     dispatch({
-                      type: "SELL_HOUSE",
+                      type: "UNMORTGAGE_PROPERTY",
                       payload: { propertyIndex: inspectedPropertyIndex },
                     })
                   }
                   className={`${btnBase} ${
-                    canSell
-                      ? "bg-[#ffc905] hover:bg-[#e6b504] text-black"
+                    canUnmortgage
+                      ? "bg-[#008ed2] hover:bg-[#007cb8] text-white"
                       : btnDisabled
                   }`}
                 >
-                  <Minus className="w-3.5 h-3.5" /> Sell ( $
-                  {Math.round((square.housePrice || 0) * 0.5)})
+                  <Check className="w-3.5 h-3.5" /> Unmortgage (- $
+                  {unmortgageCost})
                 </button>
               </div>
-            )}
-
-            {/* Mortgage & Unmortgage */}
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                disabled={!canMortgage}
-                onClick={() =>
-                  dispatch({
-                    type: "MORTGAGE_PROPERTY",
-                    payload: { propertyIndex: inspectedPropertyIndex },
-                  })
-                }
-                className={`${btnBase} ${
-                  canMortgage
-                    ? "bg-[#eb1c24] hover:bg-[#d61920] text-white"
-                    : btnDisabled
-                }`}
-              >
-                <KeyRound className="w-3.5 h-3.5" /> Mortgage (+ $
-                {mortgageValue})
-              </button>
-
-              <button
-                type="button"
-                disabled={!canUnmortgage}
-                onClick={() =>
-                  dispatch({
-                    type: "UNMORTGAGE_PROPERTY",
-                    payload: { propertyIndex: inspectedPropertyIndex },
-                  })
-                }
-                className={`${btnBase} ${
-                  canUnmortgage
-                    ? "bg-[#008ed2] hover:bg-[#007cb8] text-white"
-                    : btnDisabled
-                }`}
-              >
-                <Check className="w-3.5 h-3.5" /> Unmortgage (- $
-                {unmortgageCost})
-              </button>
             </div>
           </div>
         )}

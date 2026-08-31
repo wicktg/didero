@@ -74,11 +74,11 @@ export const CenterHub: React.FC = () => {
       <ActionControls />
 
       {/* Secondary Utilities Navigation */}
-      <div className="w-full grid grid-cols-2 gap-1.5 pt-1 border-t-[1.5px] border-black">
+      <div className="w-full flex sm:grid sm:grid-cols-2 gap-1.5 pt-1 border-t-[1.5px] border-black">
         <button
           type="button"
           onClick={() => setIsTradeModalOpen(true)}
-          className="py-1.5 px-2 bg-white hover:bg-neutral-100 text-black border-[1.5px] border-black rounded text-[10px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"
+          className="hidden sm:flex py-1.5 px-2 bg-white hover:bg-neutral-100 text-black border-[1.5px] border-black rounded text-[10px] font-extrabold uppercase tracking-wider items-center justify-center gap-1 transition-colors cursor-pointer"
         >
           <ArrowLeftRight className="w-3 h-3 text-[#008ed2]" /> Propose Trade
         </button>
@@ -86,7 +86,7 @@ export const CenterHub: React.FC = () => {
         <button
           type="button"
           onClick={() => setSelectedTab("properties")}
-          className="py-1.5 px-2 bg-white hover:bg-neutral-100 text-black border-[1.5px] border-black rounded text-[10px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"
+          className="w-full py-1.5 px-2 bg-white hover:bg-neutral-100 text-black border-[1.5px] border-black rounded text-[10px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors cursor-pointer"
         >
           <Building className="w-3 h-3 text-black" /> Portfolio
         </button>
