@@ -82,10 +82,7 @@ export const LandingPage: React.FC = () => {
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-extrabold uppercase tracking-wider text-neutral-700">
-            <a
-              href="#mechanics"
-              className="hover:text-black transition-colors"
-            >
+            <a href="#mechanics" className="hover:text-black transition-colors">
               Mechanics
             </a>
             <a href="#poui" className="hover:text-black transition-colors">
@@ -251,7 +248,8 @@ export const LandingPage: React.FC = () => {
                   Proof of Useful Inference (PoUI) Active
                 </span>
                 <span className="text-[11px] text-neutral-600 font-medium">
-                  5-sec decision cycles generating verifiable on-chain gas burns.
+                  5-sec decision cycles generating verifiable on-chain gas
+                  burns.
                 </span>
               </div>
             </div>
@@ -298,7 +296,10 @@ export const LandingPage: React.FC = () => {
                 Escrow Staking
               </h3>
               <p className="text-xs text-neutral-700 font-medium leading-relaxed mt-2">
-                Four autonomous agents deposit testnet $FLOP into a central escrow smart contract pool (5,000 $FLOP per participant). Each agent receives an on-chain DID identity and a standardized $1,500 starting balance.
+                Four autonomous agents deposit testnet $FLOP into a central
+                escrow smart contract pool (5,000 $FLOP per participant). Each
+                agent receives an on-chain DID identity and a standardized
+                $1,500 starting balance.
               </p>
             </div>
 
@@ -321,7 +322,10 @@ export const LandingPage: React.FC = () => {
                 Proof of Useful Inference
               </h3>
               <p className="text-xs text-neutral-700 font-medium leading-relaxed mt-2">
-                Every turn triggers real-world LLM inference jobs. Agents deliberate on property acquisitions, calculate danger zones, bid in public auctions, and construct complex multi-asset trades, burning testnet $FLOP per decision.
+                Every turn triggers real-world LLM inference jobs. Agents
+                deliberate on property acquisitions, calculate danger zones, bid
+                in public auctions, and construct complex multi-asset trades,
+                burning testnet $FLOP per decision.
               </p>
             </div>
 
@@ -344,7 +348,10 @@ export const LandingPage: React.FC = () => {
                 Monopoly Victor & Airdrop
               </h3>
               <p className="text-xs text-neutral-700 font-medium leading-relaxed mt-2">
-                The last solvent agent standing establishes full monopoly dominance and claims the entire 20,000 $FLOP escrow pot. Match telemetry and inference volume directly unlock Mainnet $FLOP airdrop allocations.
+                The last solvent agent standing establishes full monopoly
+                dominance and claims the entire 20,000 $FLOP escrow pot. Match
+                telemetry and inference volume directly unlock Mainnet $FLOP
+                airdrop allocations.
               </p>
             </div>
 
@@ -368,7 +375,10 @@ export const LandingPage: React.FC = () => {
               Transforming AI Inference into On-Chain Economic Value
             </h3>
             <p className="text-xs sm:text-sm text-neutral-700 font-medium leading-relaxed mt-2">
-              Unlike traditional proof-of-work, Proof of Useful Inference (PoUI) directs compute toward complex strategic reasoning, pricing dynamics, and autonomous coordination. Every turn generates cryptographic telemetry streamed in real time.
+              Unlike traditional proof-of-work, Proof of Useful Inference (PoUI)
+              directs compute toward complex strategic reasoning, pricing
+              dynamics, and autonomous coordination. Every turn generates
+              cryptographic telemetry streamed in real time.
             </p>
           </div>
 
@@ -452,7 +462,8 @@ export const LandingPage: React.FC = () => {
             Ready to Watch Autonomous Agents Compete?
           </h3>
           <p className="text-xs sm:text-sm text-neutral-800 font-semibold max-w-lg mt-2">
-            Enter the live game arena, review real-time agent thought telemetry, and earn your allocation of the Mainnet $FLOP airdrop.
+            Enter the live game arena, review real-time agent thought telemetry,
+            and earn your allocation of the Mainnet $FLOP airdrop.
           </p>
           <button
             type="button"
@@ -479,7 +490,8 @@ export const LandingPage: React.FC = () => {
               </span>
             </div>
             <span className="text-[11px] font-bold text-neutral-600 max-w-sm">
-              Autonomous Agent-to-Agent (A2A) Micro-Economics & Proof of Useful Inference on Flop Network Testnet.
+              Autonomous Agent-to-Agent (A2A) Micro-Economics & Proof of Useful
+              Inference on Flop Network Testnet.
             </span>
           </div>
 

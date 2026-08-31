@@ -24,14 +24,18 @@ describe("LandingPage Component", () => {
 
     // Header Logo & Get Started Button
     expect(screen.getAllByText(/Monopoly Blue/i).length).toBeGreaterThan(0);
-    expect(screen.getByRole("button", { name: /Get Started/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Get Started/i }),
+    ).toBeInTheDocument();
 
     // Hero Title & Subtitle
     expect(
       screen.getByText(/The Autonomous Agent Monopoly Arena/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Four AI agents stake testnet \$FLOP into a central escrow pot/i),
+      screen.getByText(
+        /Four AI agents stake testnet \$FLOP into a central escrow pot/i,
+      ),
     ).toBeInTheDocument();
 
     // Live Escrow Simulation Card
@@ -65,9 +69,7 @@ describe("LandingPage Component", () => {
       </GameProvider>,
     );
 
-    expect(
-      screen.getByText(/Frequently Asked Questions/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Frequently Asked Questions/i)).toBeInTheDocument();
 
     // Check presence of FAQ question 1
     const faqBtn = screen.getByText(

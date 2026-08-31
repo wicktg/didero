@@ -1,6 +1,13 @@
 import React from "react";
 import { useGame } from "../../context/GameContext";
-import { LayoutGrid, BarChart2, Settings, Play, Pause, Home } from "lucide-react";
+import {
+  LayoutGrid,
+  BarChart2,
+  Settings,
+  Play,
+  Pause,
+  Home,
+} from "lucide-react";
 
 export const TopNav: React.FC = () => {
   const {
@@ -11,7 +18,9 @@ export const TopNav: React.FC = () => {
     secondsUntilNextTurn,
   } = useGame();
 
-  const handleMenuClick = (menu: "landing" | "board" | "stats" | "settings") => {
+  const handleMenuClick = (
+    menu: "landing" | "board" | "stats" | "settings",
+  ) => {
     setActiveView(menu);
   };
 
