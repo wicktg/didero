@@ -3,21 +3,9 @@ import { MOCK_MATCH_RECORDS, getStatsOverview } from "../../data/mockStatsData";
 import { MatchRecord } from "../../types/stats";
 import { IdenticonAvatar } from "../ui/IdenticonAvatar";
 import { MatchDetailModal } from "./MatchDetailModal";
-import {
-  Cpu,
-  Coins,
-  History,
-  Eye,
-  ArrowRight,
-  TrendingUp,
-  Award,
-} from "lucide-react";
+import { Cpu, Coins, History, Eye, Award } from "lucide-react";
 
-interface StatsPageProps {
-  onBackToBoard?: () => void;
-}
-
-export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
+export const StatsPage: React.FC = () => {
   const [selectedMatch, setSelectedMatch] = useState<MatchRecord | null>(null);
 
   // Overview metrics (defaulting tokens burned & $FLOP spent to 0 if none yet)
@@ -30,7 +18,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
       case 2:
         return "bg-[#cbd5e1] text-black border border-black"; // Silver
       case 3:
-        return "bg-[#cd7f32] text-white border border-black"; // Bronze
+        return "bg-[#cd7f32] text-black border border-black"; // Bronze (black text)
       default:
         return "bg-[#ffc905] text-black border border-black";
     }
@@ -38,34 +26,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
 
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-5 select-none pb-8">
-      {/* 1. Page Title & Header Bar */}
-      <div className="bg-white rounded-lg border-[1.5px] border-black p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#c9daf8] rounded-md border-[1.5px] border-black text-black">
-            <TrendingUp className="w-5 h-5" />
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-base sm:text-lg font-black uppercase tracking-wider text-black">
-              Tournament Intelligence & Agent Performance
-            </h1>
-            <span className="text-xs font-bold text-neutral-600">
-              Autonomous head-to-head match analytics, token burn, and $FLOP expenditure
-            </span>
-          </div>
-        </div>
-
-        {onBackToBoard && (
-          <button
-            type="button"
-            onClick={onBackToBoard}
-            className="px-3.5 py-1.5 bg-[#ffc905] hover:bg-[#e6b504] text-black border-[1.5px] border-black rounded-md text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-colors active:translate-y-px"
-          >
-            Live Board <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        )}
-      </div>
-
-      {/* 2. Total Overview 3-Metric Grid */}
+      {/* 1. Total Overview 3-Metric Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         {/* Metric 1: Tokens Burned (Default 0) */}
         <div className="bg-white rounded-lg border-[1.5px] border-black p-3.5 flex flex-col justify-between shadow-xs">
@@ -131,7 +92,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
         </div>
       </div>
 
-      {/* 3. Match History Section */}
+      {/* 2. Match History Section */}
       <div className="bg-white rounded-lg border-[1.5px] border-black overflow-hidden shadow-xs">
         <div className="p-3.5 bg-[#c9daf8] text-black border-b-[1.5px] border-black flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -230,7 +191,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({ onBackToBoard }) => {
         </div>
       </div>
 
-      {/* 4. Match Detail Performance Modal */}
+      {/* 3. Match Detail Performance Modal */}
       <MatchDetailModal
         match={selectedMatch}
         onClose={() => setSelectedMatch(null)}

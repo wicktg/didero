@@ -14,7 +14,7 @@ import { Users, Building2, BrainCircuit } from "lucide-react";
 import { StatsPage } from "../stats/StatsPage";
 
 export const GameLayout: React.FC = () => {
-  const { selectedTab, setSelectedTab, activeView, setActiveView } = useGame();
+  const { selectedTab, setSelectedTab, activeView } = useGame();
 
   return (
     <div className="h-screen bg-board-canvas text-neutral-900 flex flex-col font-sans overflow-hidden select-none">
@@ -22,7 +22,7 @@ export const GameLayout: React.FC = () => {
 
       {activeView === "stats" ? (
         <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-20 sm:pt-20 overflow-y-auto max-h-[calc(100vh-1rem)]">
-          <StatsPage onBackToBoard={() => setActiveView("board")} />
+          <StatsPage />
         </main>
       ) : (
         <main className="flex-1 max-w-[1080px] w-full mx-auto p-3 sm:p-5 pt-20 sm:pt-20 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start overflow-hidden">
