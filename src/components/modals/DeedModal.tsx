@@ -274,7 +274,8 @@ export const DeedModal: React.FC = () => {
                         : btnDisabled
                     }`}
                   >
-                    <Plus className="w-3.5 h-3.5" /> Build ( ${square.housePrice})
+                    <Plus className="w-3.5 h-3.5" /> Build ( $
+                    {square.housePrice})
                   </button>
 
                   <button
